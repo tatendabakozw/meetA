@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import Login_Pic from '../../assets/icons/Login_Pic'
 import {Input} from 'react-native-elements'
@@ -9,6 +9,8 @@ interface Props {
 }
 
 const Login = ({navigation}:Props) => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
     useLayoutEffect(()=>{
         navigation.setOptions({
@@ -27,8 +29,18 @@ const Login = ({navigation}:Props) => {
                     <Text style={styles.login__heading}>
                         Login
                     </Text>
-                    <Input placeholder="email" containerStyle={styles.login__input} />
-                    <Input placeholder="password" containerStyle={styles.login__input} />
+                    <Input 
+                        placeholder="email" 
+                        autoFocus
+                        value={email}
+                        onChangeText={text => setEmail(text)}
+                        containerStyle={styles.login__input} />
+                    <Input 
+                        placeholder="password"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={text => setPassword(text)} 
+                        containerStyle={styles.login__input} />
                     <TouchableOpacity style={styles.login__button}>
                         <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
                     </TouchableOpacity>
@@ -48,12 +60,12 @@ const styles = StyleSheet.create({
         paddingTop: 30
     },
     login__container:{
-        backgroundColor: '#f3f3f3',
         height: '100%'
     },
     login__top:{
         height: "35%",
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor:"#f3f3f3"
     },
     login__bottom:{
         backgroundColor: "#fff",
