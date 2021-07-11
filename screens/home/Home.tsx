@@ -89,7 +89,7 @@ const Home = () => {
     ]
 
     return (
-        <HomeLayout >
+        <HomeLayout header_title="Chats" >
            <View style={styles.home} >
                {/* <Text>l;kasj;lfkja;sljk</Text> */}
             {

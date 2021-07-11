@@ -3,7 +3,11 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'; 
 
-const HomeHeader = () => {
+interface Props{
+    heading__title ?: string
+}
+
+const HomeHeader = ({heading__title}:Props) => {
 
     const [search_on, setSearchOn] = useState('off')
 
@@ -16,7 +20,7 @@ const HomeHeader = () => {
             <StatusBar style="auto" />
             <View style={styles.header__top}>
                 <View>
-                    <Text style={{fontSize: 25, fontWeight: 'bold', color: '#333'}}>Chats</Text>
+                    <Text style={{fontSize: 25, fontWeight: 'bold', color: '#333'}}>{heading__title}</Text>
                 </View>
                 <TouchableOpacity onPress={toggleSearch} style={{borderRadius: 50, padding: 5}}>
                     <AntDesign name="search1" size={20} color="#6B7280" />
