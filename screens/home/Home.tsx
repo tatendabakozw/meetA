@@ -25,6 +25,54 @@ const Home = ({navigation}: Props) => {
             propic : `${require('../../assets/imgs/man.png')}`,
             time: '1m',
             id: 2
+        },
+        {
+            name : 'Tatenda Bako',
+            message: 'zvirisei my G, urikupi',
+            online_status : 'online',
+            propic : `${require('../../assets/imgs/woman.png')}`,
+            time: '5m',
+            id: 3
+        },
+        {
+            name : 'tatendaZw',
+            message: 'my name is tatenda bako, i hope this message is long enough to test illepsum',
+            online_status : 'offline',
+            propic : `${require('../../assets/imgs/man.png')}`,
+            time: '1m',
+            id: 4
+        },
+        {
+            name : 'Tatenda Bako',
+            message: 'zvirisei my G, urikupi',
+            online_status : 'online',
+            propic : `${require('../../assets/imgs/woman.png')}`,
+            time: '5m',
+            id: 5
+        },
+        {
+            name : 'tatendaZw',
+            message: 'my name is tatenda bako, i hope this message is long enough to test illepsum',
+            online_status : 'offline',
+            propic : `${require('../../assets/imgs/man.png')}`,
+            time: '1m',
+            id: 6
+        },
+        {
+            name : 'Tatenda Bako',
+            message: 'zvirisei my G, urikupi',
+            online_status : 'online',
+            propic : `${require('../../assets/imgs/woman.png')}`,
+            time: '5m',
+            id: 7
+        },
+        {
+            name : 'tatendaZw',
+            message: 'my name is tatenda bako, i hope this message is long enough to test illepsum',
+            online_status : 'offline',
+            propic : `${require('../../assets/imgs/man.png')}`,
+            time: '1m',
+            id: 8
         }
     ]
 

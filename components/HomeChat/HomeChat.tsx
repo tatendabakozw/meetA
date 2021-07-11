@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     homechat__imgContainer:{
-        padding: 8,
+        padding: 5,
         backgroundColor: '#c4c4c4',
         borderRadius: 50,
         marginRight: 10
