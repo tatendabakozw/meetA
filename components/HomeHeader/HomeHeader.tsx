@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'; 
 
+
 const HomeHeader = () => {
 
     const [search_on, setSearchOn] = useState('off')

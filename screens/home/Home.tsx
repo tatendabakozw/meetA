@@ -9,6 +9,25 @@ interface Props{
 
 const Home = ({navigation}: Props) => {
 
+    const chat_details = [
+        {
+            name : 'Tatenda Bako',
+            message: 'zvirisei my G, urikupi',
+            online_status : 'online',
+            propic : `${require('../../assets/imgs/woman.png')}`,
+            time: '5m',
+            id: 1
+        },
+        {
+            name : 'tatendaZw',
+            message: 'my name is tatenda bako, i hope this message is long enough to test illepsum',
+            online_status : 'offline',
+            propic : `${require('../../assets/imgs/man.png')}`,
+            time: '1m',
+            id: 2
+        }
+    ]
+
     useLayoutEffect(()=>{
         navigation.setOptions({
             headerStyle: {
@@ -22,15 +41,19 @@ const Home = ({navigation}: Props) => {
         <HomeLayout >
            <View >
                {/* <Text>l;kasj;lfkja;sljk</Text> */}
-               <HomeChat />
-               <HomeChat />
-               <HomeChat />
-               <HomeChat />
-               <HomeChat />
-               <HomeChat />
-               <HomeChat />
-               <HomeChat />
-               <HomeChat />
+            {
+                chat_details?.map(detail=>(
+                    <HomeChat 
+                    key={detail.id}
+                    name={detail.name}
+                    message={detail.message}
+                    online_status = {detail.online_status}
+                    propic = {detail.propic}
+                    time= {detail.time}
+                    />
+                ))
+            }
+ 
            </View>
         </HomeLayout>
     )
