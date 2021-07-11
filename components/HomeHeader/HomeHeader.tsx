@@ -18,7 +18,7 @@ const HomeHeader = () => {
                 <View>
                     <Text style={{fontSize: 30, fontWeight: 'bold', color: '#333'}}>Chats</Text>
                 </View>
-                <TouchableOpacity onPress={toggleSearch} style={{backgroundColor: 'red', borderRadius: 50, padding: 5}}>
+                <TouchableOpacity onPress={toggleSearch} style={{borderRadius: 50, padding: 5}}>
                     <AntDesign name="search1" size={22} color="#6B7280" />
                 </TouchableOpacity>
             </View>

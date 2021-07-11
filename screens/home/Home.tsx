@@ -27,9 +27,6 @@ const Home = ({navigation}: Props) => {
                 <Text>
                     home page sajlfkja
                 </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('login')}>
-                    <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
-                </TouchableOpacity>
             </View>
         </View>
     )
