@@ -1,15 +1,13 @@
 import React, {useLayoutEffect} from 'react'
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import {Header} from 'react-native-elements'
-import HomeHeader from '../../components/HomeHeader/HomeHeader'
-import {useSafeArea} from 'react-native-safe-area-context'
+import { StyleSheet, Text, View } from 'react-native'
+import HomeChat from '../../components/HomeChat/HomeChat'
+import HomeLayout from '../../layouts/HomeLayout'
 
 interface Props{
     navigation : any
 }
 
 const Home = ({navigation}: Props) => {
-    const insets = useSafeArea();
 
     useLayoutEffect(()=>{
         navigation.setOptions({
@@ -21,14 +19,20 @@ const Home = ({navigation}: Props) => {
     },[navigation])
 
     return (
-        <View style={{paddingTop: insets.top}}>
-            <View style={styles.home__container}>
-                <HomeHeader/>
-                <Text>
-                    home page sajlfkja
-                </Text>
-            </View>
-        </View>
+        <HomeLayout >
+           <View >
+               {/* <Text>l;kasj;lfkja;sljk</Text> */}
+               <HomeChat />
+               <HomeChat />
+               <HomeChat />
+               <HomeChat />
+               <HomeChat />
+               <HomeChat />
+               <HomeChat />
+               <HomeChat />
+               <HomeChat />
+           </View>
+        </HomeLayout>
     )
 }
 
@@ -40,8 +44,9 @@ const styles = StyleSheet.create({
         height: 150
     },
     home__container:{
+        backgroundColor: "#fff",
         flex: 1,
-    backgroundColor: "#fff",
+        height: '100%'
     // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
     }
 })

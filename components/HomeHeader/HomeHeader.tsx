@@ -26,7 +26,7 @@ const HomeHeader = () => {
                 {
                     search_on === 'on' ? (
                         <View style={styles.header__search}>
-                            <TextInput style={styles.header__searchInput} />
+                            <TextInput placeholder="Search" style={styles.header__searchInput} />
                         </View>
                     ):(
                         <>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     header:{
         height: 130,
         padding: 20,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
     },
     header__top:{
         display: 'flex',
@@ -82,10 +82,11 @@ const styles = StyleSheet.create({
     },
     header__search:{
         backgroundColor: '#f3f3f3',
-        paddingVertical: 10,
+        paddingVertical: 8,
         paddingHorizontal: 20,
         borderRadius: 50,
-        marginRight: 10
+        marginRight: 10,
+        width: '100%'
     },
     header__searchInput:{
 
