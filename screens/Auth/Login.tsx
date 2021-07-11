@@ -41,10 +41,10 @@ const Login = ({navigation}:Props) => {
                         value={password}
                         onChangeText={text => setPassword(text)} 
                         containerStyle={styles.login__input} />
-                    <TouchableOpacity style={styles.login__button}>
+                    <TouchableOpacity style={styles.login__button} onPress={() => navigation.navigate('home')}>
                         <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('register')}>
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
                     </TouchableOpacity>
                 </View>
