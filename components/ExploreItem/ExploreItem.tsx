@@ -1,16 +1,29 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { useState } from 'react'
+import { Image, Modal, StyleSheet, TouchableOpacity, Text, View } from 'react-native'
 
 const ExploreItem = () => {
+    const [description_modal_open, setDescriptionModalOpen] = useState(false)
+
     return (
-        <View style={styles.exploreitem}>
-            <Image 
-                source={require('../../assets/imgs/bako.jpg')} 
-                style={styles.image} 
-                resizeMode="cover"
-                blurRadius ={20}
-            />
-        </View>
+        <>
+            <TouchableOpacity onPress={()=> setDescriptionModalOpen(true)} style={styles.exploreitem}>
+                <Image 
+                    source={require('../../assets/imgs/bako.jpg')} 
+                    style={styles.image} 
+                    resizeMode="cover"
+                    blurRadius ={20}
+                />
+            </TouchableOpacity>
+            <Modal visible={description_modal_open}>
+                <View>
+                    <TouchableOpacity onPress={() => setDescriptionModalOpen(false)}>
+                        <Text>close</Text>
+                    </TouchableOpacity>
+                    <Text>Stuff goes here</Text>
+                </View>
+            </Modal>
+        </>
     )
 }
 
@@ -18,7 +31,7 @@ export default ExploreItem
 
 const styles = StyleSheet.create({
     exploreitem:{
-        height: 180,
+        height: 150,
         width: '45%',
         borderRadius: 20,
         marginBottom: 20,
