@@ -1,20 +1,13 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useLayoutEffect } from 'react'
+import React from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import Register_Pic from '../../assets/icons/Register_Pic'
 import {Input} from 'react-native-elements'
+import { useHistory } from 'react-router-native'
 
-interface Props {
-    navigation :any
-}
+const Register = () => {
 
-const Register = ({navigation}:Props) => {
-
-    useLayoutEffect(()=>{
-        navigation.setOptions({
-           headerShown: false
-        })
-    },[navigation])
+    const history = useHistory()
 
     return (
         <View style={styles.register}>
@@ -32,7 +25,7 @@ const Register = ({navigation}:Props) => {
                     <TouchableOpacity style={styles.register__button}>
                         <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('login')}>
+                    <TouchableOpacity onPress={() => history.push('/')}>
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
                     </TouchableOpacity>
                 </View>

@@ -15,13 +15,13 @@ const HomeChat = ({propic, name, online_status, message, time, id}:Props) => {
         <View style={styles.homechat}>
             <View style={styles.homechat__imgContainer}>
                 {/* <Image source={require('../../assets/imgs/woman.png')} style={{ width: 45, height: 45 }} /> */}
-                <Image source={propic} style={{ width: 45, height: 45 }} />
+                <Image source={propic} style={{ width: 30, height: 30 }} />
             </View>
             <View style={styles.homechat__texts}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.homechat__name}>{name}</Text>
                     {
-                        online_status === 'online' ? (<View style={{padding: 5, backgroundColor:'#10B981', borderRadius: 50, marginTop:5}}/>):(<View style={{padding: 5, backgroundColor:'#F6954F', borderRadius: 50, marginTop:5}}/>)
+                        online_status === 'online' ? (<View style={{padding: 4, backgroundColor:'#10B981', borderRadius: 50, marginTop:5}}/>):(<View style={{padding: 4, backgroundColor:'#F6954F', borderRadius: 50, marginTop:5}}/>)
                     }
                 </View>
                 <Text numberOfLines={2} ellipsizeMode="tail" style={styles.homechat__message}>{message}</Text>
@@ -52,12 +52,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
     homechat__name:{
-        fontSize: 22,
-        fontWeight: 'bold',
+        fontSize: 16,
+        fontWeight: '700',
         marginRight: 5,
         color: '#374151'
     },
     homechat__message:{
+        fontSize: 12,
         color: '#6B7280',
         width: 210
     }

@@ -3,11 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import HomeChat from '../../components/HomeChat/HomeChat'
 import HomeLayout from '../../layouts/HomeLayout'
 
-interface Props{
-    navigation : any
-}
-
-const Home = ({navigation}: Props) => {
+const Home = () => {
 
     const chat_details = [
         {
@@ -73,21 +69,28 @@ const Home = ({navigation}: Props) => {
             propic : `${require('../../assets/imgs/man.png')}`,
             time: '1m',
             id: 8
+        },
+        {
+            name : 'Tatenda Bako',
+            message: 'zvirisei my G, urikupi',
+            online_status : 'online',
+            propic : `${require('../../assets/imgs/woman.png')}`,
+            time: '5m',
+            id: 9
+        },
+        {
+            name : 'tatendaZw',
+            message: 'my name is tatenda bako, i hope this message is long enough to test illepsum',
+            online_status : 'offline',
+            propic : `${require('../../assets/imgs/man.png')}`,
+            time: '1m',
+            id: 10
         }
     ]
 
-    useLayoutEffect(()=>{
-        navigation.setOptions({
-            headerStyle: {
-                backgroundColor: '#fff',
-            },
-            headerShown: false
-        })
-    },[navigation])
-
     return (
         <HomeLayout >
-           <View >
+           <View style={styles.home} >
                {/* <Text>l;kasj;lfkja;sljk</Text> */}
             {
                 chat_details?.map(detail=>(
@@ -110,14 +113,7 @@ const Home = ({navigation}: Props) => {
 export default Home
 
 const styles = StyleSheet.create({
-    home__header:{
-        padding: 20,
-        height: 150
-    },
-    home__container:{
-        backgroundColor: "#fff",
-        flex: 1,
-        height: '100%'
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+    home:{
+        marginBottom: 30
     }
 })

@@ -3,7 +3,6 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'; 
 
-
 const HomeHeader = () => {
 
     const [search_on, setSearchOn] = useState('off')
@@ -17,10 +16,10 @@ const HomeHeader = () => {
             <StatusBar style="auto" />
             <View style={styles.header__top}>
                 <View>
-                    <Text style={{fontSize: 30, fontWeight: 'bold', color: '#333'}}>Chats</Text>
+                    <Text style={{fontSize: 25, fontWeight: 'bold', color: '#333'}}>Chats</Text>
                 </View>
                 <TouchableOpacity onPress={toggleSearch} style={{borderRadius: 50, padding: 5}}>
-                    <AntDesign name="search1" size={22} color="#6B7280" />
+                    <AntDesign name="search1" size={20} color="#6B7280" />
                 </TouchableOpacity>
             </View>
             <View style={styles.header__bottom}>
@@ -32,10 +31,10 @@ const HomeHeader = () => {
                     ):(
                         <>
                             <View style={styles.header__colorItem}>
-                                <Text style={{color: '#fff', fontSize: 16}}>Other Stuff</Text>
+                                <Text style={{color: '#fff', fontSize: 12}}>Other Stuff</Text>
                             </View>
                             <View style={styles.header__nonecolrItem}>
-                                <Text style={{color: '#333'}}>Stuff</Text>
+                                <Text style={{color: '#374151', fontSize: 12}}>Stuff</Text>
                             </View>
                         </>
                     )
@@ -53,6 +52,13 @@ const styles = StyleSheet.create({
         height: 130,
         padding: 20,
         backgroundColor: "#fff",
+        borderBottomColor:'#F3F4F6', // if you need 
+        borderBottomWidth:1,
+        overflow: 'hidden',
+        shadowColor: '#F3F4F6',
+        shadowRadius: 10,
+        shadowOpacity: 1,
+        
     },
     header__top:{
         display: 'flex',
@@ -69,7 +75,7 @@ const styles = StyleSheet.create({
     },
     header__colorItem:{
         backgroundColor: '#5B61B9',
-        paddingVertical: 8,
+        paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 50,
         marginRight: 10
@@ -82,9 +88,9 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     header__search:{
-        backgroundColor: '#f3f3f3',
-        paddingVertical: 8,
-        paddingHorizontal: 20,
+        backgroundColor: '#F9FAFB',
+        paddingVertical: 6,
+        paddingHorizontal: 18,
         borderRadius: 50,
         marginRight: 10,
         width: '100%'
