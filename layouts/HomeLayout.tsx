@@ -13,7 +13,7 @@ const HomeLayout = ({children}:Props) => {
     return (
         <View style={{ flex:1}}>
             <View><HomeHeader/></View>
-            <ScrollView style={{paddingHorizontal: 20, paddingTop: 20, backgroundColor: '#F9FAFB'}}>{children}</ScrollView>
+            <ScrollView style={{paddingHorizontal: 20, backgroundColor: '#F9FAFB'}}>{children}</ScrollView>
             <View style={{ bottom: 0, left: 0, right: 0}}><HomeFooter/></View>
         </View>
     )
