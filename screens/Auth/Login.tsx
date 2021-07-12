@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native'
 import Login_Pic from '../../assets/icons/Login_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
@@ -24,24 +24,24 @@ const Login = () => {
                     <Text style={styles.login__heading}>
                         Login
                     </Text>
-                    <Input 
+                    {/* <Input 
                         placeholder="email" 
                         // autoFocus
                         value={email}
                         onChangeText={text => setEmail(text)}
-                        containerStyle={styles.login__input} />
-                    <Input 
-                        placeholder="password"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={text => setPassword(text)} 
-                        containerStyle={styles.login__input} />
-                    <TouchableOpacity style={styles.login__button} onPress={() => history.push('/chats')}>
-                        <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
+                        containerStyle={styles.login__input} /> */}
+                    <TouchableOpacity style={styles.google__auth}>
+                        <Image source={require('../../assets/icons/google.png')} style={{ width: 25, height: 25, borderRadius:50, marginRight: 10 }} />
+                        <Text style={{color: 'white', fontSize: 20}}>Google</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => history.push('/register')}>
-                        <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
+
+                    <TouchableOpacity style={styles.facebook__auth}>
+                        <Image source={require('../../assets/icons/facebook.png')} style={{ width: 25, height: 25, marginRight: 10 }} />
+                        <Text style={{color: '#5B61B9', fontSize: 20}}>Facebook</Text>
                     </TouchableOpacity>
+
+                    
+
                 </View>
             </KeyboardAvoidingView>
         </View>
@@ -52,7 +52,8 @@ export default Login
 
 const styles = StyleSheet.create({
     login:{
-        paddingTop: 30
+        paddingTop: 30,
+        backgroundColor: '#F3F4F6'
     },
     login__container:{
         height: '100%'
@@ -60,20 +61,23 @@ const styles = StyleSheet.create({
     login__top:{
         height: "35%",
         alignItems: 'center',
-        backgroundColor:"#f3f3f3"
+        backgroundColor:"#F3F4F6"
     },
     login__bottom:{
         backgroundColor: "#fff",
         height: "65%",
-        borderTopRightRadius: 50,
-        borderTopLeftRadius: 50,
+        borderTopRightRadius: 40,
+        borderTopLeftRadius: 40,
         padding: 30,
-        alignItems: 'center'
+        alignItems: 'center',
+        flexDirection: 'column',
+        alignContent: 'center',
+        paddingTop: '25%'
     },
     login__heading:{
         fontSize: 40,
-        fontFamily: 'sans-serif',
-        marginBottom: 15
+        marginBottom: 15,
+        color: '#374151'
     },
     login__input:{
         marginBottom: 15
@@ -85,6 +89,28 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         marginBottom: 20
     },
-    loginSign__button:{}
+    loginSign__button:{},
+    google__auth:{
+        marginVertical: 15,
+        backgroundColor: "#5B61B9",
+        width: '100%',
+        padding: 15,
+        borderRadius: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: "center"
+    },
+    facebook__auth:{
+        marginVertical: 15,
+        backgroundColor: "#fff",
+        width: '100%',
+        padding: 15,
+        borderRadius: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: "center",
+        borderColor: "#5B61B9",
+        borderWidth: 1
+    }
     
 })
