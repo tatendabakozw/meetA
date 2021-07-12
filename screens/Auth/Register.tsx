@@ -38,9 +38,9 @@ const Register = () => {
     }
 
     return (
-        <ScrollView style={styles.register}>
+        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'padding'} style={styles.register}>
             <StatusBar style="auto" />
-            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'padding'} style={styles.register__container}>
+            <View style={styles.register__container}>
                 <View style={styles.register__top}>
                     <Register_Pic height={250} width={250}/>
                 </View>
@@ -100,18 +100,15 @@ const Register = () => {
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
                     </TouchableOpacity>
                 </View>
-            </KeyboardAvoidingView>
-        </ScrollView>
+            </View>
+        </KeyboardAvoidingView>
     )
 }
 
 export default Register
 
 const styles = StyleSheet.create({
-    register:{
-        paddingTop: 30,
-        backgroundColor: '#F3F4F6',
-    },
+    register:{},
     register__container:{
         backgroundColor: '#F3F4F6',
         height: '100%',
