@@ -38,7 +38,7 @@ const Register = () => {
     }
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'padding'} style={styles.register}>
+        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'padding'}>
             <StatusBar style="auto" />
             <View style={styles.register__container}>
                 <View style={styles.register__top}>
@@ -108,7 +108,6 @@ const Register = () => {
 export default Register
 
 const styles = StyleSheet.create({
-    register:{},
     register__container:{
         backgroundColor: '#F3F4F6',
         height: '100%',

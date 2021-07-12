@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, ActivityIndicator } from 'react-native'
 import Login_Pic from '../../assets/icons/Login_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
@@ -11,6 +11,7 @@ interface Props {}
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const history = useHistory()
 
@@ -24,12 +25,20 @@ const Login = () => {
         return unsubscribe;
     },[])
 
-    const register = () =>{}
+    const loginWIthCredentials = () =>{
+        setLoading(true)
+        auth.signInWithEmailAndPassword(email, password).then(auth_user=>{
+            console.log(auth_user)
+        }).finally(()=>{
+            setLoading(false)
+            history.push('/')
+        })
+    }
 
     return (
-        <View style={styles.login}>
+        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'padding'}>
             <StatusBar style="auto" />
-            <KeyboardAvoidingView style={styles.login__container}>
+            <View style={styles.login__container}>
                 <View style={styles.login__top}>
                     <Login_Pic height={250} width={250}/>
                 </View>
@@ -48,15 +57,23 @@ const Login = () => {
                         value={password}
                         onChangeText={text => setPassword(text)} 
                         containerStyle={styles.login__input} />
-                    <TouchableOpacity style={styles.login__button} onPress={() => history.push('/home')}>
-                        <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
-                    </TouchableOpacity>
+                     {
+                        !loading ? (
+                            <TouchableOpacity style={styles.login__button}>
+                                <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
+                            </TouchableOpacity>
+                        ):(
+                            <TouchableOpacity disabled style={styles.login__button}>
+                                <ActivityIndicator size="small" color="#fff" />
+                            </TouchableOpacity> 
+                        )
+                    }
                     <TouchableOpacity onPress={() => history.push('/register')}>
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
                     </TouchableOpacity>
                 </View>
-            </KeyboardAvoidingView>
-        </View>
+            </View>
+        </KeyboardAvoidingView>
     )
 }
 
@@ -68,12 +85,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#F3F4F6'
     },
     login__container:{
-        height: '100%'
+        height: '100%',
+        backgroundColor: '#F3F4F6'
     },
     login__top:{
         height: "35%",
         alignItems: 'center',
-        backgroundColor:"#f3f3f3"
     },
     login__bottom:{
         backgroundColor: "#fff",
@@ -84,7 +101,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         alignContent: 'center',
-        paddingVertical: '20%'
+        paddingVertical: '20%',
     },
     login__heading:{
         fontSize: 40,
