@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
 import Login_Pic from '../../assets/icons/Login_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
+import { auth } from '../../firebase'
 
 interface Props {}
 
@@ -13,9 +14,17 @@ const Login = () => {
 
     const history = useHistory()
 
-    const register = () =>{
-        
-    }
+    useEffect(()=>{
+        const unsubscribe = auth.onAuthStateChanged(auth_user=>{
+            if(auth_user){
+                history.push('/chats')
+            }
+        })
+
+        return unsubscribe;
+    },[])
+
+    const register = () =>{}
 
     return (
         <View style={styles.login}>

@@ -15,8 +15,11 @@ const Register = () => {
     const history = useHistory()
 
     const registerWithCredentials = () =>{
-        auth.createUserWithEmailAndPassword(email, password).then(user=>{
-
+        auth.createUserWithEmailAndPassword(email, password).then(auth_user=>{
+            auth_user.user?.updateProfile({
+                displayName: username,
+                photoURL: gender === 'male' ? '../../assets/imgs/man.png' : '../../assets/imgs/woman.png'
+            })
         }).catch(err=>{
             alert(err.message)
         })
@@ -54,7 +57,7 @@ const Register = () => {
                         value={gender} 
                         onChangeText={text => setGender(text)}
                         containerStyle={styles.register__input} />
-                    <TouchableOpacity style={styles.register__button}>
+                    <TouchableOpacity onPress={registerWithCredentials} style={styles.register__button}>
                         <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => history.push('/')}>
