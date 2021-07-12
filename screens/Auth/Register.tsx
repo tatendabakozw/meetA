@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, View, TouchableOpacity, Platform, ActivityIndicator } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, View, TouchableOpacity, Platform, ActivityIndicator, ScrollView } from 'react-native'
 import Register_Pic from '../../assets/icons/Register_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
@@ -38,9 +38,9 @@ const Register = () => {
     }
 
     return (
-        <View style={styles.register}>
+        <ScrollView style={styles.register}>
             <StatusBar style="auto" />
-            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'height'} style={styles.register__container}>
+            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'padding'} style={styles.register__container}>
                 <View style={styles.register__top}>
                     <Register_Pic height={250} width={250}/>
                 </View>
@@ -101,7 +101,7 @@ const Register = () => {
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -111,12 +111,10 @@ const styles = StyleSheet.create({
     register:{
         paddingTop: 30,
         backgroundColor: '#F3F4F6',
-        flex: 1
     },
     register__container:{
         backgroundColor: '#F3F4F6',
         height: '100%',
-        flex: 1,
     },
     register__top:{
         height: "35%",
@@ -131,7 +129,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         alignContent: 'center',
-        paddingVertical: '2%'
+        paddingVertical: '2%',
     },
     register__heading:{
         fontSize: 40,
@@ -139,7 +137,8 @@ const styles = StyleSheet.create({
         color: '#374151'
     },
     register__input:{
-        marginBottom: 2
+        marginBottom: 2,
+        backgroundColor: '#fff'
     },
     register__button:{
         backgroundColor: "#5B61B9",
