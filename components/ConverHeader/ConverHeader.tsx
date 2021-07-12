@@ -11,10 +11,10 @@ const ConverHeader = () => {
         <View style={styles.converheader}>
             <StatusBar style="auto" />
             <View style={styles.converheader__left}>
-                <TouchableOpacity onPress={()=> history.push('/chats')} style={styles.converheader__backIcon}>
+                <TouchableOpacity activeOpacity={0.7} onPress={()=> history.push('/chats')} style={styles.converheader__backIcon}>
                     <Ionicons name="chevron-back-outline" size={24} color="#374151" />
                 </TouchableOpacity>
-                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity activeOpacity={0.7} style={{flexDirection: 'row', alignItems: 'center'}}>
                     <View style={styles.homechat__imgContainer}>
                         <Image source={require('../../assets/imgs/man.png')} style={{ width: 35, height: 35 }} />
                         
