@@ -38,9 +38,9 @@ const Register = () => {
     }
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'padding'}>
+        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
             <StatusBar style="auto" />
-            <View style={styles.register__container}>
+            <ScrollView style={styles.register__container}>
                 <View style={styles.register__top}>
                     <Register_Pic height={250} width={250}/>
                 </View>
@@ -85,6 +85,7 @@ const Register = () => {
                             
                         />
                     </View> */}
+                    
                     {
                         !loading ? (
                             <TouchableOpacity onPress={registerWithCredentials} style={styles.register__button}>
@@ -100,7 +101,7 @@ const Register = () => {
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </ScrollView>
         </KeyboardAvoidingView>
     )
 }

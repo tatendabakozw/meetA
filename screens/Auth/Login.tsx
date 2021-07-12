@@ -1,6 +1,13 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Platform, ActivityIndicator } from 'react-native'
+import { KeyboardAvoidingView, 
+        StyleSheet, 
+        Text, 
+        View, 
+        Alert , 
+        TouchableOpacity, 
+        Platform, 
+        ActivityIndicator } from 'react-native'
 import Login_Pic from '../../assets/icons/Login_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
@@ -27,16 +34,19 @@ const Login = () => {
 
     const loginWIthCredentials = () =>{
         setLoading(true)
-        auth.signInWithEmailAndPassword(email, password).then(auth_user=>{
+        auth.signInWithEmailAndPassword(email.trim(), password).then(auth_user=>{
             console.log(auth_user)
         }).finally(()=>{
             setLoading(false)
             history.push('/')
+        }).catch(err=>{
+            alert(err.message)
+            setLoading(false)
         })
     }
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'padding'}>
+        <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
             <StatusBar style="auto" />
             <View style={styles.login__container}>
                 <View style={styles.login__top}>
@@ -59,7 +69,7 @@ const Login = () => {
                         containerStyle={styles.login__input} />
                      {
                         !loading ? (
-                            <TouchableOpacity style={styles.login__button}>
+                            <TouchableOpacity onPress={loginWIthCredentials} style={styles.login__button}>
                                 <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
                             </TouchableOpacity>
                         ):(
@@ -81,7 +91,7 @@ export default Login
 
 const styles = StyleSheet.create({
     login:{
-        paddingTop: 30,
+        padding: 30,
         backgroundColor: '#F3F4F6'
     },
     login__container:{
@@ -101,7 +111,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         alignContent: 'center',
-        paddingVertical: '10%',
     },
     login__heading:{
         fontSize: 40,
