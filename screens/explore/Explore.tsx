@@ -1,11 +1,15 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { useHistory } from 'react-router-native'
 import ExploreItem from '../../components/ExploreItem/ExploreItem'
-import HomeLayout from '../../layouts/HomeLayout'
+import ExploreLayout from '../../layouts/ExploreLayout'
 
 const Explore = () => {
+
+    const history = useHistory()
+
     return (
-        <HomeLayout header_title="Explore">
+        <ExploreLayout header_title="Explore" header__back__activity={()=> history.goBack()}>
             <View style={styles.explore}>
                 <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 20}}>
                     <View style={styles.buttons}>
@@ -24,7 +28,7 @@ const Explore = () => {
                     <ExploreItem />
                 </View>
             </View>
-        </HomeLayout>
+        </ExploreLayout>
     )
 }
 

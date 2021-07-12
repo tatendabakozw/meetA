@@ -8,7 +8,15 @@ const Conversation = () => {
     const history = useHistory()
     return (
         <ConversationsLayout>
-            <View style={{padding: 20, flexDirection: 'column'}}>
+            <View style={{paddingHorizontal: 20, flexDirection: 'column'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20}}>
+                    <TouchableOpacity activeOpacity={0.7} style={{backgroundColor:'#D1FAE5', borderRadius: 50, padding: 10,width: '45%', marginVertical: 10, borderWidth:1, borderColor:'#047857'}}>
+                        <Text style={{color: '#047857', textAlign: 'center'}}>APPROVE</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.7} style={{backgroundColor:'#FECACA', borderRadius: 50, padding: 10,width: '45%', marginVertical: 10, borderWidth:1, borderColor:'#DC2626'}}>
+                        <Text style={{color: '#B91C1C', textAlign: 'center'}}>DISAPPROVE</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={{alignSelf: 'flex-start'}}>
                     <MessageComponent/>
                 </View>

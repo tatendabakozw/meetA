@@ -34,12 +34,12 @@ const HomeHeader = ({heading__title}:Props) => {
                         </View>
                     ):(
                         <>
-                            <View style={styles.header__colorItem}>
-                                <Text style={{color: '#fff', fontSize: 12}}>Other Stuff</Text>
-                            </View>
-                            <View style={styles.header__nonecolrItem}>
-                                <Text style={{color: '#374151', fontSize: 12}}>Stuff</Text>
-                            </View>
+                            <TouchableOpacity activeOpacity={0.7} style={styles.header__colorItem}>
+                                <Text style={{color: '#fff', fontSize: 12}}>My Chats</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity activeOpacity={0.7} style={styles.header__nonecolrItem}>
+                                <Text style={{color: '#374151', fontSize: 12}}>Friends</Text>
+                            </TouchableOpacity>
                         </>
                     )
                 }

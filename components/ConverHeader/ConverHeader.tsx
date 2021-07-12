@@ -39,7 +39,8 @@ export default ConverHeader
 
 const styles = StyleSheet.create({
     converheader:{
-        paddingVertical: 20,
+        paddingBottom: 20,
+        paddingTop: 35,
         backgroundColor: '#fff',
         paddingHorizontal: 15
     },
