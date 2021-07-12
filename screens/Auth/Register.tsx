@@ -5,7 +5,6 @@ import Register_Pic from '../../assets/icons/Register_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
 import { auth } from '../../firebase'
-import DropDownPicker from 'react-native-dropdown-picker'
 
 const Register = () => {
     const [username, setUsername] = useState('')
@@ -13,13 +12,7 @@ const Register = () => {
     const [gender, setGender] = useState('')
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
-    const [items, setItems] = useState([
-        {label: 'Male', value: 'male'},
-        {label: 'Female', value: 'female'},
-        {label: 'Rather not say', value: 'other'}
-    ]);
-    const [open, setOpen] = useState(false)
-
+   
     const history = useHistory()
 
     const registerWithCredentials = () =>{
@@ -33,6 +26,7 @@ const Register = () => {
             setLoading(false)
             history.push('/')
         }).catch(err=>{
+            setLoading(false)
             alert(err.message)
         })
     }
@@ -70,21 +64,6 @@ const Register = () => {
                         value={gender} 
                         onChangeText={text => setGender(text)}
                         containerStyle={styles.register__input} />
-                        {/* <View style={{backgroundColor: '#fff', marginBottom: 20}}>
-                        <DropDownPicker
-                            open={open}
-                            value={gender}
-                            items={items}
-                            setOpen={setOpen}
-                            setValue={setGender}
-                            setItems={setItems}
-                            placeholder="Select Gender"
-                            containerStyle={{backgroundColor: 'white', borderRadius: 50}}
-                            theme="LIGHT"
-                            mode="SIMPLE"
-                            
-                        />
-                    </View> */}
                     
                     {
                         !loading ? (
