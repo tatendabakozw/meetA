@@ -1,18 +1,31 @@
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Platform } from 'react-native'
 import Register_Pic from '../../assets/icons/Register_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
+import { auth } from '../../firebase'
 
 const Register = () => {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [gender, setGender] = useState('')
+    const [email, setEmail] = useState('')
 
     const history = useHistory()
+
+    const registerWithCredentials = () =>{
+        auth.createUserWithEmailAndPassword(email, password).then(user=>{
+
+        }).catch(err=>{
+            alert(err.message)
+        })
+    }
 
     return (
         <View style={styles.register}>
             <StatusBar style="auto" />
-            <KeyboardAvoidingView style={styles.register__container}>
+            <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'height'} style={styles.register__container}>
                 <View style={styles.register__top}>
                     <Register_Pic height={250} width={250}/>
                 </View>
@@ -20,8 +33,27 @@ const Register = () => {
                     <Text style={styles.register__heading}>
                         Register
                     </Text>
-                    <Input placeholder="email" containerStyle={styles.register__input} />
-                    <Input placeholder="password" containerStyle={styles.register__input} />
+                    <Input 
+                        placeholder="Email"
+                        value={email} 
+                        onChangeText={text => setEmail(text)}
+                        containerStyle={styles.register__input} />
+                    <Input 
+                        placeholder="Password" 
+                        secureTextEntry
+                        value={password} 
+                        onChangeText={text => setPassword(text)}
+                        containerStyle={styles.register__input} />
+                    <Input 
+                        placeholder="Username" 
+                        value={username} 
+                        onChangeText={text => setUsername(text)}
+                        containerStyle={styles.register__input} />
+                    <Input 
+                        placeholder="Gender" 
+                        value={gender} 
+                        onChangeText={text => setGender(text)}
+                        containerStyle={styles.register__input} />
                     <TouchableOpacity style={styles.register__button}>
                         <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
                     </TouchableOpacity>
@@ -38,11 +70,14 @@ export default Register
 
 const styles = StyleSheet.create({
     register:{
-        paddingTop: 30
+        paddingTop: 30,
+        backgroundColor: '#F3F4F6',
+        flex: 1
     },
     register__container:{
         backgroundColor: '#f3f3f3',
-        height: '100%'
+        height: '100%',
+        flex: 1
     },
     register__top:{
         height: "35%",
@@ -51,25 +86,28 @@ const styles = StyleSheet.create({
     register__bottom:{
         backgroundColor: "#fff",
         height: "65%",
-        borderTopRightRadius: 50,
-        borderTopLeftRadius: 50,
+        borderTopRightRadius: 40,
+        borderTopLeftRadius: 40,
         padding: 30,
-        alignItems: 'center'
+        alignItems: 'center',
+        flexDirection: 'column',
+        alignContent: 'center',
+        paddingVertical: '2%'
     },
     register__heading:{
         fontSize: 40,
-        fontFamily: 'sans-serif',
-        marginBottom: 15
+        marginBottom: 15,
+        color: '#374151'
     },
     register__input:{
-        marginBottom: 15
+        marginBottom: 2
     },
     register__button:{
         backgroundColor: "#5B61B9",
         width: '100%',
         padding: 15,
         borderRadius: 50,
-        marginBottom: 20
+        marginBottom: 10
     },
     registerSign__button:{}
 })
