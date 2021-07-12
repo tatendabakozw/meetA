@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         alignContent: 'center',
-        paddingVertical: '20%',
+        paddingVertical: '10%',
     },
     login__heading:{
         fontSize: 40,
