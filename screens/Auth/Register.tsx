@@ -5,6 +5,7 @@ import Register_Pic from '../../assets/icons/Register_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
 import { auth } from '../../firebase'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 const Register = () => {
     const [username, setUsername] = useState('')
@@ -12,15 +13,21 @@ const Register = () => {
     const [gender, setGender] = useState('')
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
+    const [items, setItems] = useState([
+        {label: 'Male', value: 'male'},
+        {label: 'Female', value: 'female'},
+        {label: 'Rather not say', value: 'other'}
+    ]);
+    const [open, setOpen] = useState(false)
 
     const history = useHistory()
 
     const registerWithCredentials = () =>{
         setLoading(true)
-        auth.createUserWithEmailAndPassword(email, password).then(auth_user=>{
+        auth.createUserWithEmailAndPassword(email.trim(), password).then(auth_user=>{
             auth_user.user?.updateProfile({
                 displayName: username,
-                photoURL: gender === 'male' ? 'https://i.ibb.co/qCjtzY7/man.png' : 'https://i.ibb.co/zQGktfn/woman.png'
+                photoURL: gender === 'Male' ? 'https://i.ibb.co/qCjtzY7/man.png' : 'https://i.ibb.co/zQGktfn/woman.png'
             })
         }).finally(()=>{
             setLoading(false)
@@ -45,7 +52,8 @@ const Register = () => {
                         placeholder="Email"
                         value={email} 
                         onChangeText={text => setEmail(text)}
-                        containerStyle={styles.register__input} />
+                        containerStyle={{marginTop: 5}} />
+                
                     <Input 
                         placeholder="Password" 
                         secureTextEntry
@@ -62,13 +70,28 @@ const Register = () => {
                         value={gender} 
                         onChangeText={text => setGender(text)}
                         containerStyle={styles.register__input} />
+                        {/* <View style={{backgroundColor: '#fff', marginBottom: 20}}>
+                        <DropDownPicker
+                            open={open}
+                            value={gender}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setGender}
+                            setItems={setItems}
+                            placeholder="Select Gender"
+                            containerStyle={{backgroundColor: 'white', borderRadius: 50}}
+                            theme="LIGHT"
+                            mode="SIMPLE"
+                            
+                        />
+                    </View> */}
                     {
-                        loading ? (
-                            <TouchableOpacity disabled onPress={registerWithCredentials} style={styles.register__button}>
+                        !loading ? (
+                            <TouchableOpacity onPress={registerWithCredentials} style={styles.register__button}>
                                 <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
                             </TouchableOpacity>
                         ):(
-                            <TouchableOpacity disabled onPress={registerWithCredentials} style={styles.register__button}>
+                            <TouchableOpacity disabled style={styles.register__button}>
                                 <ActivityIndicator size="small" color="#fff" />
                             </TouchableOpacity> 
                         )
@@ -91,9 +114,9 @@ const styles = StyleSheet.create({
         flex: 1
     },
     register__container:{
-        backgroundColor: '#f3f3f3',
+        backgroundColor: '#F3F4F6',
         height: '100%',
-        flex: 1
+        flex: 1,
     },
     register__top:{
         height: "35%",
