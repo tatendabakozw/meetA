@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Platform } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, View, TouchableOpacity, Platform, ActivityIndicator } from 'react-native'
 import Register_Pic from '../../assets/icons/Register_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
@@ -11,15 +11,20 @@ const Register = () => {
     const [password, setPassword] = useState('')
     const [gender, setGender] = useState('')
     const [email, setEmail] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const history = useHistory()
 
     const registerWithCredentials = () =>{
+        setLoading(true)
         auth.createUserWithEmailAndPassword(email, password).then(auth_user=>{
             auth_user.user?.updateProfile({
                 displayName: username,
-                photoURL: gender === 'male' ? '../../assets/imgs/man.png' : '../../assets/imgs/woman.png'
+                photoURL: gender === 'male' ? 'https://i.ibb.co/qCjtzY7/man.png' : 'https://i.ibb.co/zQGktfn/woman.png'
             })
+        }).finally(()=>{
+            setLoading(false)
+            history.push('/')
         }).catch(err=>{
             alert(err.message)
         })
@@ -57,9 +62,17 @@ const Register = () => {
                         value={gender} 
                         onChangeText={text => setGender(text)}
                         containerStyle={styles.register__input} />
-                    <TouchableOpacity onPress={registerWithCredentials} style={styles.register__button}>
-                        <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
-                    </TouchableOpacity>
+                    {
+                        loading ? (
+                            <TouchableOpacity disabled onPress={registerWithCredentials} style={styles.register__button}>
+                                <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
+                            </TouchableOpacity>
+                        ):(
+                            <TouchableOpacity disabled onPress={registerWithCredentials} style={styles.register__button}>
+                                <ActivityIndicator size="small" color="#fff" />
+                            </TouchableOpacity> 
+                        )
+                    }
                     <TouchableOpacity onPress={() => history.push('/')}>
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
                     </TouchableOpacity>
