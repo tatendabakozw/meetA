@@ -50,9 +50,8 @@ const Login = ({navigation}:Props) => {
     useEffect(()=>{
         const unsubscribe = auth.onAuthStateChanged(auth_user=>{
             if(auth_user){
+                storeData(auth_user)
                 navigation.replace('chats')
-                // console.log(auth_user)
-                // alert(auth_user)
             }
         })
         return unsubscribe;

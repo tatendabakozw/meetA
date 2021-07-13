@@ -25,11 +25,10 @@ const Register = ({navigation}: Props) => {
         auth.createUserWithEmailAndPassword(email.trim(), password).then(auth_user=>{
             auth_user.user?.updateProfile({
                 displayName: username,
-                photoURL: gender === 'Male' ? 'https://i.ibb.co/qCjtzY7/man.png' : 'https://i.ibb.co/zQGktfn/woman.png'
+                photoURL: gender.toLowerCase().trim() === 'Male' ? 'https://i.ibb.co/qCjtzY7/man.png' : 'https://i.ibb.co/zQGktfn/woman.png'
             })
         }).finally(()=>{
             setLoading(false)
-            // history.push('/')
             navigation.navigate('login')
         }).catch(err=>{
             setLoading(false)
@@ -82,10 +81,7 @@ const Register = ({navigation}: Props) => {
                             </TouchableOpacity> 
                         )
                     }
-                    <TouchableOpacity 
-                        // onPress={() => history.push('/')}
-                        onPress={()=> navigation.navigate('login')}
-                        >
+                    <TouchableOpacity onPress={()=> navigation.navigate('login')} >
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
                     </TouchableOpacity>
                 </View>
