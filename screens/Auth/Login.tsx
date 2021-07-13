@@ -54,11 +54,13 @@ const Login = () => {
     const loginWIthCredentials = () =>{
         setLoading(true)
         auth.signInWithEmailAndPassword(email.trim(), password).then(auth_user=>{
-            storeData(auth_user)
-            history.push('/')
+            if(auth_user){
+                storeData(auth_user)
+                history.push('/chats')
+            }
         }).finally(()=>{
             setLoading(false)
-            history.push('/')
+            // history.push('/')
         }).catch(err=>{
             alert(err.message)
             setLoading(false)

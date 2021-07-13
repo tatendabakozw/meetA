@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import HomeChat from '../../components/HomeChat/HomeChat'
 import HomeLayout from '../../layouts/HomeLayout'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { db } from '../../firebase';
+import { useHistory } from 'react-router-native';
 
 const Home = () => {
     const [user, setUser] = useState<any>()
     const [name_loading, setNameLoading] = useState(false)
+    const [user_doc, setUserDoc] = useState<any>()
+    const [user_bio, setUserBio] = useState('')
+    const history = useHistory()
 
     const getData = async () => {
         setNameLoading(true)
@@ -108,20 +113,54 @@ const Home = () => {
         }
     ]
 
+    const getUserDoc = async () =>{
+        const cityRef = db.collection('meetA').doc(user.uid);
+        const doc = await cityRef.get();
+        if (!doc.exists) {
+            console.log('No such document!');
+        } else {
+            // console.log('Document data:', doc.data());
+            setUserDoc(doc.data())
+        }
+    }
+
+    //get user info
+    useEffect(()=>{
+        getUserDoc()
+    },[user])
+
+    //get user bio
+    useEffect(()=>{
+        AsyncStorage.getItem('@user_bio').then((res: any)=>{
+            setUserBio(res)
+        }).catch(err=>{
+            console.log(err)
+        })
+    })
+
     return (
         <HomeLayout header_title={name_loading ? "Chats" : user?.user?.displayName} >
-            {/* <Text>{JSON.stringify(user)}</Text> */}
+               
            <View style={styles.home} >
-               {/* <Text>l;kasj;lfkja;sljk</Text> */}
+                {/* <Text>{user_doc ? 'ehe' : 'maya'}</Text> */}
+                {/* <Text>{user_bio}</Text> */}
+                {
+                    !user_bio ? (
+                        <TouchableOpacity activeOpacity={0.8} onPress={()=> history.push('/profile')} style={{padding: 20, backgroundColor: '#FEE2E2', borderRadius: 15, borderColor: '#EF4444', borderWidth:0.5, marginVertical: 20}}>
+                            <Text style={{color: '#4B5563', fontSize:15}}>Seems you haven't created a bio yet, click here to create your bio</Text>
+                        </TouchableOpacity>
+                    ):null
+                }
+
             {
                 chat_details?.map(detail=>(
                     <HomeChat 
-                    key={detail.id}
-                    name={detail.name}
-                    message={detail.message}
-                    online_status = {detail.online_status}
-                    propic = {detail.propic}
-                    time= {detail.time}
+                        key={detail.id}
+                        name={detail.name}
+                        message={detail.message}
+                        online_status = {detail.online_status}
+                        propic = {detail.propic}
+                        time= {detail.time}
                     />
                 ))
             }

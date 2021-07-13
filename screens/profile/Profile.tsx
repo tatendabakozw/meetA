@@ -5,6 +5,7 @@ import { auth, db } from '../../firebase'
 import ExploreLayout from '../../layouts/ExploreLayout'
 import { EvilIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Profile = () => {
 
@@ -44,9 +45,11 @@ const Profile = () => {
     const createBio = () =>{
         setBioLoading(true)
         db.collection('meetA').doc(user.uid).set({'bio' : new_bio}, {merge: true}).then(res=>{
+            AsyncStorage.setItem('@user_bio', new_bio)
             setBioLoading(false)
             setEditBio(false)
         })
+
     }
     const createGender = () =>{
         setGenderLoading(true)
@@ -81,7 +84,7 @@ const Profile = () => {
 
     useEffect(()=>{
         getUserDoc()
-    },[bio_loading, gender_loading, user])
+    },[bio_loading, gender_loading, user, new_bio])
 
     useEffect(()=>{
         getData()
@@ -90,6 +93,7 @@ const Profile = () => {
     const history = useHistory()
     const logout = () =>{
         AsyncStorage.removeItem('@current_user')
+        AsyncStorage.removeItem('@user_bio')
         auth.signOut()
         history.push('/')
     }
@@ -218,13 +222,31 @@ const Profile = () => {
                         </>) : (
                             <>
                                 {
-                                    info_loading ? (<Text style={{color: '#9CA3AF', fontSize: 15, lineHeight: 25}}>Your Biography</Text>) : (
+                                    !user_doc?.bio ? (<Text style={{color: '#9CA3AF', fontSize: 15, lineHeight: 25}}>Your Bio will appear here. Should not include contact details</Text>) : (
                                         <Text style={{color: '#9CA3AF', fontSize: 15, lineHeight: 25}}>{user_doc?.bio}</Text>
                                     )
                                 }
                             </>
                         )
                     }
+                </View>
+
+                <View style={{flexDirection: 'column', width: '100%', marginVertical: 20}}>
+                    <Text style={{color: '#374151', fontSize: 25, fontWeight: 'bold'}}>Pictures</Text>
+                    <ScrollView horizontal>
+                        <View style={{height: 100, width: 100, overflow: 'hidden', borderRadius: 15, marginVertical: 20, marginRight: 20}}>
+                            <Image source={require('../../assets/imgs/bako.jpg')} resizeMode="cover" style={{height: 100, width: 100}} />
+                        </View>
+                        <View style={{height: 100, width: 100, overflow: 'hidden', borderRadius: 15, marginVertical: 20, marginRight: 20}}>
+                            <Image source={require('../../assets/imgs/bako.jpg')} resizeMode="cover" style={{height: 100, width: 100}} />
+                        </View>
+                        <View style={{height: 100, width: 100, overflow: 'hidden', borderRadius: 15, marginVertical: 20, marginRight: 20}}>
+                            <Image source={require('../../assets/imgs/bako.jpg')} resizeMode="cover" style={{height: 100, width: 100}} />
+                        </View>
+                        <View style={{height: 100, width: 100, overflow: 'hidden', borderRadius: 15, marginVertical: 20, marginRight: 20}}>
+                            <Image source={require('../../assets/imgs/bako.jpg')} resizeMode="cover" style={{height: 100, width: 100}} />
+                        </View>
+                    </ScrollView>
                 </View>
                
                 <TouchableOpacity style={{backgroundColor:'#FECACA', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10, borderWidth:1, borderColor:'#DC2626'}} onPress={logout}>

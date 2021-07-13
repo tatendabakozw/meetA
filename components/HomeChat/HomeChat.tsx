@@ -22,7 +22,7 @@ const HomeChat = ({propic, name, online_status, message, time, id}:Props) => {
                 {/* <Image source={require('../../assets/imgs/woman.png')} style={{ width: 45, height: 45 }} /> */}
                 <Image source={propic} style={{ width: 35, height: 35 }} />
             </View>
-            <TouchableOpacity onPress={()=> history.push('/conversation')} style={styles.homechat__texts}>
+            <TouchableOpacity activeOpacity={0.7} onPress={()=> history.push('/conversation')} style={styles.homechat__texts}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.homechat__name}>{name}</Text>
                     {
@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
     homechat__message:{
         fontSize: 14,
         color: '#6B7280',
-        width: 210
+        width: 220
     }
 })

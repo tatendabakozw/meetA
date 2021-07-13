@@ -13,7 +13,7 @@ const Conversation = () => {
                     <TouchableOpacity activeOpacity={0.7} style={{backgroundColor:'#D1FAE5', borderRadius: 50, padding: 10,width: '45%', marginVertical: 10, borderWidth:1, borderColor:'#047857'}}>
                         <Text style={{color: '#047857', textAlign: 'center'}}>APPROVE</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={0.7} style={{backgroundColor:'#FECACA', borderRadius: 50, padding: 10,width: '45%', marginVertical: 10, borderWidth:1, borderColor:'#DC2626'}}>
+                    <TouchableOpacity activeOpacity={0.7} style={{backgroundColor:'#FEE2E2', borderRadius: 50, padding: 10,width: '45%', marginVertical: 10, borderWidth:1, borderColor:'#F87171'}}>
                         <Text style={{color: '#B91C1C', textAlign: 'center'}}>DISAPPROVE</Text>
                     </TouchableOpacity>
                 </View>
