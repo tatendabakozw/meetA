@@ -8,11 +8,13 @@ interface Props{
     online_status : string,
     message : string,
     time : string,
-    id ?: number
+    id ?: number,
+    navigation ?: any
+    location: string
 }
 
 
-const HomeChat = ({propic, name, online_status, message, time, id}:Props) => {
+const HomeChat = ({propic, name, online_status, message, time, id, navigation, location}:Props) => {
 
     const history = useHistory()
 
@@ -22,7 +24,10 @@ const HomeChat = ({propic, name, online_status, message, time, id}:Props) => {
                 {/* <Image source={require('../../assets/imgs/woman.png')} style={{ width: 45, height: 45 }} /> */}
                 <Image source={propic} style={{ width: 35, height: 35 }} />
             </View>
-            <TouchableOpacity activeOpacity={0.7} onPress={()=> history.push('/conversation')} style={styles.homechat__texts}>
+            <TouchableOpacity 
+                activeOpacity={0.7} 
+                onPress={()=> navigation.navigate('conversation')} style={styles.homechat__texts}
+            >
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.homechat__name}>{name}</Text>
                     {

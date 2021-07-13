@@ -22,8 +22,6 @@ const Login = ({navigation}:Props) => {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
-    // const history = useHistory()
-
     const storeData = async (value:any) => {
         try {
             const jsonValue = JSON.stringify(value)
@@ -49,6 +47,16 @@ const Login = ({navigation}:Props) => {
         }
     }
   
+    useEffect(()=>{
+        const unsubscribe = auth.onAuthStateChanged(auth_user=>{
+            if(auth_user){
+                navigation.replace('chats')
+                // console.log(auth_user)
+                // alert(auth_user)
+            }
+        })
+        return unsubscribe;
+    },[])
 
     useEffect(()=>{
         getData()
@@ -59,7 +67,6 @@ const Login = ({navigation}:Props) => {
         auth.signInWithEmailAndPassword(email.trim(), password).then(auth_user=>{
             if(auth_user){
                 storeData(auth_user)
-                // history.push('/chats')
                 navigation.replace('chats')
             }
         }).finally(()=>{
@@ -105,7 +112,6 @@ const Login = ({navigation}:Props) => {
                         )
                     }
                     <TouchableOpacity 
-                        // onPress={() => history.push('/register')}
                             onPress={()=> navigation.navigate('register')}                        
                         >
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>

@@ -1,15 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { useHistory } from 'react-router-native'
 import ExploreItem from '../../components/ExploreItem/ExploreItem'
 import ExploreLayout from '../../layouts/ExploreLayout'
 
-const Explore = () => {
+interface Props{
+    navigation : any
+}
 
-    const history = useHistory()
+const Explore = ({navigation}:Props) => {
 
     return (
-        <ExploreLayout header_title="Explore" header__back__activity={()=> history.goBack()}>
+        <ExploreLayout header_title="Explore">
             <View style={styles.explore}>
                 <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 20}}>
                     <View style={styles.buttons}>

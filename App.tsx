@@ -9,6 +9,7 @@ import Home from './screens/home/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Explore from './screens/explore/Explore';
 import Profile from './screens/profile/Profile';
+import Conversation from './screens/conversation/Conversation';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,6 +63,7 @@ const App = () => {
         <Stack.Screen name="chats" component={HomeTabs} options={{headerShown: false}} />
         <Stack.Screen name="login" component={Login} options={{headerShown: false}} />
         <Stack.Screen name="register" component={Register} options={{headerShown: false}}/>
+        <Stack.Screen name="conversation" component={Conversation} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   )

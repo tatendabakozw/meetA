@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, ActivityIndicator } from 'react-native'
-import { useHistory } from 'react-router-native'
 import { auth, db } from '../../firebase'
 import ExploreLayout from '../../layouts/ExploreLayout'
 import { EvilIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler'
 
-const Profile = () => {
+interface Props{
+    navigation : any
+}
+
+const Profile = ({navigation}:Props) => {
 
     //gender
     const [edit_gender, setEditGender] = useState(false)
@@ -90,12 +93,11 @@ const Profile = () => {
         getData()
     },[user])
 
-    const history = useHistory()
     const logout = () =>{
         AsyncStorage.removeItem('@current_user')
         AsyncStorage.removeItem('@user_bio')
         auth.signOut()
-        history.push('/')
+        navigation.replace('login')
     }
 
     const toggleEditBio = () =>{
@@ -109,7 +111,7 @@ const Profile = () => {
     }
 
     return (
-        <ExploreLayout header_title="Account" header__back__activity={()=> history.goBack()}>
+        <ExploreLayout header_title="Account" header__back__activity={()=> navigation.goBack()}>
             {/* <Text>{user?.uid}</Text> */}
             <View style={styles.account__container}>
                 <View style={{flexDirection: 'row',alignItems: 'center', width: '100%'}}>

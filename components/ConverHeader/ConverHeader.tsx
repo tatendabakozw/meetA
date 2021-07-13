@@ -1,17 +1,21 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useHistory } from 'react-router-native'
+// import { useHistory } from 'react-router-native'
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
 
-const ConverHeader = () => {
-    const history = useHistory()
+interface Props{
+    navigation ?: any
+}
+
+const ConverHeader = ({navigation}:Props) => {
+    // const history = useHistory()
     return (
         <View style={styles.converheader}>
             <StatusBar style="auto" />
             <View style={styles.converheader__left}>
-                <TouchableOpacity activeOpacity={0.7} onPress={()=> history.push('/chats')} style={styles.converheader__backIcon}>
+                <TouchableOpacity activeOpacity={0.7} onPress={()=> navigation.navigate('chats')} style={styles.converheader__backIcon}>
                     <Ionicons name="chevron-back-outline" size={24} color="#374151" />
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.7} style={{flexDirection: 'row', alignItems: 'center'}}>
