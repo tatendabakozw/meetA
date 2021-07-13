@@ -10,7 +10,7 @@ const ExploreItem = () => {
 
     return (
         <>
-            <TouchableOpacity onPress={()=> setDescriptionModalOpen(true)} style={styles.exploreitem}>
+            <TouchableOpacity activeOpacity={0.8} onPress={()=> setDescriptionModalOpen(true)} style={styles.exploreitem}>
                 <Image 
                     source={require('../../assets/imgs/bako.jpg')} 
                     style={styles.image} 
