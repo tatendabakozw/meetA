@@ -7,17 +7,23 @@ import { EvilIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = () => {
-    const [edit_bio, setEditBio] = useState(false)
-    const [edit_username, setEditUsername] = useState(false)
 
     //gender
     const [edit_gender, setEditGender] = useState(false)
     const [new_gender, setNewGender] = useState('')
     const [gender_loading, setGenderLoading] = useState(false)
 
+    //username
+    const [new_username, setNewUsername] = useState<any>()
+    const [edit_username, setEditUsername] = useState(false)
+    const [username_loading, setUsernameLoading] = useState(false)
+
     //bio
     const [new_bio, setNewBio] = useState<any>('')
     const [bio_loading, setBioLoading] = useState(false)
+    const [edit_bio, setEditBio] = useState(false)
+
+    //user info
     const [user, setUser] = useState<any>()
     const [info_loading, setInfoLoading] = useState(false)
     const [user_doc, setUserDoc] = useState<any>()
@@ -47,6 +53,18 @@ const Profile = () => {
         db.collection('meetA').doc(user.uid).set({'gender' : new_gender}, {merge: true}).then(res=>{
             setGenderLoading(false)
             setEditGender(false)
+        })
+    }
+    const createUsername = () =>{
+        setUsernameLoading(true)
+        user.updateProfile({
+            displayName: new_username
+        }).then((res: any)=>{
+            console.log(res)
+            setEditUsername(false)
+            setUsernameLoading(false)
+        }).catch((e: any)=>{
+            console.log(e)
         })
     }
 
@@ -109,10 +127,21 @@ const Profile = () => {
                                     placeholder="New username" 
                                     style={{width: '100%', borderColor:'#D1D5DB', borderWidth: 1, borderRadius:50, paddingHorizontal: 10, paddingVertical:5}} 
                                     numberOfLines={1} 
+                                    onChangeText={text => setNewUsername(text)}
                                 />
-                                <TouchableOpacity style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10}}>
-                                    <Text style={{color: 'white', textAlign: 'center'}}>Save</Text>
-                                </TouchableOpacity>
+                                {
+                                    username_loading ? (
+                                        <TouchableOpacity disabled style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10}}>
+                                            <ActivityIndicator size="small" color="#fff" />
+                                        </TouchableOpacity>
+                                    ):(
+                                        <TouchableOpacity 
+                                            onPress={createUsername} 
+                                            style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10}}>
+                                            <Text style={{color: 'white', textAlign: 'center'}}>Save</Text>
+                                        </TouchableOpacity>
+                                    )
+                                }
                             </View>) : null
                         }
                         </View>
