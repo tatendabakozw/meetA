@@ -5,6 +5,7 @@ import Register_Pic from '../../assets/icons/Register_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
 import { auth } from '../../firebase'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Register = () => {
     const [username, setUsername] = useState('')

@@ -20,7 +20,7 @@ const HomeHeader = ({heading__title}:Props) => {
             <StatusBar style="auto" />
             <View style={styles.header__top}>
                 <View>
-                    <Text style={{fontSize: 25, fontWeight: 'bold', color: '#333'}}>{heading__title}</Text>
+                    <Text style={{fontSize: 25, color: '#374151'}}>{heading__title}</Text>
                 </View>
                 <TouchableOpacity onPress={toggleSearch} style={{borderRadius: 50, padding: 5}}>
                     <AntDesign name="search1" size={20} color="#6B7280" />

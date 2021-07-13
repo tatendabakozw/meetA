@@ -12,6 +12,7 @@ import Login_Pic from '../../assets/icons/Login_Pic'
 import {Input} from 'react-native-elements'
 import { useHistory } from 'react-router-native'
 import { auth } from '../../firebase'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Props {}
 
@@ -22,20 +23,40 @@ const Login = () => {
 
     const history = useHistory()
 
-    useEffect(()=>{
-        const unsubscribe = auth.onAuthStateChanged(auth_user=>{
-            if(auth_user){
-                history.push('/chats')
-            }
-        })
+    const storeData = async (value:any) => {
+        try {
+            const jsonValue = JSON.stringify(value)
+            await AsyncStorage.setItem('@current_user', jsonValue)
+        } catch (e) {
+            // saving error
+            console.log(e)
+        }
+    }
 
-        return unsubscribe;
+    
+    const getData = async () => {
+        try {
+        const value = await AsyncStorage.getItem('@current_user')
+        if(value !== null) {
+            // value previously stored
+            history.push('/chats')
+        }
+        } catch(e) {
+        // error reading value
+            console.log(e)
+        }
+    }
+  
+
+    useEffect(()=>{
+        getData()
     },[])
 
     const loginWIthCredentials = () =>{
         setLoading(true)
         auth.signInWithEmailAndPassword(email.trim(), password).then(auth_user=>{
             console.log(auth_user)
+            storeData(auth_user)
         }).finally(()=>{
             setLoading(false)
             history.push('/')
