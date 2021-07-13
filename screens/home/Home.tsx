@@ -1,9 +1,29 @@
-import React, {useLayoutEffect} from 'react'
+import React, {useEffect, useLayoutEffect, useState} from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import HomeChat from '../../components/HomeChat/HomeChat'
 import HomeLayout from '../../layouts/HomeLayout'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
+    const [user, setUser] = useState<any>()
+    const [name_loading, setNameLoading] = useState(false)
+
+    const getData = async () => {
+        setNameLoading(true)
+        try {
+            const jsonValue = await AsyncStorage.getItem('@current_user')
+            jsonValue != null ? setUser(JSON.parse(jsonValue)) : null;
+            setNameLoading(false)
+        } catch(e) {
+        // error reading value
+            console.log(e)
+        }
+    }
+  
+
+    useEffect(()=>{
+        getData()
+    },[])
 
     const chat_details = [
         {
@@ -89,7 +109,8 @@ const Home = () => {
     ]
 
     return (
-        <HomeLayout header_title="Chats" >
+        <HomeLayout header_title={name_loading ? "Chats" : user?.displayName} >
+            {/* <Text>{JSON.stringify(user)}</Text> */}
            <View style={styles.home} >
                {/* <Text>l;kasj;lfkja;sljk</Text> */}
             {
