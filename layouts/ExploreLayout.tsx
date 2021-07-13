@@ -15,7 +15,7 @@ const ExploreLayout = ({children, header_title, header__back__activity}:Props) =
         <SafeAreaView style={{ flex:1}}>
             <View><ExploreHeader heading__title={header_title} header__back__activity={header__back__activity} /></View>
             <ScrollView style={{paddingHorizontal: 20, backgroundColor: '#F9FAFB'}}>{children}</ScrollView>
-            <View style={{ bottom: 0, left: 0, right: 0}}><HomeFooter/></View>
+            {/* <View style={{ bottom: 0, left: 0, right: 0}}><HomeFooter/></View> */}
         </SafeAreaView>
     )
 }

@@ -4,14 +4,18 @@ import HomeChat from '../../components/HomeChat/HomeChat'
 import HomeLayout from '../../layouts/HomeLayout'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db } from '../../firebase';
-import { useHistory } from 'react-router-native';
+// import { useHistory } from 'react-router-native';
 
-const Home = () => {
+interface Props{
+    navigation : any
+}
+
+const Home = ({navigation}:Props) => {
     const [user, setUser] = useState<any>()
     const [name_loading, setNameLoading] = useState(false)
     const [user_doc, setUserDoc] = useState<any>()
     const [user_bio, setUserBio] = useState('')
-    const history = useHistory()
+    // const history = useHistory()
 
     const getData = async () => {
         setNameLoading(true)
@@ -146,7 +150,11 @@ const Home = () => {
                 {/* <Text>{user_bio}</Text> */}
                 {
                     !user_bio ? (
-                        <TouchableOpacity activeOpacity={0.8} onPress={()=> history.push('/profile')} style={{padding: 20, backgroundColor: '#FEE2E2', borderRadius: 15, borderColor: '#EF4444', borderWidth:0.5, marginVertical: 20}}>
+                        <TouchableOpacity 
+                            activeOpacity={0.8} 
+                            // onPress={()=> history.push('/profile')} 
+                            onPress={() => navigation.navigate('/profile')}
+                            style={{padding: 20, backgroundColor: '#FEE2E2', borderRadius: 15, borderColor: '#EF4444', borderWidth:0.5, marginVertical: 20}}>
                             <Text style={{color: '#4B5563', fontSize:15}}>Seems you haven't created a bio yet, click here to create your bio</Text>
                         </TouchableOpacity>
                     ):null

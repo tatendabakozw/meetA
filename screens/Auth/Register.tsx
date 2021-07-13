@@ -3,18 +3,22 @@ import React, { useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, View, TouchableOpacity, Platform, ActivityIndicator, ScrollView } from 'react-native'
 import Register_Pic from '../../assets/icons/Register_Pic'
 import {Input} from 'react-native-elements'
-import { useHistory } from 'react-router-native'
+// import { useHistory } from 'react-router-native'
 import { auth } from '../../firebase'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const Register = () => {
+interface Props {
+    navigation: any
+}
+
+const Register = ({navigation}: Props) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [gender, setGender] = useState('')
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
    
-    const history = useHistory()
+    // const history = useHistory()
 
     const registerWithCredentials = () =>{
         setLoading(true)
@@ -25,7 +29,8 @@ const Register = () => {
             })
         }).finally(()=>{
             setLoading(false)
-            history.push('/')
+            // history.push('/')
+            navigation.navigate('login')
         }).catch(err=>{
             setLoading(false)
             alert(err.message)
@@ -77,7 +82,10 @@ const Register = () => {
                             </TouchableOpacity> 
                         )
                     }
-                    <TouchableOpacity onPress={() => history.push('/')}>
+                    <TouchableOpacity 
+                        // onPress={() => history.push('/')}
+                        onPress={()=> navigation.navigate('login')}
+                        >
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>
                     </TouchableOpacity>
                 </View>

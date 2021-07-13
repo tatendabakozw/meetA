@@ -9,18 +9,20 @@ import { KeyboardAvoidingView,
         ActivityIndicator } from 'react-native'
 import Login_Pic from '../../assets/icons/Login_Pic'
 import {Input} from 'react-native-elements'
-import { useHistory } from 'react-router-native'
+// import { useHistory } from 'react-router-native'
 import { auth } from '../../firebase'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface Props {}
+interface Props {
+    navigation : any 
+}
 
-const Login = () => {
+const Login = ({navigation}:Props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const history = useHistory()
+    // const history = useHistory()
 
     const storeData = async (value:any) => {
         try {
@@ -38,7 +40,8 @@ const Login = () => {
         const value = await AsyncStorage.getItem('@current_user')
         if(value !== null) {
             // value previously stored
-            history.push('/chats')
+            // history.push('/chats')
+            navigation.replace('chats')
         }
         } catch(e) {
         // error reading value
@@ -56,7 +59,8 @@ const Login = () => {
         auth.signInWithEmailAndPassword(email.trim(), password).then(auth_user=>{
             if(auth_user){
                 storeData(auth_user)
-                history.push('/chats')
+                // history.push('/chats')
+                navigation.replace('chats')
             }
         }).finally(()=>{
             setLoading(false)
@@ -100,7 +104,10 @@ const Login = () => {
                             </TouchableOpacity> 
                         )
                     }
-                    <TouchableOpacity onPress={() => history.push('/register')}>
+                    <TouchableOpacity 
+                        // onPress={() => history.push('/register')}
+                            onPress={()=> navigation.navigate('register')}                        
+                        >
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
                     </TouchableOpacity>
                 </View>
