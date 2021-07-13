@@ -1,18 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native'
 import { useHistory } from 'react-router-native'
 import { auth } from '../../firebase'
 import ExploreLayout from '../../layouts/ExploreLayout'
 import { EvilIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = () => {
     const [edit_bio, setEditBio] = useState(false)
     const [edit_username, setEditUsername] = useState(false)
     const [edit_gender, setEditGender] = useState(false)
     const [new_bio, setNewBio] = useState('')
+    const [user, setUser] = useState<any>()
+    const [info_loading, setInfoLoading] = useState(false)
+
+
+    const getData = async () => {
+        setInfoLoading(true)
+        try {
+            const jsonValue = await AsyncStorage.getItem('@current_user')
+            jsonValue != null ? setUser(JSON.parse(jsonValue)) : null;
+            setInfoLoading(false)
+        } catch(e) {
+        // error reading value
+            console.log(e)
+        }
+    }
+
+    useEffect(()=>{
+        getData()
+    },[])
 
     const history = useHistory()
     const logout = () =>{
+        AsyncStorage.removeItem('@current_user')
         auth.signOut()
         history.push('/')
     }
@@ -32,15 +53,13 @@ const Profile = () => {
             <View style={styles.account__container}>
                 <View style={{flexDirection: 'row',alignItems: 'center', width: '100%'}}>
                     <View style={styles.account__image}>
-                        <Image source={require('../../assets/imgs/bako.jpg')} resizeMode="cover" style={{height: 100, width:100}} />
-                        {/* <View style={styles.cameraicon}>
-                            <SimpleLineIcons name="camera" size={28} color="black" />
-                        </View> */}
+                        <Image source={{uri: user?.user?.photoURL}} resizeMode="cover" style={{height: 100, width:100}} />
+                       
                     </View>
                     <View style={{flexDirection: 'column'}}>
                         <View style={{flexDirection: 'column', alignItems: 'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={styles.account__name}>Tatenda Bako</Text>
+                                <Text style={styles.account__name}>{info_loading ? 'Username' : user?.user?.displayName}</Text>
                                 <TouchableOpacity onPress={toggleEditUsername} activeOpacity={0.7} style={{marginBottom: 10, marginLeft: 10}}>
                                     <EvilIcons name="pencil" size={24} color="#60A5FA" />
                                 </TouchableOpacity>
@@ -60,7 +79,7 @@ const Profile = () => {
                         </View>
                         <View style={{marginVertical: 10, flexDirection: 'column', width: '100%'}}>
                             <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
-                                <Text style={{color: '#9CA3AF', fontSize: 20, marginBottom: 5}}>Male</Text>
+                                <Text style={{color: '#9CA3AF', fontSize: 20, marginBottom: 5}}>Gender</Text>
                                 <TouchableOpacity onPress={toggleEditGender} activeOpacity={0.7} style={{marginBottom: 10, marginLeft: 10}}>
                                     <EvilIcons name="pencil" size={24} color="#60A5FA" />
                                 </TouchableOpacity>

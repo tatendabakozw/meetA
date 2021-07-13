@@ -55,8 +55,8 @@ const Login = () => {
     const loginWIthCredentials = () =>{
         setLoading(true)
         auth.signInWithEmailAndPassword(email.trim(), password).then(auth_user=>{
-            console.log(auth_user)
             storeData(auth_user)
+            history.push('/')
         }).finally(()=>{
             setLoading(false)
             history.push('/')

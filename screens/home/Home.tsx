@@ -109,8 +109,8 @@ const Home = () => {
     ]
 
     return (
-        <HomeLayout header_title={name_loading ? "Chats" : user?.displayName} >
-            {/* <Text>{JSON.stringify(user)}</Text> */}
+        <HomeLayout header_title={name_loading ? "Chats" : user?.user?.displayName} >
+            <Text>{JSON.stringify(user)}</Text>
            <View style={styles.home} >
                {/* <Text>l;kasj;lfkja;sljk</Text> */}
             {
