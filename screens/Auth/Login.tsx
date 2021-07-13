@@ -4,7 +4,6 @@ import { KeyboardAvoidingView,
         StyleSheet, 
         Text, 
         View, 
-        Alert , 
         TouchableOpacity, 
         Platform, 
         ActivityIndicator } from 'react-native'
@@ -88,7 +87,7 @@ const Login = () => {
                         value={password}
                         onChangeText={text => setPassword(text)} 
                         containerStyle={styles.login__input} />
-                     {
+                    {
                         !loading ? (
                             <TouchableOpacity onPress={loginWIthCredentials} style={styles.login__button}>
                                 <Text style={{color: "white", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>LOGIN</Text>

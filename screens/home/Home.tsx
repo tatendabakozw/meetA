@@ -3,21 +3,48 @@ import { StyleSheet, Text, View } from 'react-native'
 import HomeChat from '../../components/HomeChat/HomeChat'
 import HomeLayout from '../../layouts/HomeLayout'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { db } from '../../firebase';
 
 const Home = () => {
     const [user, setUser] = useState<any>()
     const [name_loading, setNameLoading] = useState(false)
+    const [user_doc, setUserDoc] = useState<any>()
+
+    const storeUserData = async (value:any) => {
+        try {
+            const jsonValue = JSON.stringify(value)
+            await AsyncStorage.setItem('@user_doc', jsonValue)
+        } catch (e) {
+            // saving error
+            console.log(e)
+        }
+    }
 
     const getData = async () => {
         setNameLoading(true)
         try {
             const jsonValue = await AsyncStorage.getItem('@current_user')
-            jsonValue != null ? setUser(JSON.parse(jsonValue)) : null;
-            setNameLoading(false)
+            if(jsonValue != null){
+                setUser(JSON.parse(jsonValue))
+                setNameLoading(false)
+                const user_document = await db.collection('meetA').doc(JSON.parse(jsonValue).user.uid).get()
+                if (!user_document) {
+                    console.log('No such document!');
+                  } else {
+                    // setUserDoc(user_document.data())
+                    storeUserData(user_document.data())
+                  }
+            }else{
+                return null
+            }
         } catch(e) {
         // error reading value
             console.log(e)
         }
+    }
+
+    const getUserDoc = () =>{
+        db.collection('cities').doc('SF')
     }
   
 
@@ -110,7 +137,8 @@ const Home = () => {
 
     return (
         <HomeLayout header_title={name_loading ? "Chats" : user?.user?.displayName} >
-            <Text>{JSON.stringify(user)}</Text>
+            {/* <Text>{JSON.stringify(user)}</Text> */}
+            <Text>{user_doc?.bio}</Text>
            <View style={styles.home} >
                {/* <Text>l;kasj;lfkja;sljk</Text> */}
             {
