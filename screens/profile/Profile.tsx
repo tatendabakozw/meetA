@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler'
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useStateValue } from '../../StateContext/StateProvider';
 
 interface Props{
     navigation : any
@@ -48,6 +49,8 @@ const Profile = ({navigation}:Props) => {
     const [bio_picture_progress, setBioPictureProgress] = useState<any>()
     const [edit_bio_picture, setEditBioPictures] = useState<any>(false)
     const [all_bio_pictures, setAllBioPictures] = useState<any>()
+
+    const [{current_user, user_bio}] = useStateValue()
 
     useEffect(() => {
         db.collection('bio_images').onSnapshot(snapshot => {
@@ -220,7 +223,7 @@ const Profile = ({navigation}:Props) => {
     //changing the profile picture
     const changeProfilePicture = async () =>{
         setPictureLoading(true)
-        const uploadTask = storage.ref(`/images/propics/${user.uid}`).put(new_bio_picture)
+        const uploadTask = storage.ref(`/images/propics/${current_user.uid}`).put(new_bio_picture)
         uploadTask.on("state_changed", (snapshot) => {
             const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
             setProfileProgress(progress);
@@ -229,7 +232,7 @@ const Profile = ({navigation}:Props) => {
             alert(error.message)
         },
             () => {
-                storage.ref('images/propics').child(user.uid).getDownloadURL().then(url => {
+                storage.ref('images/propics').child(current_user.uid).getDownloadURL().then(url => {
                     user.updateProfile({
                         photoURL: url
                     })
@@ -242,7 +245,7 @@ const Profile = ({navigation}:Props) => {
 
     const uploadBioPicture = async () =>{
         setBioPictureLoading(true)
-        const uploadTask = storage.ref(`/images/biopics/${user?.uid}`).put(new_profile_picture)
+        const uploadTask = storage.ref(`/images/biopics/${current_user?.uid}`).put(new_profile_picture)
         uploadTask.on("state_changed", (snapshot) => {
             const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
             setBioPictureProgress(progress);
@@ -251,8 +254,8 @@ const Profile = ({navigation}:Props) => {
             alert(error.message)
         },
             () => {
-                storage.ref('images/biopics').child(user?.uid).getDownloadURL().then(url => {
-                    db.collection('bio_images').doc(user?.uid + '-' + Date.now()).set({
+                storage.ref('images/biopics').child(current_user?.uid).getDownloadURL().then(url => {
+                    db.collection('bio_images').doc(current_user?.uid + '-' + Date.now()).set({
                         bio_image: url
                     }, {merge: true})
                 })
@@ -291,7 +294,7 @@ const Profile = ({navigation}:Props) => {
     return (
         <ExploreLayout header_title="Account" header__back__activity={()=> navigation.goBack()}>
             {/* <Text>{user.uid}</Text> */}
-            
+            <Text>{JSON.stringify(current_user)}</Text>
             <View style={styles.account__container}>
                         {edit_profile && <View style={styles.preview__imageContainer}>
                         <Image source={{ uri: profile__preview }} style={styles.preview__image} />
@@ -320,10 +323,10 @@ const Profile = ({navigation}:Props) => {
                             <EvilIcons name="camera" size={30} color="#60A5FA" />
                         </TouchableOpacity>
                     </View>
-                    <View style={{flexDirection: 'column'}}>
-                        <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Text style={styles.account__name}>{info_loading ? 'Username' : user?.displayName}</Text>
+                    <View style={{flexDirection: 'column', width: '100%', flex:1}}>
+                        <View style={{flexDirection: 'column', alignItems: 'center', width: '100%'}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', flex:1}}>
+                                <Text style={styles.account__name}>{info_loading ? 'Username' : current_user?.displayName}</Text>
                                 <TouchableOpacity onPress={toggleEditUsername} activeOpacity={0.7} style={{marginBottom: 10, marginLeft: 10}}>
                                     <EvilIcons name="pencil" size={24} color="#60A5FA" />
                                 </TouchableOpacity>
@@ -353,7 +356,7 @@ const Profile = ({navigation}:Props) => {
                         }
                         </View>
                         <View style={{marginVertical: 10, flexDirection: 'column', width: '100%'}}>
-                            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
+                            <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center', flex:1, justifyContent:'space-between'}}>
                                 <Text style={{color: '#9CA3AF', fontSize: 20, marginBottom: 5}}>
                                     {
                                         user_doc?.gender ? (`${user_doc?.gender}`) : (`Gender`)
@@ -395,7 +398,7 @@ const Profile = ({navigation}:Props) => {
                 </TouchableOpacity>
 
                 <View style={{marginVertical: 10, flexDirection: 'column', width: '100%'}}>
-                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
+                    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center', justifyContent: 'space-between'}}>
                         <Text style={{color: '#374151', fontSize: 25, marginBottom: 10, fontWeight: 'bold'}}>Bio</Text>
                         <TouchableOpacity onPress={toggleEditBio} activeOpacity={0.7} style={{marginBottom: 10, marginLeft: 10}}>
                             <EvilIcons name="pencil" size={24} color="#60A5FA" />
@@ -455,7 +458,7 @@ const Profile = ({navigation}:Props) => {
                 </View> }
 
                 <View style={{flexDirection: 'column', width: '100%', marginVertical: 20}}>
-                    <View style={{flexDirection: 'row'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                         <Text style={{color: '#374151', fontSize: 25, fontWeight: 'bold', marginRight: 10}}>Pictures</Text>
                         <TouchableOpacity onPress={pickBioPictures} activeOpacity={0.8}>
                             <MaterialIcons name="add-a-photo" size={24} color="#60A5FA" />
@@ -512,7 +515,9 @@ const styles = StyleSheet.create({
     account__name:{
         color: '#374151',
         fontSize: 25,
-        marginBottom: 5
+        marginBottom: 5,
+        flex:1,
+        width: '100%'
     },
     cameraicon:{
         position: 'absolute',

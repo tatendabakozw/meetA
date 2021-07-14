@@ -4,36 +4,18 @@ import HomeChat from '../../components/HomeChat/HomeChat'
 import HomeLayout from '../../layouts/HomeLayout'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db } from '../../firebase';
-// import { useHistory } from 'react-router-native';
+import { useStateValue } from '../../StateContext/StateProvider';
 
 interface Props{
     navigation : any
 }
 
 const Home = ({navigation}:Props) => {
-    const [user, setUser] = useState<any>()
-    const [name_loading, setNameLoading] = useState(false)
+    // const [user, setUser] = useState<any>()
+    // const [name_loading, setNameLoading] = useState(false)
     const [user_doc, setUserDoc] = useState<any>()
-    const [user_bio, setUserBio] = useState('')
-    // const history = useHistory()
 
-    //get user from local storage
-    const getData = async () => {
-        setNameLoading(true)
-        try {
-            const jsonValue = await AsyncStorage.getItem('@current_user')
-            jsonValue != null ? setUser(JSON.parse(jsonValue)) : null;
-            setNameLoading(false)
-        } catch(e) {
-        // error reading value
-            console.log(e)
-        }
-    }
-  
-
-    useEffect(()=>{
-        getData()
-    },[])
+    const [{current_user, user_bio}, dispatch] = useStateValue()  
 
     const chat_details = [
         {
@@ -128,40 +110,28 @@ const Home = ({navigation}:Props) => {
         }
     ]
 
-    //get user from firebase
-    const getUserDoc = async () =>{
-        const cityRef = db.collection('meetA').doc(user.uid);
-        const doc = await cityRef.get();
-        if (!doc.exists) {
-            console.log('No such document!');
-        } else {
-            // console.log('Document data:', doc.data());
-            setUserDoc(doc.data())
-        }
-    }
-
     //get user info
     useEffect(()=>{
-        getUserDoc()
-    },[])
-
-    //get user bio
-    useEffect(()=>{
-        AsyncStorage.getItem('@user_bio').then((res: any)=>{
-            setUserBio(res)
-        }).catch(err=>{
-            console.log(err)
+        // getUserDoc()
+        db.collection('meetA').doc(current_user?.uid).onSnapshot(doc=>{
+            setUserDoc({
+                id: doc.id,
+                user:doc.data()
+            })
+            dispatch({
+                type: 'SET_BIO',
+                bio: doc.data()
+            })
         })
     },[])
 
     return (
-        <HomeLayout header_title={name_loading ? "Chats" : user?.displayName} >
-               
+        <HomeLayout header_title={ !current_user ? "Chats" : current_user?.displayName} >
+               {/* <Text>{JSON.stringify(user_doc)}</Text> */}
+               {/* <Text>{JSON.stringify(user_bio?.bio)}</Text> */}
            <View style={styles.home} >
-                {/* <Text>{user_doc ? 'ehe' : 'maya'}</Text> */}
-                {/* <Text>{user_bio}</Text> */}
                 {
-                    !user_doc?.bio ? (
+                    !user_bio?.bio ? (
                         <TouchableOpacity 
                             activeOpacity={0.8} 
                             onPress={() => navigation.navigate('profile')}
@@ -171,20 +141,20 @@ const Home = ({navigation}:Props) => {
                     ):null
                 }
 
-            {
-                chat_details?.map(detail=>(
-                    <HomeChat 
-                        key={detail.id}
-                        name={detail.name}
-                        message={detail.message}
-                        online_status = {detail.online_status}
-                        propic = {detail.propic}
-                        time= {detail.time}
-                        location={detail.location}
-                        pushingToPage={()=> navigation.navigate('conversation')}
-                    />
-                ))
-            }
+                {
+                    chat_details?.map(detail=>(
+                        <HomeChat 
+                            key={detail.id}
+                            name={detail.name}
+                            message={detail.message}
+                            online_status = {detail.online_status}
+                            propic = {detail.propic}
+                            time= {detail.time}
+                            location={detail.location}
+                            pushingToPage={()=> navigation.navigate('conversation')}
+                        />
+                    ))
+                }
  
            </View>
         </HomeLayout>

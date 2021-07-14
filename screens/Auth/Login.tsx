@@ -12,6 +12,7 @@ import {Input} from 'react-native-elements'
 // import { useHistory } from 'react-router-native'
 import { auth } from '../../firebase'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useStateValue } from '../../StateContext/StateProvider'
 
 interface Props {
     navigation : any 
@@ -21,6 +22,8 @@ const Login = ({navigation}:Props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
+
+    const [{}, dispatch] = useStateValue()
 
     //function to store data locally
     const storeData = async (value:any) => {
@@ -39,6 +42,10 @@ const Login = ({navigation}:Props) => {
             if(auth_user){
                 navigation.replace('chats')
                 storeData(auth_user)
+                dispatch({
+                    type: 'SET_USER',
+                    user: auth_user
+                })
             }
         })
         return unsubscribe
@@ -51,6 +58,10 @@ const Login = ({navigation}:Props) => {
             if(auth_user){
                 storeData(auth_user)
                 navigation.replace('chats')
+                dispatch({
+                    type: 'SET_USER',
+                    user: auth_user
+                })
             }
         }).finally(()=>{
             setLoading(false)
