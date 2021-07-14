@@ -17,6 +17,7 @@ const Home = ({navigation}:Props) => {
     const [user_bio, setUserBio] = useState('')
     // const history = useHistory()
 
+    //get user from local storage
     const getData = async () => {
         setNameLoading(true)
         try {
@@ -127,6 +128,7 @@ const Home = ({navigation}:Props) => {
         }
     ]
 
+    //get user from firebase
     const getUserDoc = async () =>{
         const cityRef = db.collection('meetA').doc(user.uid);
         const doc = await cityRef.get();
@@ -153,7 +155,7 @@ const Home = ({navigation}:Props) => {
     },[])
 
     return (
-        <HomeLayout header_title={name_loading ? "Chats" : user?.user?.displayName} >
+        <HomeLayout header_title={name_loading ? "Chats" : user?.displayName} >
                
            <View style={styles.home} >
                 {/* <Text>{user_doc ? 'ehe' : 'maya'}</Text> */}
