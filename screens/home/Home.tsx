@@ -141,7 +141,7 @@ const Home = ({navigation}:Props) => {
     //get user info
     useEffect(()=>{
         getUserDoc()
-    },[user])
+    },[])
 
     //get user bio
     useEffect(()=>{
@@ -150,10 +150,10 @@ const Home = ({navigation}:Props) => {
         }).catch(err=>{
             console.log(err)
         })
-    })
+    },[])
 
     return (
-        <HomeLayout header_title={name_loading ? "Chats" : user?.displayName} >
+        <HomeLayout header_title={name_loading ? "Chats" : user?.user?.displayName} >
                
            <View style={styles.home} >
                 {/* <Text>{user_doc ? 'ehe' : 'maya'}</Text> */}

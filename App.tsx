@@ -10,6 +10,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Explore from './screens/explore/Explore';
 import Profile from './screens/profile/Profile';
 import Conversation from './screens/conversation/Conversation';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Setting a timer']);
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,8 +53,6 @@ function HomeTabs() {
       <Tab.Screen name="chats" component={Home} />
       <Tab.Screen name="explore" component={Explore} />
       <Tab.Screen name="profile" component={Profile} />
-      {/* <Tab.Screen name="explore" component={Explore} />
-      <Tab.Screen name="profile" component={Profile} /> */}
     </Tab.Navigator>
   );
 }
@@ -60,10 +61,10 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="chats" component={HomeTabs} options={{headerShown: false}} />
+        <Stack.Screen name="login" component={Login} options={{headerShown: false}} />
         <Stack.Screen name="register" component={Register} options={{headerShown: false}}/>
         <Stack.Screen name="conversation" component={Conversation} options={{headerShown: false}} />
-        <Stack.Screen name="login" component={Login} options={{headerShown: false}} />
+        <Stack.Screen name="chats" component={HomeTabs} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   )

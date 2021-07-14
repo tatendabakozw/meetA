@@ -6,7 +6,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler'
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
+import { MaterialIcons } from '@expo/vector-icons';
 
 interface Props{
     navigation : any
@@ -38,8 +38,25 @@ const Profile = ({navigation}:Props) => {
     const [profile__preview, setProfilePreview] = useState<any>()
     const [picture_loading, setPictureLoading] = useState(false)
     const [new_profile_picture, setNewProfilePicture] = useState<any>(null);
-    const [profile_progress, setProfileProgress] = useState(0)
+    const [profile_progress, setProfileProgress] = useState<any>()
     const [edit_profile, setEditProfile] = useState(false)
+
+    //bio pictures
+    const [bio_picture_preview, setBioPicturePreview] = useState<any>()
+    const [bio_picture_loading, setBioPictureLoading] = useState(false)
+    const [new_bio_picture, setNewBioPicture] = useState<any>(null)
+    const [bio_picture_progress, setBioPictureProgress] = useState<any>()
+    const [edit_bio_picture, setEditBioPictures] = useState<any>(false)
+    const [all_bio_pictures, setAllBioPictures] = useState<any>()
+
+    useEffect(() => {
+        db.collection('bio_images').onSnapshot(snapshot => {
+            setAllBioPictures(snapshot.docs.map(doc => ({
+                id: doc.id,
+                bio_pic: doc.data()
+            })))
+        })
+    }, [])
 
     //checking image permissions
     useEffect(() => {
@@ -53,6 +70,27 @@ const Profile = ({navigation}:Props) => {
         })();
     }, []);
 
+    //get current user from from firestore
+    useEffect(()=>{
+        db.collection('meetA').doc(user?.uid).onSnapshot(doc=>{
+            setUserDoc(doc.data())
+        })
+    },[])
+
+    //check if user is logged in
+    useEffect(()=>{
+        setInfoLoading(true)
+        const unsubscribe = auth.onAuthStateChanged(auth_user=>{
+            if(auth_user){
+                setUser(auth_user)
+                setInfoLoading(false)
+            }
+        })
+    
+        return unsubscribe;
+    },[])
+
+    //pick profile picture image
     const pickImage = async () => {
         setEditProfile(true)
         let result : any = await ImagePicker.launchImageLibraryAsync({
@@ -81,7 +119,7 @@ const Profile = ({navigation}:Props) => {
                 xhr.open("GET", result.uri, true);
                 xhr.send(null);
             });
-            setNewProfilePicture(blob)
+            setNewBioPicture(blob)
             // Implement a new Blob promise with XMLHTTPRequest
             const fileReaderInstance = new FileReader();
             fileReaderInstance.readAsDataURL(blob)
@@ -90,12 +128,44 @@ const Profile = ({navigation}:Props) => {
                 console.log(base64data);
                 setProfilePreview(base64data)
             }
-        }
-
-        
-        
-        
+        }   
     };
+
+    const pickBioPictures = async () =>{
+        setEditBioPictures(true)
+        let result : any = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [3, 3],
+            quality: 0.7,
+          });
+      
+          // console.log(result);
+      
+          if (!result.cancelled) {
+              const blob: Blob = await new Promise((resolve, reject) => {
+                  const xhr = new XMLHttpRequest();
+                  xhr.onload = function () {
+                  resolve(xhr.response);
+                  };
+                  xhr.onerror = function () {
+                  reject(new TypeError("Network request failed"));
+                  };
+                  xhr.responseType = "blob";
+                  xhr.open("GET", result.uri, true);
+                  xhr.send(null);
+              });
+              setNewProfilePicture(blob)
+              // Implement a new Blob promise with XMLHTTPRequest
+              const fileReaderInstance = new FileReader();
+              fileReaderInstance.readAsDataURL(blob)
+              fileReaderInstance.onload = () => {
+                  const base64data = fileReaderInstance.result;                
+                  console.log(base64data);
+                  setBioPicturePreview(base64data)
+              }
+          }
+    }
 
     const createBio = () =>{
         setBioLoading(true)
@@ -126,32 +196,15 @@ const Profile = ({navigation}:Props) => {
         })
     }
 
-    //get current user from from firestore
-    useEffect(()=>{
-        db.collection('meetA').doc(user?.uid).onSnapshot(doc=>{
-            setUserDoc(doc.data())
-        })
-    },[])
-
-    //check if user is logged in
-    useEffect(()=>{
-        setInfoLoading(true)
-        const unsubscribe = auth.onAuthStateChanged(auth_user=>{
-            if(auth_user){
-                setUser(auth_user)
-                setInfoLoading(false)
-            }
-        })
-    
-        return unsubscribe;
-    },[])
-
-    //lgout function
-    const logout = () =>{
-        AsyncStorage.removeItem('@current_user')
-        AsyncStorage.removeItem('@user_bio')
-        auth.signOut()
-        navigation.replace('login')
+    //create a random text 
+    function makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        
+        for (var i = 0; i < 8; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        
+        return text;
     }
 
     const toggleEditBio = () =>{
@@ -164,9 +217,10 @@ const Profile = ({navigation}:Props) => {
         setEditGender(!edit_gender ? true : false)
     }
 
+    //changing the profile picture
     const changeProfilePicture = async () =>{
         setPictureLoading(true)
-        const uploadTask = storage.ref(`/images/propics/${user.uid}`).put(new_profile_picture)
+        const uploadTask = storage.ref(`/images/propics/${user.uid}`).put(new_bio_picture)
         uploadTask.on("state_changed", (snapshot) => {
             const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
             setProfileProgress(progress);
@@ -184,23 +238,54 @@ const Profile = ({navigation}:Props) => {
                 setEditProfile(false)
             }
         )
+    }
 
+    const uploadBioPicture = async () =>{
+        setBioPictureLoading(true)
+        const uploadTask = storage.ref(`/images/biopics/${user?.uid}`).put(new_profile_picture)
+        uploadTask.on("state_changed", (snapshot) => {
+            const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+            setBioPictureProgress(progress);
+        }, (error) => {
+            console.log(error);
+            alert(error.message)
+        },
+            () => {
+                storage.ref('images/biopics').child(user?.uid).getDownloadURL().then(url => {
+                    db.collection('bio_images').doc(user?.uid + '-' + Date.now()).set({
+                        bio_image: url
+                    }, {merge: true})
+                })
+                setBioPictureLoading(false)
+                setEditBioPictures(false)
+            }
+        )
 
-        // const ref = storage.ref().child(`images/propics/${user.uid+"-"+ Date.now()}`);
-        // // Upload Base64 image to Firebase
-        // const snapshot = await ref.put(new_profile_picture);
-        // // Create a download URL
-        // const remoteURL = await snapshot.ref.getDownloadURL();
-        
-        // if(remoteURL){
-        //     user.updateProfile({
-        //         photoURL: remoteURL
-        //     })
-        //     setPictureLoading(false)
-        //     console.log(remoteURL)
-        // }else{
-        //     alert('no piii')
-        // }
+        // const uploadTask = storage.ref(`/images/service/${picture.name}`).put(picture)
+        // uploadTask.on("state_changed", (snapshot) => {
+        //     const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        //     setBioPictureProgress(progress);
+        // }, (error) => {
+        //     console.log(error);
+        //     alert(error.message)
+        // },
+        //     () => {
+        //         storage.ref('images/service').child(picture.name).getDownloadURL().then(url => {
+        //             db.collection('homepage').add({
+        //                 home_title: home_title,
+        //                 home_picture: url
+        //             })
+        //         })
+        //     }
+        // )
+    }
+
+    //logout function
+    const logout = () =>{
+        AsyncStorage.removeItem('@current_user')
+        AsyncStorage.removeItem('@user_bio')
+        auth.signOut()
+        navigation.replace('login')
     }
 
     return (
@@ -208,15 +293,22 @@ const Profile = ({navigation}:Props) => {
             {/* <Text>{user.uid}</Text> */}
             
             <View style={styles.account__container}>
-                        {edit_profile && <View style={{width: '100%', flexDirection: 'column', alignItems: 'center'}}>
-                        <Image source={{ uri: profile__preview }} style={{ width: 200, height: 200,  marginVertical: 10 }} />
+                        {edit_profile && <View style={styles.preview__imageContainer}>
+                        <Image source={{ uri: profile__preview }} style={styles.preview__image} />
                         {
-                            picture_loading ? (<TouchableOpacity disabled style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10}}>
-                                {/* <ActivityIndicator size="small" color="#fff" /> */}
-                                <Text style={{color: 'white', textAlign: 'center'}} >{profile_progress}%</Text>
-                                </TouchableOpacity>):(<TouchableOpacity onPress={changeProfilePicture} style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10}}>
+                            picture_loading ? 
+                                (<TouchableOpacity disabled style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10}}>
+                                    <ActivityIndicator size="small" color="#fff" />
+                                    {/* <Text style={{color: 'white', textAlign: 'center'}} >{profile_progress}%</Text> */}
+                                </TouchableOpacity>):
+                                (<View style={{flexDirection: 'column', width: '100%'}}>
+                                    <TouchableOpacity onPress={changeProfilePicture} activeOpacity={0.8} style={styles.purple__button}>
                                         <Text style={{color: 'white', textAlign: 'center'}}>Save Picture</Text>
-                                </TouchableOpacity>)
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>setEditProfile(false)} activeOpacity={0.8} style={styles.red__button}>
+                                            <Text style={{color: '#333', textAlign: 'center'}}>Cancel Profile Change</Text>
+                                    </TouchableOpacity>
+                                </View>)
                         }
                     </View>}
                 <View style={{flexDirection: 'row',alignItems: 'center', width: '100%'}}>
@@ -342,21 +434,45 @@ const Profile = ({navigation}:Props) => {
                     }
                 </View>
 
+                {edit_bio_picture && <View style={styles.preview__imageContainer}>
+                    <Image source={{ uri: bio_picture_preview }} style={styles.preview__image} />
+                    {
+                        bio_picture_loading ? (
+                            <TouchableOpacity activeOpacity={0.7} disabled style={styles.purple__button}>
+                                <ActivityIndicator size="small" color="#fff" />
+                                {/* <Text style={{color: 'white', textAlign: 'center'}} >10%</Text> */}
+                            </TouchableOpacity>
+                        ) :(<View style={{flexDirection: 'column', width: '100%'}}>
+                                <TouchableOpacity onPress={uploadBioPicture} activeOpacity={0.8} style={styles.purple__button}>
+                                    <Text style={{color: 'white', textAlign: 'center'}}>Upload Picture</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={()=>setEditBioPictures(false)} activeOpacity={0.8} style={styles.red__button}>
+                                        <Text style={{color: '#333', textAlign: 'center'}}>Cancel Upload</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )
+                    }
+                </View> }
+
                 <View style={{flexDirection: 'column', width: '100%', marginVertical: 20}}>
-                    <Text style={{color: '#374151', fontSize: 25, fontWeight: 'bold'}}>Pictures</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{color: '#374151', fontSize: 25, fontWeight: 'bold', marginRight: 10}}>Pictures</Text>
+                        <TouchableOpacity onPress={pickBioPictures} activeOpacity={0.8}>
+                            <MaterialIcons name="add-a-photo" size={24} color="#60A5FA" />
+                        </TouchableOpacity>
+                    </View>
                     <ScrollView horizontal>
-                        <View style={{height: 100, width: 100, overflow: 'hidden', borderRadius: 15, marginVertical: 20, marginRight: 20}}>
-                            <Image source={require('../../assets/imgs/bako.jpg')} resizeMode="cover" style={{height: 100, width: 100}} />
-                        </View>
-                        <View style={{height: 100, width: 100, overflow: 'hidden', borderRadius: 15, marginVertical: 20, marginRight: 20}}>
-                            <Image source={require('../../assets/imgs/bako.jpg')} resizeMode="cover" style={{height: 100, width: 100}} />
-                        </View>
-                        <View style={{height: 100, width: 100, overflow: 'hidden', borderRadius: 15, marginVertical: 20, marginRight: 20}}>
-                            <Image source={require('../../assets/imgs/bako.jpg')} resizeMode="cover" style={{height: 100, width: 100}} />
-                        </View>
-                        <View style={{height: 100, width: 100, overflow: 'hidden', borderRadius: 15, marginVertical: 20, marginRight: 20}}>
-                            <Image source={require('../../assets/imgs/bako.jpg')} resizeMode="cover" style={{height: 100, width: 100}} />
-                        </View>
+                        {
+                            all_bio_pictures?.map((pic:any)=>(
+                                <>
+                                    {pic.id.split('-')[0] === user.uid ? (
+                                        <TouchableOpacity activeOpacity={0.7} style={{height: 120, width: 120, overflow: 'hidden', borderRadius: 15, marginVertical: 20, marginRight: 20}}>
+                                            <Image source={{uri: pic.bio_pic.bio_image}} resizeMode="cover" style={{height: 120, width: 120}} />
+                                        </TouchableOpacity>
+                                    ):null}
+                                </>
+                            ))
+                        }
                     </ScrollView>
                 </View>
                
@@ -411,5 +527,32 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         elevation: 5
+    },
+    preview__imageContainer:{
+        flexDirection: 'column',
+        width: '100%',
+        alignItems: 'center',
+    },
+    preview__image:{
+        width: 200, 
+        height: 200, 
+        marginVertical: 10,
+        borderRadius: 15
+    },
+    purple__button:{
+        backgroundColor:'#5B61B9', 
+        borderRadius: 50, 
+        padding: 10, 
+        width: '100%', 
+        marginVertical: 10
+    },
+    red__button:{
+        backgroundColor:'#FECACA', 
+        borderRadius: 50, 
+        padding: 10, 
+        width: '100%', 
+        marginVertical: 10, 
+        borderWidth:1, 
+        borderColor:'#DC2626'
     }
 })
