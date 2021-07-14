@@ -22,6 +22,7 @@ const Login = ({navigation}:Props) => {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
+    //function to store data locally
     const storeData = async (value:any) => {
         try {
             const jsonValue = JSON.stringify(value)
@@ -32,45 +33,28 @@ const Login = ({navigation}:Props) => {
         }
     }
 
-    
-    const getData = async () => {
-        try {
-        const value = await AsyncStorage.getItem('@current_user')
-        if(value !== null) {
-            // value previously stored
-            // history.push('/chats')
-            navigation.replace('chats')
-        }
-        } catch(e) {
-        // error reading value
-            console.log(e)
-        }
-    }
-  
+    //check if user is already logged in
     useEffect(()=>{
         const unsubscribe = auth.onAuthStateChanged(auth_user=>{
             if(auth_user){
                 navigation.replace('chats')
+                storeData(auth_user)
             }
         })
         return unsubscribe
     },[])
 
-    useEffect(()=>{
-        getData()
-    },[])
-
+    //login using credentials
     const loginWIthCredentials = () =>{
         setLoading(true)
         auth.signInWithEmailAndPassword(email.trim(), password).then(auth_user=>{
             if(auth_user){
                 storeData(auth_user)
-                // history.push('/chats')
                 navigation.replace('chats')
             }
         }).finally(()=>{
             setLoading(false)
-            // history.push('/')
+            navigation.replace('chats')
         }).catch(err=>{
             alert(err.message)
             setLoading(false)
@@ -110,10 +94,7 @@ const Login = ({navigation}:Props) => {
                             </TouchableOpacity> 
                         )
                     }
-                    <TouchableOpacity 
-                        // onPress={() => history.push('/register')}
-                            onPress={()=> navigation.navigate('register')}                        
-                        >
+                    <TouchableOpacity onPress={()=> navigation.navigate('register')}>
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
                     </TouchableOpacity>
                 </View>
