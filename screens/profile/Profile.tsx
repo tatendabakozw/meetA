@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, ActivityIndicator } from 'react-native'
-import { auth, db } from '../../firebase'
+import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput, ActivityIndicator, Platform } from 'react-native'
+import { auth, db, storage } from '../../firebase'
 import ExploreLayout from '../../layouts/ExploreLayout'
 import { EvilIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ScrollView } from 'react-native-gesture-handler'
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 interface Props{
     navigation : any
@@ -32,18 +34,68 @@ const Profile = ({navigation}:Props) => {
     const [info_loading, setInfoLoading] = useState(false)
     const [user_doc, setUserDoc] = useState<any>()
 
+    //user profile picture
+    const [profile__preview, setProfilePreview] = useState<any>()
+    const [picture_loading, setPictureLoading] = useState(false)
+    const [new_profile_picture, setNewProfilePicture] = useState<any>(null);
+    const [profile_progress, setProfileProgress] = useState(0)
+    const [edit_profile, setEditProfile] = useState(false)
 
-    const getData = async () => {
-        setInfoLoading(true)
-        const unsubscribe = auth.onAuthStateChanged(auth_user=>{
-            if(auth_user){
-                setUser(auth_user)
-                setInfoLoading(false)
+    //checking image permissions
+    useEffect(() => {
+        (async () => {
+            if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
             }
-        })
+            }
+        })();
+    }, []);
+
+    const pickImage = async () => {
+        setEditProfile(true)
+        let result : any = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [3, 3],
+          quality: 0.7,
+        });
     
-        return unsubscribe;
-    }
+        // console.log(result);
+    
+        if (!result.cancelled) {
+            // setNewProfilePicture(result.uri);
+            // const file = await FileSystem.readAsStringAsync(result.uri, {
+            //     encoding: FileSystem.EncodingType.Base64,
+            // });
+            const blob: Blob = await new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                resolve(xhr.response);
+                };
+                xhr.onerror = function () {
+                reject(new TypeError("Network request failed"));
+                };
+                xhr.responseType = "blob";
+                xhr.open("GET", result.uri, true);
+                xhr.send(null);
+            });
+            setNewProfilePicture(blob)
+            // Implement a new Blob promise with XMLHTTPRequest
+            const fileReaderInstance = new FileReader();
+            fileReaderInstance.readAsDataURL(blob)
+            fileReaderInstance.onload = () => {
+                const base64data = fileReaderInstance.result;                
+                console.log(base64data);
+                setProfilePreview(base64data)
+            }
+        }
+
+        
+        
+        
+    };
 
     const createBio = () =>{
         setBioLoading(true)
@@ -74,25 +126,27 @@ const Profile = ({navigation}:Props) => {
         })
     }
 
-    const getUserDoc = async () =>{
-        const cityRef = db.collection('meetA').doc(user.uid);
-        const doc = await cityRef.get();
-        if (!doc.exists) {
-            console.log('No such document!');
-        } else {
-            // console.log('Document data:', doc.data());
+    //get current user from from firestore
+    useEffect(()=>{
+        db.collection('meetA').doc(user?.uid).onSnapshot(doc=>{
             setUserDoc(doc.data())
-        }
-    }
+        })
+    },[])
 
+    //check if user is logged in
     useEffect(()=>{
-        getUserDoc()
-    },[bio_loading, gender_loading, user, new_bio])
+        setInfoLoading(true)
+        const unsubscribe = auth.onAuthStateChanged(auth_user=>{
+            if(auth_user){
+                setUser(auth_user)
+                setInfoLoading(false)
+            }
+        })
+    
+        return unsubscribe;
+    },[])
 
-    useEffect(()=>{
-        getData()
-    },[user])
-
+    //lgout function
     const logout = () =>{
         AsyncStorage.removeItem('@current_user')
         AsyncStorage.removeItem('@user_bio')
@@ -110,14 +164,69 @@ const Profile = ({navigation}:Props) => {
         setEditGender(!edit_gender ? true : false)
     }
 
+    const changeProfilePicture = async () =>{
+        setPictureLoading(true)
+        const uploadTask = storage.ref(`/images/propics/${user.uid}`).put(new_profile_picture)
+        uploadTask.on("state_changed", (snapshot) => {
+            const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+            setProfileProgress(progress);
+        }, (error) => {
+            console.log(error);
+            alert(error.message)
+        },
+            () => {
+                storage.ref('images/propics').child(user.uid).getDownloadURL().then(url => {
+                    user.updateProfile({
+                        photoURL: url
+                    })
+                })
+                setPictureLoading(false)
+                setEditProfile(false)
+            }
+        )
+
+
+        // const ref = storage.ref().child(`images/propics/${user.uid+"-"+ Date.now()}`);
+        // // Upload Base64 image to Firebase
+        // const snapshot = await ref.put(new_profile_picture);
+        // // Create a download URL
+        // const remoteURL = await snapshot.ref.getDownloadURL();
+        
+        // if(remoteURL){
+        //     user.updateProfile({
+        //         photoURL: remoteURL
+        //     })
+        //     setPictureLoading(false)
+        //     console.log(remoteURL)
+        // }else{
+        //     alert('no piii')
+        // }
+    }
+
     return (
         <ExploreLayout header_title="Account" header__back__activity={()=> navigation.goBack()}>
-            {/* <Text>{user?.uid}</Text> */}
+            {/* <Text>{user.uid}</Text> */}
+            
             <View style={styles.account__container}>
+                        {edit_profile && <View style={{width: '100%', flexDirection: 'column', alignItems: 'center'}}>
+                        <Image source={{ uri: profile__preview }} style={{ width: 200, height: 200,  marginVertical: 10 }} />
+                        {
+                            picture_loading ? (<TouchableOpacity disabled style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10}}>
+                                {/* <ActivityIndicator size="small" color="#fff" /> */}
+                                <Text style={{color: 'white', textAlign: 'center'}} >{profile_progress}%</Text>
+                                </TouchableOpacity>):(<TouchableOpacity onPress={changeProfilePicture} style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10}}>
+                                        <Text style={{color: 'white', textAlign: 'center'}}>Save Picture</Text>
+                                </TouchableOpacity>)
+                        }
+                    </View>}
                 <View style={{flexDirection: 'row',alignItems: 'center', width: '100%'}}>
-                    <View style={styles.account__image}>
-                        <Image source={{uri: user?.photoURL}} resizeMode="cover" style={{height: 100, width:100}} />
-                       
+                    <View style={{flexDirection: 'row', alignItems:'baseline', marginVertical: 10}}>
+                        <View style={styles.account__image}>
+                            <Image source={{uri: user?.photoURL}} resizeMode="cover" style={{height: 100, width:100}} />
+                        </View>
+                        <TouchableOpacity onPress={pickImage} activeOpacity={0.8}>
+                            <EvilIcons name="camera" size={30} color="#60A5FA" />
+                        </TouchableOpacity>
                     </View>
                     <View style={{flexDirection: 'column'}}>
                         <View style={{flexDirection: 'column', alignItems: 'center'}}>
@@ -189,10 +298,10 @@ const Profile = ({navigation}:Props) => {
                     </View>
                    
                 </View>
-                
-                <TouchableOpacity style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 10}} onPress={logout}>
+                <TouchableOpacity style={{backgroundColor:'#5B61B9', borderRadius: 50, padding: 10, width: '100%', marginVertical: 20}} onPress={logout}>
                     <Text style={{color: 'white', textAlign: 'center'}}>logout</Text>
                 </TouchableOpacity>
+
                 <View style={{marginVertical: 10, flexDirection: 'column', width: '100%'}}>
                     <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center', alignContent: 'center'}}>
                         <Text style={{color: '#374151', fontSize: 25, marginBottom: 10, fontWeight: 'bold'}}>Bio</Text>
@@ -268,20 +377,21 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         width: '100%',
-        flex:1
+        flex:1,
+        paddingVertical: 20
     },
     account__image:{
         height: 100,
         width: 100,
         borderRadius: 150,
         overflow: 'hidden',
-        margin: 10,
         backgroundColor: '#F3F4F6',
         borderWidth: 1,
         borderColor: '#E5E7EB',
-        position: 'relative',
         display: 'flex',
-        zIndex: 10
+        zIndex: 10,
+        flexDirection: 'row',
+        marginVertical: 10
     },
     account__name:{
         color: '#374151',

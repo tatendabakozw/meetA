@@ -4,10 +4,13 @@ import { useHistory } from 'react-router-native'
 import ConversationsLayout from '../../layouts/ConversationsLayout'
 import { Ionicons } from '@expo/vector-icons';
 
-const Conversation = () => {
-    const history = useHistory()
+interface Props {
+    navigation : any
+}
+
+const Conversation = ({navigation}:Props) => {
     return (
-        <ConversationsLayout>
+        <ConversationsLayout back_location={()=> navigation.goBack()}>
             <View style={{paddingHorizontal: 20, flexDirection: 'column'}}>
                 <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20}}>
                     <TouchableOpacity activeOpacity={0.7} style={{backgroundColor:'#D1FAE5', borderRadius: 50, padding: 10,width: '45%', marginVertical: 10, borderWidth:1, borderColor:'#047857'}}>

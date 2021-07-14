@@ -1,6 +1,5 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useHistory } from 'react-router-native'
 
 interface Props{
     propic ?: any,
@@ -9,14 +8,12 @@ interface Props{
     message : string,
     time : string,
     id ?: number,
-    navigation ?: any
-    location: string
+    location: string,
+    pushingToPage: () => void
 }
 
 
-const HomeChat = ({propic, name, online_status, message, time, id, navigation, location}:Props) => {
-
-    const history = useHistory()
+const HomeChat = ({propic, name, online_status, message, time, id, pushingToPage}:Props) => {
 
     return (
         <View style={styles.homechat}>
@@ -26,7 +23,7 @@ const HomeChat = ({propic, name, online_status, message, time, id, navigation, l
             </View>
             <TouchableOpacity 
                 activeOpacity={0.7} 
-                onPress={()=> navigation.navigate('conversation')} style={styles.homechat__texts}
+                onPress={pushingToPage} style={styles.homechat__texts}
             >
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.homechat__name}>{name}</Text>

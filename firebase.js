@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
+import 'firebase/storage'
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -23,5 +24,6 @@ if(firebase.apps.length === 0){
 
 const db = app.firestore()
 const auth = firebase.auth()
+const storage = firebase.storage()
 
-export {db, auth}
+export {db, auth, storage}

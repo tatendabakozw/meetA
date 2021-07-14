@@ -153,17 +153,16 @@ const Home = ({navigation}:Props) => {
     })
 
     return (
-        <HomeLayout header_title={name_loading ? "Chats" : user?.user?.displayName} >
+        <HomeLayout header_title={name_loading ? "Chats" : user?.displayName} >
                
            <View style={styles.home} >
                 {/* <Text>{user_doc ? 'ehe' : 'maya'}</Text> */}
                 {/* <Text>{user_bio}</Text> */}
                 {
-                    !user_bio ? (
+                    !user_doc?.bio ? (
                         <TouchableOpacity 
                             activeOpacity={0.8} 
-                            // onPress={()=> history.push('/profile')} 
-                            onPress={() => navigation.navigate('/profile')}
+                            onPress={() => navigation.navigate('profile')}
                             style={{padding: 20, backgroundColor: '#FEE2E2', borderRadius: 15, borderColor: '#EF4444', borderWidth:0.5, marginVertical: 20}}>
                             <Text style={{color: '#4B5563', fontSize:15}}>Seems you haven't created a bio yet, click here to create your bio</Text>
                         </TouchableOpacity>
@@ -179,6 +178,8 @@ const Home = ({navigation}:Props) => {
                         online_status = {detail.online_status}
                         propic = {detail.propic}
                         time= {detail.time}
+                        location={detail.location}
+                        pushingToPage={()=> navigation.navigate('conversation')}
                     />
                 ))
             }

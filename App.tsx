@@ -61,9 +61,9 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="chats" component={HomeTabs} options={{headerShown: false}} />
-        <Stack.Screen name="login" component={Login} options={{headerShown: false}} />
         <Stack.Screen name="register" component={Register} options={{headerShown: false}}/>
         <Stack.Screen name="conversation" component={Conversation} options={{headerShown: false}} />
+        <Stack.Screen name="login" component={Login} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -6,16 +6,17 @@ import { StatusBar } from 'expo-status-bar';
 import { Feather } from '@expo/vector-icons';
 
 interface Props{
-    navigation ?: any
+    navigation ?: any,
+    back_location ?: () => void
 }
 
-const ConverHeader = ({navigation}:Props) => {
+const ConverHeader = ({navigation, back_location}:Props) => {
     // const history = useHistory()
     return (
         <View style={styles.converheader}>
             <StatusBar style="auto" />
             <View style={styles.converheader__left}>
-                <TouchableOpacity activeOpacity={0.7} onPress={()=> navigation.navigate('chats')} style={styles.converheader__backIcon}>
+                <TouchableOpacity activeOpacity={0.7} onPress={back_location} style={styles.converheader__backIcon}>
                     <Ionicons name="chevron-back-outline" size={24} color="#374151" />
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.7} style={{flexDirection: 'row', alignItems: 'center'}}>

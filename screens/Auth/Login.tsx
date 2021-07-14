@@ -52,6 +52,8 @@ const Login = ({navigation}:Props) => {
             if(auth_user){
                 storeData(auth_user)
                 navigation.replace('chats')
+            }else{
+                console.log('user not logged in')
             }
         })
         return unsubscribe;
@@ -80,7 +82,7 @@ const Login = ({navigation}:Props) => {
     return (
         <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
             <StatusBar style="auto" />
-            <View style={styles.login__container}>
+            <KeyboardAvoidingView style={styles.login__container}>
                 <View style={styles.login__top}>
                     <Login_Pic height={250} width={250}/>
                 </View>
@@ -116,7 +118,7 @@ const Login = ({navigation}:Props) => {
                         <Text style={{color: "#5B61B9", fontSize: 15, textAlign: 'center', fontWeight: 'bold'}}>SIGN UP</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </KeyboardAvoidingView>
     )
 }
