@@ -6,7 +6,30 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 import PostComponent from '../../components/PostComponent/PostComponent';
 
+
 function Activity() {
+
+    const posts = [
+        {
+            id: '1',
+            name: 'Tatenda Bako',
+            time_posted: '5 mins',
+            post_body: 'This is the first post on this app created by the developer. Enjoy your dating!',
+            likes: 10,
+            comments: 25,
+            post_user_image: '../../assets/imgs/bako.jpg'
+
+        }
+    ]
+
+    const create_a_post = () => {
+
+    }
+
+    const filter_posts = () => {
+
+    }
+
     return (
         <HomeLayout header_title={'Activity'}>
             <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Moments</Text>
@@ -31,16 +54,29 @@ function Activity() {
             <View style={tw`flex flex-row items-center`}>
                 <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Latest</Text>
                 <View style={tw`flex-1`} />
-                <TouchableOpacity style={tw`bg-blue-100 p-2 rounded-full`}>
+                <TouchableOpacity onPress={create_a_post} style={tw`bg-blue-100 p-2 rounded-full`}>
                     <AntDesign name="plus" size={16} color="#1E3A8A" />
                 </TouchableOpacity>
-                <TouchableOpacity style={tw`p-2`}>
+                <TouchableOpacity onPress={filter_posts} style={tw`p-2`}>
                     <MaterialCommunityIcons name="tune" size={24} color="#374151" />
                 </TouchableOpacity>
             </View>
             <View style={tw`my-4`}>
-                <PostComponent />
-                <PostComponent />
+                {
+                    posts?.map(post => (
+                        <View key={post.id}>
+                            <PostComponent
+                                name={post.name}
+                                post_body={post.post_body}
+                                likes={post.likes}
+                                comments={post.comments}
+                                id={post.id}
+                                time_posted={post.time_posted}
+                                post_user_image={post.post_user_image}
+                            />
+                        </View>
+                    ))
+                }
             </View>
         </HomeLayout>
     )

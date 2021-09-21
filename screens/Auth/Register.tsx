@@ -33,14 +33,14 @@ const Register = () => {
                         placeholder="Email"
                         value={email}
                         onChangeText={text => setEmail(text)}
-                        style={tw`py-2 px-4 border border-gray-300 rounded-full w-full my-4`}
+                        style={[tw`py-2 px-4 border border-gray-300 w-full my-4`, styles.input]}
                     />
                     <TextInput
                         placeholder="Password"
                         value={password}
                         secureTextEntry
                         onChangeText={text => setPassword(text)}
-                        style={tw`py-2 px-4 border border-gray-300 rounded-full w-full my-4`}
+                        style={[tw`py-2 px-4 border border-gray-300 w-full my-4`, styles.input]}
                     />
 
                     {error ? <Error error={error} /> : null}
@@ -69,4 +69,8 @@ const Register = () => {
 
 export default Register
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    input:{
+        borderRadius: 50
+    }
+})

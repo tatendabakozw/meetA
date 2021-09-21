@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { Image, KeyboardAvoidingView, Text, TextInput, View } from 'react-native'
+import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import tw from 'tailwind-react-native-classnames';
 import CustomButton from '../../components/CustomButtons/CustomButton';
@@ -32,14 +32,14 @@ const Login = () => {
                         placeholder="Email"
                         value={email}
                         onChangeText={text => setEmail(text)}
-                        style={tw`py-2 px-4 border border-gray-300 rounded-full w-full my-4`}
+                        style={[tw`py-2 px-4 border border-gray-300 w-full my-4`, styles.input]}
                     />
                     <TextInput
                         placeholder="Password"
                         value={password}
                         secureTextEntry
                         onChangeText={text => setPassword(text)}
-                        style={tw`py-2 px-4 border border-gray-300 rounded-full w-full my-4`}
+                        style={[tw`py-2 px-4 border border-gray-300 w-full my-4`, styles.input]}
                     />
                     {error ? <Error error={error} /> : null}
                     {message ? <SucCess message={message} /> : null}
@@ -61,5 +61,11 @@ const Login = () => {
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    input:{
+        borderRadius: 50
+    }
+})
 
 export default Login
