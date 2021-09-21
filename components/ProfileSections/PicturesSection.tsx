@@ -74,7 +74,7 @@ const PicturesSection = ({ user }: Props) => {
     // console.log(user?.picture)
 
     return (
-        <ScrollView style={tw`w-full py-4`}>
+        <ScrollView style={tw`w-full py-4 mb-8`}>
             <View style={tw`flex-row items-center justify-between`}>
                 {
                     edit_profile ? (

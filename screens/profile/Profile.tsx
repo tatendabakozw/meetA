@@ -39,7 +39,7 @@ const Profile = ({ navigation }: Props) => {
     return (
         <ExploreLayout header_title={'Profile'} header__back__activity={() => navigation.goBack()}>
 
-            <View style={tw`flex-col w-full items-center pt-4 flex-1 items-center content-center`}>
+            <View style={tw`flex-col w-full items-center pt-4 flex-1 items-center content-center px-4`}>
                 {/* // the profile pic and username */}
                 <>
                     <PropicUsername user={user} />
@@ -50,6 +50,7 @@ const Profile = ({ navigation }: Props) => {
                 <>
                     <BioSection user={user} />
                 </>
+                
 
                 {/* //edit and add pictures to you account */}
                 <>

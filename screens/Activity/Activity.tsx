@@ -55,7 +55,7 @@ function Activity() {
             </View>
             <View style={tw`my-4`}>
                 {
-                    posts?.map(post => (
+                    posts?.map((post: any) => (
                         <View key={post.id}>
                             <PostComponent
                                 name={post.name}

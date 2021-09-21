@@ -100,17 +100,17 @@ const PropicUsername = ({ user }: Props) => {
 
     return (
         <>
-            <View style={tw`flex flex-row items-center w-full justify-between`}>
+            <View style={tw`flex flex-row items-center w-full justify-between my-8`}>
                 {
                     edit_profile ? (<TouchableOpacity onPress={add_Picture} activeOpacity={0.8} style={tw`w-1/3`} >
                         <Image
                             source={profile__preview ? { uri: profile__preview } : require('../../assets/imgs/placeholder.png')}
-                            style={[tw`rounded-full`, { height: 100, width: 100, borderRadius: 50 }]} resizeMode="contain"
+                            style={[tw`rounded-full bg-white`, { height: 100, width: 100, borderRadius: 50 }]} resizeMode="contain"
                         />
                     </TouchableOpacity>) : (<TouchableOpacity onPress={add_Picture} activeOpacity={0.8} style={tw`w-1/3`} >
                         <Image
                             source={auth.currentUser?.photoURL ? { uri: auth.currentUser?.photoURL } : require('../../assets/imgs/placeholder.png')}
-                            style={[tw``, { height: 100, width: 100, borderRadius: 400 }]} resizeMode="contain"
+                            style={[tw`rounded-full`, { height: 100, width: 100, borderRadius: 400 }]} resizeMode="contain"
                         />
                     </TouchableOpacity>)
                 }

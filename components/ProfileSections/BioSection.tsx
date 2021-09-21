@@ -30,7 +30,7 @@ const BioSection = ({ user }: Props) => {
     }
 
     return (
-        <View style={tw`w-full`}>
+        <View style={tw`w-full mb-8`}>
             <View style={tw`flex-row items-center justify-between`}>
                 <Text style={tw`text-xl text-gray-700 font-semibold text-center`}>Bio</Text>
                 <TouchableOpacity
