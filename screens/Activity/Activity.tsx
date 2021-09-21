@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import HomeLayout from '../../layouts/HomeLayout'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -15,7 +15,7 @@ function Activity() {
             id: '1',
             name: 'Tatenda Bako',
             time_posted: '5 mins',
-            post_body: 'This is the first post on this app created by the developer. Enjoy your dating!',
+            post_body: 'This is the first post on this app.  Enjoy your dating!  \n \nUse comments below as feedback. Leave your comments below on what you wish should be added, removed or altered to this platform.',
             likes: 10,
             comments: 25,
             post_user_image: '../../assets/imgs/bako.jpg'
@@ -33,15 +33,14 @@ function Activity() {
 
     return (
         <HomeLayout header_title={'Activity'}>
-            <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Moments</Text>
+            {/* <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Moments</Text> */}
             <ScrollView horizontal contentContainerStyle={tw`my-4`}>
                 <View style={[tw`overflow-hidden mr-4`, { borderRadius: 50 }]}>
-                    <View style={[tw`border-2 overflow-hidden p-4 bg-blue-200 border-white`, { borderRadius: 50 }]}>
+                    <View style={[tw`border-2 overflow-hidden p-4 bg-blue-100 border-white`, { borderRadius: 50 }]}>
                         <AntDesign name="plus" size={24} color="#1E3A8A" />
                     </View>
                 </View>
                 <MomentItem />
-
             </ScrollView>
             <View style={tw`flex flex-row items-center`}>
                 <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Latest</Text>
