@@ -5,6 +5,7 @@ import HomeLayout from '../../layouts/HomeLayout'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 import PostComponent from '../../components/PostComponent/PostComponent';
+import MomentItem from '../../components/MomentItem/MomentItem';
 
 
 function Activity() {
@@ -39,16 +40,7 @@ function Activity() {
                         <AntDesign name="plus" size={24} color="#1E3A8A" />
                     </View>
                 </View>
-                <View style={[tw`border-2 overflow-hidden border-blue-400 mr-2`, { borderRadius: 50 }]}>
-                    <View style={[tw`border overflow-hidden h-16 w-16 border-white`, { borderRadius: 50 }]}>
-                        <Image source={require('../../assets/imgs/bako.jpg')} style={[tw`h-16 w-16`, { borderRadius: 50 }]} resizeMode="cover" />
-                    </View>
-                </View>
-                <View style={[tw`border-2 overflow-hidden border-gray-300 mr-2`, { borderRadius: 50 }]}>
-                    <View style={[tw`border overflow-hidden h-16 w-16 border-white`, { borderRadius: 50 }]}>
-                        <Image source={require('../../assets/imgs/man.png')} style={[tw`h-16 w-16`, { borderRadius: 50 }]} resizeMode="cover" />
-                    </View>
-                </View>
+                <MomentItem />
 
             </ScrollView>
             <View style={tw`flex flex-row items-center`}>

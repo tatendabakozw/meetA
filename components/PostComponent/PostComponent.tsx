@@ -4,7 +4,7 @@ import tw from 'tailwind-react-native-classnames'
 import { MaterialCommunityIcons, Ionicons, EvilIcons } from '@expo/vector-icons';
 // import StackedAvatar from '../StackedAvatar/StackedAvatar';
 
-interface Props{
+interface Props {
     id: string,
     post_user_image?: any,
     name: string,
@@ -14,13 +14,18 @@ interface Props{
     comments: number
 }
 
-const PostComponent = ({id, post_user_image, name, time_posted, post_body, likes, comments}: Props) => {
- 
+const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments }: Props) => {
+
     return (
         <View style={tw`flex flex-col p-4 bg-gray-100 rounded-xl mb-8`}>
             <View style={tw`flex flex-row items-center mb-4`}>
                 <TouchableOpacity>
-                    <Image source={require('../../assets/imgs/bako.jpg')} style={[tw`rounded-full bg-white mr-2`, { height: 45, width: 45 }]} />
+                    <View style={[tw`border-2 overflow-hidden border-blue-400 mr-2`, { borderRadius: 50 }]}>
+                        <View style={[tw`border overflow-hidden h-12 w-12 border-white`, { borderRadius: 50 }]}>
+                            <Image source={require('../../assets/imgs/bako.jpg')} style={[tw`h-12 w-12`, { borderRadius: 50 }]} resizeMode="cover" />
+                        </View>
+                    </View>
+                    
                 </TouchableOpacity>
                 <View style={tw`flex flex-col`}>
                     <Text style={tw`text-gray-800 font-bold`}>{name}</Text>
