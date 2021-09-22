@@ -13,14 +13,28 @@ import SucCess from '../../components/Alerts/Success';
 const Register = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [username, setUserName] = useState('')
     const navigation = useNavigation()
+    const [err, setErr] = useState('')
 
     // @ts-ignore
     const { loading, error, message } = useSelector(state => state.user_register)
     const dispatch = useDispatch()
 
     const register_user = () => {
-        dispatch(register_user_Action(email.trim(), password))
+        if (!username || !email || !password) {
+            setErr('Enter all fields')
+            setTimeout(() => {
+                setErr('')
+            }, 3000);
+        } if (password.length < 6) {
+            setErr('Password should be greater than 6 characters')
+            setTimeout(() => {
+                setErr('')
+            }, 3000);
+        } else {
+            dispatch(register_user_Action(email.trim(), password, username))
+        }
     }
 
     return (
@@ -29,6 +43,12 @@ const Register = () => {
             <KeyboardAvoidingView style={tw`flex flex-row items-center min-h-full px-4`}>
                 <View style={tw`flex flex-col items-center mx-auto w-full`}>
                     <Image source={require('../../assets/imgs/logo.png')} style={{ width: 120, height: 120, marginBottom: 10 }} resizeMode="contain" />
+                    <TextInput
+                        placeholder="Username"
+                        value={username}
+                        onChangeText={text => setUserName(text)}
+                        style={[tw`py-2 px-4 border border-gray-300 w-full my-4`, styles.input]}
+                    />
                     <TextInput
                         placeholder="Email"
                         value={email}
@@ -43,6 +63,7 @@ const Register = () => {
                         style={[tw`py-2 px-4 border border-gray-300 w-full my-4`, styles.input]}
                     />
 
+                    {err ? <Error error={err} /> : null}
                     {error ? <Error error={error} /> : null}
                     {message ? <SucCess message={message} /> : null}
 
@@ -70,7 +91,7 @@ const Register = () => {
 export default Register
 
 const styles = StyleSheet.create({
-    input:{
+    input: {
         borderRadius: 50
     }
 })

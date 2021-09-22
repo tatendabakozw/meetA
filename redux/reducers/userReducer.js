@@ -81,14 +81,14 @@ export const edit_username_Reducer = (state = {}, action) => {
 }
 
 //edit phone number option
-export const edit_phone_Reducer = (state = {}, action) => {
+export const edit_phone_Reducer = (state = {phone_loading: false}, action) => {
     switch (action.type) {
         case EDIT_PHONE_REQUEST:
-            return { loading: true }
+            return { phone_loading: true }
         case EDIT_PHONE_SUCCESS:
-            return { loading: false, user: action.payload, message: "Phone number changed!" }
+            return { phone_loading: false, phone_user: action.payload, phone_message: "Phone number changed!" }
         case EDIT_PHONE_FAIL:
-            return { loading: false, error: action.payload }
+            return { phone_loading: false, phone_error: action.payload }
         default:
             return state
     }

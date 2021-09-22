@@ -12,7 +12,7 @@ import {
 import { auth, db } from "../../firebase"
 import { storeData } from "../../helpers/async-storage";
 
-export const register_user_Action = (email, password) => (dispatch) => {
+export const register_user_Action = (email, password, username) => (dispatch) => {
     dispatch({
         type: REGISTER_USER_REQUEST
     })
@@ -26,12 +26,21 @@ export const register_user_Action = (email, password) => (dispatch) => {
                 phoneNumber: res.user.phoneNumber,
                 address: null,
                 picture: [],
-                displayName: res.user.displayName,
+                displayName: username,
                 UserChatRooms: []
             }).then(() => {
-                dispatch({
-                    type: REGISTER_USER_SUCCESS,
-                    payload: res
+                res.user.updateProfile({
+                    displayName: username
+                }).then(() => {
+                    dispatch({
+                        type: REGISTER_USER_SUCCESS,
+                        payload: res
+                    })
+                }).catch(error => {
+                    dispatch({
+                        type: REGISTER_USER_FAIL,
+                        payload: error.message
+                    })
                 })
             }).catch(error => {
                 dispatch({

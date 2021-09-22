@@ -30,8 +30,10 @@ const PropicUsername = ({ user }: Props) => {
     // @ts-ignore
     const _picture = useSelector(state => state.edit_profile)
 
-    const { loading, error, message } = edit_user || edit_phone1
+    const { phone_loading, phone_error, phone_message } = edit_phone1
     const {profile_loading, profile_message, profile_error} = _picture
+    const { loading, error, message } = edit_user
+ 
 
 
     //for profile picture
@@ -114,6 +116,8 @@ const PropicUsername = ({ user }: Props) => {
                         />
                     </TouchableOpacity>)
                 }
+
+                {/* //username */}
                 <View style={tw`flex flex-col justify-between w-2/3`}>
                     <View style={tw`flex-row items-center mb-2 justify-between`}>
                         {
@@ -138,6 +142,8 @@ const PropicUsername = ({ user }: Props) => {
                             <EvilIcons name="pencil" size={24} color="#60A5FA" />
                         </TouchableOpacity>
                     </View>
+
+                    {/* //phone number */}
                     <View style={tw`flex-row items-center justify-between`}>
 
                         {
@@ -193,12 +199,12 @@ const PropicUsername = ({ user }: Props) => {
                             }} />
                         </TouchableOpacity>
                         <View style={tw`w-2/5 ml-2`}>
-                            <CustomButton button_text="Save number" outline button_action={edit_phone_handler} loading={loading} />
+                            <CustomButton button_text="Save number" outline button_action={edit_phone_handler} loading={phone_loading} />
                         </View>
 
                     </View>
-                        {error && <Error error={error} />}
-                        {message && <SucCess message={message} />}
+                        {phone_error && <Error error={phone_error} />}
+                        {phone_message && <SucCess message={phone_message} />}
                     </View>) : null
                 }
             </View>

@@ -6,7 +6,6 @@ import HomeChat from '../../components/HomeChat/HomeChat'
 import CustomLoading from '../../components/Loading/CustomLoading'
 import { getData } from '../../helpers/async-storage'
 import HomeLayout from '../../layouts/HomeLayout'
-import { get_all_messages_Action } from '../../redux/actions/chatActions'
 import { get_current_set_user_Action } from '../../redux/actions/userActions'
 
 interface Props {
@@ -25,7 +24,6 @@ const Home = ({ navigation }: Props) => {
     useEffect(() => {
         getData().then(res => {
             console.log(res.uid)
-            dispatch(get_all_messages_Action(res.uid))
             dispatch(get_current_set_user_Action(res.uid))
         }).catch(error => {
             console.log(error)
@@ -35,7 +33,7 @@ const Home = ({ navigation }: Props) => {
     console.log(all_messages)
 
 
-    if (loading || all_messages_loading) {
+    if (loading ) {
         return (
             <HomeLayout header_title={'Profile'}>
                 <CustomLoading />
@@ -50,8 +48,7 @@ const Home = ({ navigation }: Props) => {
                     <Text style={tw`text-center`}>Click here to add a bio to your account</Text>
                 </TouchableOpacity>)
             }
-            <Text>{JSON.stringify(all_messages)}</Text>
-            <Text>sahflkjashdlkkjhlkljkkklfj</Text>
+            {/* <Text>{JSON.stringify(all_messages)}</Text> */}
             <>
                 {
                     all_messages?.init_chats?.map((detail: any) => (
