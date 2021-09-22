@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
 import HomeChat from '../../components/HomeChat/HomeChat'
 import CustomLoading from '../../components/Loading/CustomLoading'
-import { auth } from '../../firebase'
+import { getData } from '../../helpers/async-storage'
 import HomeLayout from '../../layouts/HomeLayout'
 import { get_all_messages_Action } from '../../redux/actions/chatActions'
 import { get_current_set_user_Action } from '../../redux/actions/userActions'
@@ -18,28 +18,31 @@ const Home = ({ navigation }: Props) => {
     const user_info = useSelector(state => state.current_user)
     const { loading, user } = user_info
     // @ts-ignore
-    const _messages = useSelector(state=> state.get_all_messages)
-    const {all_messages_loading, all_messages} = _messages
+    const _messages = useSelector(state => state.get_all_messages)
+    const { all_messages_loading, all_messages } = _messages
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(get_current_set_user_Action(auth.currentUser?.uid))
+        getData().then(res => {
+            console.log(res.uid)
+            dispatch(get_all_messages_Action(res.uid))
+            dispatch(get_current_set_user_Action(res.uid))
+        }).catch(error => {
+            console.log(error)
+        })
     }, [dispatch])
 
-    useEffect(()=>{
-        dispatch(get_all_messages_Action(auth.currentUser?.uid))
-    },[dispatch])
+    console.log(all_messages)
 
-    // console.log(auth.currentUser?.uid)
 
-    if (loading) {
+    if (loading || all_messages_loading) {
         return (
             <HomeLayout header_title={'Profile'}>
                 <CustomLoading />
             </HomeLayout>
         )
     }
-    
+
     return (
         <HomeLayout header_title="Home">
             {
@@ -48,22 +51,26 @@ const Home = ({ navigation }: Props) => {
                 </TouchableOpacity>)
             }
             <Text>{JSON.stringify(all_messages)}</Text>
-            {/* <>
+            <Text>sahflkjashdlkkjhlkljkkklfj</Text>
+            <>
                 {
-                    all_messages?.map((detail:any) => (
-                        <HomeChat
-                            key={detail.id}
-                            name={detail.name}
-                            message={detail.message}
-                            online_status={detail.online_status}
-                            propic={detail.propic}
-                            time={detail.time}
-                            location={detail.location}
-                            pushingToPage={() => navigation.navigate('conversation', {id: user?.uid})}
-                        />
+                    all_messages?.init_chats?.map((detail: any) => (
+                        <View key={detail.id}>
+                            <Text>aasdf</Text>
+                            <HomeChat
+                                key={detail.info.chat_id}
+                                name={detail.sender.displayName}
+                                message={detail.info.last_message}
+                                online_status={detail.sender.online_status}
+                                propic={detail.sender.photoURL}
+                                time={detail.info.time}
+                                location={detail.location}
+                                pushingToPage={() => navigation.navigate('conversation', { id: user?.uid })}
+                            />
+                        </View>
                     ))
                 }
-            </> */}
+            </>
         </HomeLayout>
     )
 }

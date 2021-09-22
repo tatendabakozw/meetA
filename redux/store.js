@@ -14,10 +14,11 @@ import {
     set_user_Reducer
 } from "./reducers/userReducer";
 import { get_all_messages_Reducer, send_message_Reducer } from "./reducers/chatReducer";
+import { getData } from "../helpers/async-storage";
 
 const initialState = {
     userSignIn: {
-        loading: false
+        userInfo: getData() ? getData() : null
     }
 }
 

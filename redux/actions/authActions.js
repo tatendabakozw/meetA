@@ -10,6 +10,7 @@ import {
     REGISTER_USER_SUCCESS
 } from "../constants/authConstants"
 import { auth, db } from "../../firebase"
+import { storeData } from "../../helpers/async-storage";
 
 export const register_user_Action = (email, password) => (dispatch) => {
     dispatch({
@@ -38,7 +39,7 @@ export const register_user_Action = (email, password) => (dispatch) => {
                     payload: error.message
                 })
             })
-        }else{
+        } else {
             dispatch({
                 type: REGISTER_USER_FAIL,
                 payload: 'User Already exists   '
@@ -58,6 +59,8 @@ export const login_user_Action = (email, password) => (dispatch) => {
         type: LOGIN_USER_REQUEST
     })
     auth.signInWithEmailAndPassword(email, password).then(res => {
+        storeData(res.user)
+    }).finally((res) => {
         dispatch({
             type: LOGIN_USER_SUCCESS,
             payload: res

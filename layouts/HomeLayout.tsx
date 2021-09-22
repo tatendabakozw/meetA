@@ -12,7 +12,7 @@ interface Props{
 const HomeLayout = ({children, header_title}:Props) => {
 
     return (
-        <SafeAreaView style={[tw`pb-24`,{ flex:1}]}>
+        <SafeAreaView style={[tw`pb-32`,{ flex:1}]}>
             <View>
                 <HomeHeader heading__title={header_title}/>
             </View>

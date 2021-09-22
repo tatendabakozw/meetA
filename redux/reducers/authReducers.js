@@ -6,7 +6,8 @@ import {
     LOGOUT_SUCCESS,
     REGISTER_USER_FAIL, 
     REGISTER_USER_REQUEST,
-    REGISTER_USER_SUCCESS
+    REGISTER_USER_SUCCESS,
+    LOGIN_USER_REQUEST
 } from "../constants/authConstants";
 
 export const register_user_Reducer = (state = {}, action) => {
@@ -25,7 +26,7 @@ export const register_user_Reducer = (state = {}, action) => {
 //logi user
 export const login_user_Reducer = (state = {loading: false}, action) => {
     switch (action.type) {
-        case LOGIN_USER_SUCCESS:
+        case LOGIN_USER_REQUEST:
             return { loading: true }
         case LOGIN_USER_SUCCESS:
             return { loading: false, userInfo: action.payload, message: 'Login Successful' }

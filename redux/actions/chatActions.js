@@ -19,6 +19,12 @@ const generateChannelID = (otherID, myid) => {
 }
 
 export const send_message_Action = (sent_to, sent_by, body) => (dispatch) => {
+    const chat_obj = {
+        chat_id: generateChannelID(sent_by, sent_to),
+        last_message: body,
+        createdAt: Date.now(),
+        participant: sent_by
+    }
     dispatch({
         type: SEND_MESSAGE_REQUEST,
         payload: { sent_by, sent_to, body }
@@ -85,32 +91,27 @@ export const get_all_messages_Action = (id) => (dispatch) => {
         payload: id
     })
 
-    const all_chats = []
-    const init_chats = []
-    let user_chat_rooms = []
     db.collection('users').doc(id).onSnapshot(user => {
-        // console.log(user.data().UserChatRooms)
+        const init_chats = []
+        let user_chat_rooms = []
+        console.log(user.data().UserChatRooms)
         user_chat_rooms = user.data().UserChatRooms
 
         for (let i = 0; i < user_chat_rooms.length; i++) {
             db.collection('ChatRooms').doc(user_chat_rooms[i]).get().then(res => {
-                init_chats.push({
-                    chat_id: res.id,
-                    info: res.data()
-                })
-            })
-            db.collection('ChatRooms').doc(user_chat_rooms[i]).collection('messages').onSnapshot(res => {
-                res.forEach(doc => {
-                    all_chats.push({
-                        chat_id: doc.id,
-                        info: doc.data()
+                db.collection('users').doc(res.data().sender).get().then(sender_user => {
+                    init_chats.push({
+                        chat_id: res.id,
+                        info: res.data(),
+                        sender: sender_user.data()
                     })
                 })
+
             })
         }
         dispatch({
             type: GET_ALL_MESSAGES_SUCCESS,
-            payload: {init_chats, all_chats}
+            payload: { init_chats }
         })
         // console.log(chats)
     }, (error) => {
