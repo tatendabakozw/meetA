@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import tw from 'tailwind-react-native-classnames'
 import ExploreItem from '../../components/ExploreItem/ExploreItem'
 import CustomLoading from '../../components/Loading/CustomLoading'
 import { auth } from '../../firebase'
@@ -21,7 +22,7 @@ const Explore = () => {
     }, [dispatch])
 
     useEffect(() => {
-        dispatch(get_explore_users_Action(user?.gender))
+        dispatch(get_explore_users_Action(user?.gender ? user?.gender : 'female' ))
     }, [dispatch])
 
     if (loading) {
@@ -56,11 +57,17 @@ const Explore = () => {
                             </>
                         ) : (
                             <>
-                                {
-                                    explore_users?.map((user: any, index: any)=>(
-                                        <ExploreItem key={index} image={user?.photoURL} user={user} />
-                                    ))
-                                }
+                                {explore_users?.length < 1 ? (<View style={tw`flex flex-col items-center w-full`}>
+                                    <Text style={tw`text-gray-700 text-lg  my-8`}>You do not have any matches at the moment</Text>
+                                </View>) : (
+                                    <>
+                                        {
+                                            explore_users?.map((user: any, index: any) => (
+                                                <ExploreItem key={index} image={user?.photoURL} user={user} />
+                                            ))
+                                        }
+                                    </>
+                                )}
                             </>
                         )
                     }

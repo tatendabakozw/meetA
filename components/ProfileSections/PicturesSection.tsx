@@ -104,7 +104,7 @@ const PicturesSection = ({ user }: Props) => {
                     ) : (
                         <View style={tw`w-full flex flex-col`}>
                             <View style={tw`flex-row items-center justify-between w-full`}>
-                                <Text style={tw`text-xl text-gray-700 font-semibold text-center`}>Pictures</Text>
+                                <Text style={tw`text-xl text-gray-700 font-semibold text-center`}>Display Pictures</Text>
                                 <TouchableOpacity
                                     onPress={add_Picture}
                                     style={tw`ml-4`}>
