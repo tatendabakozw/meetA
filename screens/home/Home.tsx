@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
 import HomeChat from '../../components/HomeChat/HomeChat'
 import CustomLoading from '../../components/Loading/CustomLoading'
+import Moments from '../../components/Moments/Moments'
 import { getData } from '../../helpers/async-storage'
 import HomeLayout from '../../layouts/HomeLayout'
 import { get_current_set_user_Action } from '../../redux/actions/userActions'
@@ -49,6 +50,9 @@ const Home = ({ navigation }: Props) => {
                 </TouchableOpacity>)
             }
             {/* <Text>{JSON.stringify(all_messages)}</Text> */}
+            <>
+                <Moments />
+            </>
             <>
                 {
                     all_messages?.init_chats?.map((detail: any) => (

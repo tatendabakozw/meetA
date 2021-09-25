@@ -17,6 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Conversation from './screens/conversation/Conversation';
 import Activity from './screens/Activity/Activity';
 import UserDetails from './screens/UserDetails/UserDetails';
+import CreatePost from './screens/CreatePost/CreatePost';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -45,7 +46,6 @@ function HomeTabs() {
             else if (route.name === 'activity') {
               iconName = focused ? 'play-circle-sharp' : 'play-circle-outline';
             }
-
             // You can return any component that you like here!
             // @ts-ignore
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -116,6 +116,7 @@ const App = () => {
               <Stack.Screen name="home" component={HomeTabs} options={{ headerShown: false }} />
               <Stack.Screen name="conversation" component={Conversation} options={{ headerShown: false }} />
               <Stack.Screen name="details" component={UserDetails} options={{ headerShown: false }} />
+              <Stack.Screen name="createpost" component={CreatePost} options={{headerShown: false}} />
             </>
           )}
 
