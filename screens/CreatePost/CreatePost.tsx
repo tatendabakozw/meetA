@@ -5,8 +5,6 @@ import tw from 'tailwind-react-native-classnames'
 import CustomButton from '../../components/CustomButtons/CustomButton'
 import ExploreLayout from '../../layouts/ExploreLayout'
 import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
-import axios from 'axios'
-import { apiUrl } from '../../helpers/apiUrl'
 import { useDispatch, useSelector } from 'react-redux'
 import { get_current_set_user_Action } from '../../redux/actions/userActions'
 import * as ImagePicker from 'expo-image-picker';
