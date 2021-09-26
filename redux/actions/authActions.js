@@ -9,55 +9,32 @@ import {
     REGISTER_USER_REQUEST,
     REGISTER_USER_SUCCESS
 } from "../constants/authConstants"
-import { auth, db } from "../../firebase"
+import { auth } from "../../firebase"
 import { storeData } from "../../helpers/async-storage";
+import axios from 'axios'
+import { apiUrl } from "../../helpers/apiUrl";
 
+//register user
 export const register_user_Action = (email, password, username) => (dispatch) => {
     dispatch({
         type: REGISTER_USER_REQUEST
     })
-    auth.createUserWithEmailAndPassword(email, password).then(res => {
-        if (res.additionalUserInfo.isNewUser) {
-            db.collection('users').doc(res.user.uid).set({
-                uid: res.user.uid,
-                gender: null,
-                bio: null,
-                photoURL: res.user.photoURL,
-                phoneNumber: res.user.phoneNumber,
-                address: null,
-                picture: [],
-                displayName: username,
-                UserChatRooms: []
-            }).then(() => {
-                res.user.updateProfile({
-                    displayName: username
-                }).then(() => {
-                    dispatch({
-                        type: REGISTER_USER_SUCCESS,
-                        payload: res
-                    })
-                }).catch(error => {
-                    dispatch({
-                        type: REGISTER_USER_FAIL,
-                        payload: error.message
-                    })
-                })
-            }).catch(error => {
-                dispatch({
-                    type: REGISTER_USER_FAIL,
-                    payload: error.message
-                })
-            })
-        } else {
-            dispatch({
-                type: REGISTER_USER_FAIL,
-                payload: 'User Already exists   '
-            })
-        }
+    axios.post(`${apiUrl}/auth/register`, {
+        email: email,
+        password: password,
+        username: username
+    }).then(res => {
+        dispatch({
+            type: REGISTER_USER_SUCCESS,
+            payload: res
+        })
     }).catch(error => {
+        console.log(error.response.data.error)
         dispatch({
             type: REGISTER_USER_FAIL,
-            payload: error.message
+            payload: error.response && error.response.data.error
+                ? error.response.data.error
+                : error.message,
         })
     })
 }
@@ -67,23 +44,39 @@ export const login_user_Action = (email, password) => (dispatch) => {
     dispatch({
         type: LOGIN_USER_REQUEST
     })
-    auth.signInWithEmailAndPassword(email, password).then(res => {
-        storeData(res.user)
-    }).finally((res) => {
-        dispatch({
-            type: LOGIN_USER_SUCCESS,
-            payload: res
-        })
-    }).catch(error => {
-        if (error.message === "There is no user record corresponding to this identifier. The user may have been deleted.") {
+    axios.post(`${apiUrl}/auth/login`, { email, password }).then(response => {
+        const user = {
+            displayName: response.data.user.displayName,
+            uid: response.data.user.uid,
+            email: response.data.user.email,
+            verified: response.data.user.verified,
+            photoURL: response.data.user.email,
+            phoneNumber: response.data.user.phoneNumber,
+            bio: response.data.user.bio,
+            gender: response.data.user.gender,
+            address: response.data.user.address,
+            token: response.data.token
+        }
+        storeData(user).then((resp) => {
+            dispatch({
+                type: LOGIN_USER_SUCCESS,
+                payload: resp
+            })
+        }).catch(error => {
             dispatch({
                 type: LOGIN_USER_FAIL,
-                payload: 'Please register first'
+                payload: error.response && error.response.data.error
+                    ? error.response.data.error
+                    : error.message,
             })
-        }
+        })
+
+    }).catch(error => {
         dispatch({
             type: LOGIN_USER_FAIL,
-            payload: error.message
+            payload: error.response && error.response.data.error
+                ? error.response.data.error
+                : error.message,
         })
     })
 }

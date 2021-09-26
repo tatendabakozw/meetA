@@ -18,6 +18,7 @@ import Conversation from './screens/conversation/Conversation';
 import Activity from './screens/Activity/Activity';
 import UserDetails from './screens/UserDetails/UserDetails';
 import CreatePost from './screens/CreatePost/CreatePost';
+import { getData, getItem } from './helpers/async-storage';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -79,19 +80,15 @@ const App = () => {
 
   useEffect(() => {
     setLoading(true)
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        setUser(user)
-        setLoading(false)
-      } else {
-        setUser(null)
-        setLoading(false)
-      }
-
+    getData().then(res=>{
+      setLoading(false)
+      setUser(res)
+    }).catch(error=>{
+      console.log(error)
+      setLoading(false)
+      setUser(null)
     })
-    setLoading(false)
-    return unsubscribe;
-  }, [user])
+  }, [])
 
   if (loading) {
     return (

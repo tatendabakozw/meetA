@@ -1,38 +1,34 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
 import HomeChat from '../../components/HomeChat/HomeChat'
 import CustomLoading from '../../components/Loading/CustomLoading'
 import Moments from '../../components/Moments/Moments'
 import { getData } from '../../helpers/async-storage'
 import HomeLayout from '../../layouts/HomeLayout'
-import { get_current_set_user_Action } from '../../redux/actions/userActions'
 
 interface Props {
     navigation?: any
 }
 
 const Home = ({ navigation }: Props) => {
-    // @ts-ignore
-    const user_info = useSelector(state => state.current_user)
-    const { loading, user } = user_info
+    const [current_user, setCurrentUser] = useState<any>()
+    const [loading, setLoading] = useState<boolean>(false)
     // @ts-ignore
     const _messages = useSelector(state => state.get_all_messages)
-    const { all_messages_loading, all_messages } = _messages
-    const dispatch = useDispatch()
+    const { all_messages } = _messages
 
     useEffect(() => {
+        setLoading(true)
         getData().then(res => {
-            console.log(res.uid)
-            dispatch(get_current_set_user_Action(res.uid))
+            setCurrentUser(res)
+            setLoading(false)
         }).catch(error => {
             console.log(error)
+            setLoading(false)
         })
-    }, [dispatch])
-
-    console.log(all_messages)
-
+    }, [])
 
     if (loading ) {
         return (
@@ -44,15 +40,16 @@ const Home = ({ navigation }: Props) => {
 
     return (
         <HomeLayout header_title="Home">
+             <>
+                <Moments />
+            </>
             {
-                !user?.bio && (<TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('profile')} style={tw`p-4 text-center rounded-lg my-4 bg-red-100`}>
+                !current_user?.bio && (<TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('profile')} style={tw`p-4 text-center rounded-lg my-4 bg-red-100`}>
                     <Text style={tw`text-center`}>Click here to add a bio to your account</Text>
                 </TouchableOpacity>)
             }
             {/* <Text>{JSON.stringify(all_messages)}</Text> */}
-            <>
-                <Moments />
-            </>
+           
             <>
                 {
                     all_messages?.init_chats?.map((detail: any) => (
@@ -66,7 +63,7 @@ const Home = ({ navigation }: Props) => {
                                 propic={detail.sender.photoURL}
                                 time={detail.info.time}
                                 location={detail.location}
-                                pushingToPage={() => navigation.navigate('conversation', { id: user?.uid })}
+                                pushingToPage={() => navigation.navigate('conversation', { id: current_user?.uid })}
                             />
                         </View>
                     ))

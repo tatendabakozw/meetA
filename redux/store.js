@@ -15,6 +15,7 @@ import {
 } from "./reducers/userReducer";
 import { get_all_messages_Reducer, send_message_Reducer } from "./reducers/chatReducer";
 import { getData } from "../helpers/async-storage";
+import { create_a_post_Reducer } from "./reducers/postReducer";
 
 const initialState = {
     userSignIn: {
@@ -35,7 +36,8 @@ const reducer = combineReducers({
     edit_profile: edit_profile_Reducer,
     explore_users: get_explore_users_Reducer,
     send_message: send_message_Reducer,
-    get_all_messages: get_all_messages_Reducer
+    get_all_messages: get_all_messages_Reducer,
+    create_post : create_a_post_Reducer
 })
 
 const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(thunk)))

@@ -15,7 +15,7 @@ export async function removeItem() {
 export const storeData = async (value) => {
     try {
         const jsonValue = JSON.stringify(value)
-        await AsyncStorage.setItem('@storage_Key', jsonValue)
+        await AsyncStorage.setItem('@user_value', jsonValue)
     } catch (e) {
         // saving error
         console.log('error storing data')
@@ -24,7 +24,7 @@ export const storeData = async (value) => {
 
 export const getData = async () => {
     try {
-        const jsonValue = await AsyncStorage.getItem('@storage_Key')
+        const jsonValue = await AsyncStorage.getItem('@user_value')
         return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
         // error reading value

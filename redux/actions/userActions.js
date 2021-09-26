@@ -26,7 +26,7 @@ import {
     GET_EXPLORE_USERS_SUCCESS,
 } from "../constants/userActions"
 import firebase from "firebase"
-import { storeData } from "../../helpers/async-storage"
+import { getData, storeData } from "../../helpers/async-storage"
 
 //get all uewrs fot explore page... 6 at a time
 export const get_explore_users_Action = (gender) => (dispatch) => {
@@ -50,7 +50,7 @@ export const get_explore_users_Action = (gender) => (dispatch) => {
                 payload: error.message
             })
         })
-    }else if (gender === 'male') {
+    } else if (gender === 'male') {
         db.collection('users').where('gender', '==', 'female').limit(6).get().then(res => {
             const users = []
             res.docs.map(doc => {
@@ -75,17 +75,18 @@ export const get_current_set_user_Action = (id) => (dispatch) => {
         type: GET_CURRENT_USER_REQUEST,
         payload: { id }
     })
-    db.collection('users').doc(id).onSnapshot(user => {
+    getData().then(res => {
         dispatch({
             type: GET_CURRENT_USER_SUCCESS,
-            payload: user.data()
+            payload: res
         })
-    }, (error) => [
+    }).catch(error => {
         dispatch({
             type: GET_CURRENT_USER_FAIL,
-            payload: error.message
+            payload: error
         })
-    ])
+    })
+
 }
 
 export const edit_username_Action = (id, new_username) => (dispatch) => {
