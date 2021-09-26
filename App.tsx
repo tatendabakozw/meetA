@@ -19,6 +19,7 @@ import Activity from './screens/Activity/Activity';
 import UserDetails from './screens/UserDetails/UserDetails';
 import CreatePost from './screens/CreatePost/CreatePost';
 import { getData, getItem } from './helpers/async-storage';
+import SinglePost from './screens/SinglePost/SinglePost';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -114,6 +115,7 @@ const App = () => {
               <Stack.Screen name="conversation" component={Conversation} options={{ headerShown: false }} />
               <Stack.Screen name="details" component={UserDetails} options={{ headerShown: false }} />
               <Stack.Screen name="createpost" component={CreatePost} options={{headerShown: false}} />
+              <Stack.Screen name="singlepost" component={SinglePost} options={{headerShown: false}} />
             </>
           )}
 

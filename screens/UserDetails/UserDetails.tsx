@@ -82,52 +82,34 @@ const UserDetails = ({ route }: Props) => {
             </View>
             <ScrollView style={tw`mt-8 bg-gray-50 rounded-xl`}>
                 <MasonryList
-                    imageContainerStyle={{ borderRadius: 15, backgroundColor: 'white' }}
+                    imageContainerStyle={{ borderRadius: 12, backgroundColor: 'white' }}
                     listContainerStyle={{ backgroundColor: '#F9FAFB', borderWidth: 0, borderColor: 'red' }}
                     columns={3}
                     spacing={2}
                     backgroundColor="#F9FAFB"
+                    onPressImage={()=>{navigation.navigate('singlepost')}}
                     images={[
-                        // Can be used with different image object fieldnames.
-                        // Ex. source, source.uri, uri, URI, url, URL
-                        {
-                            source: require("../../assets/imgs/man.png"),
-                            dimensions: { width: 1080, height: 1920 }
-                        },
-                        // IMPORTANT: It is REQUIRED for LOCAL IMAGES
-                        // to include a dimensions field with the
-                        // actual width and height of the image or
-                        // it will throw an error.
-                        {
-                            source: require("../../assets/imgs/bako.jpg"),
-                            dimensions: { width: 1080, height: 1440 }
-                        },
-                        // "width" & "height" is an alternative to the dimensions
-                        // field that will also be acceptable.
-                        // { source: require("yourApp/image.png"),
-                        //     width: 1080,
-                        //     height: 1920 },
-                        { source: { uri: "https://luehangs.site/pic-chat-app-images/beautiful-beautiful-women-beauty-40901.jpg" } },
                         {
                             uri: "https://luehangs.site/pic-chat-app-images/animals-avian-beach-760984.jpg",
-                            // Optional: Adding a dimensions field with
-                            // the actual width and height for REMOTE IMAGES
-                            // will help improve performance.
                             dimensions: { width: 1080, height: 1920 }
                         },
                         {
                             URI: "https://luehangs.site/pic-chat-app-images/beautiful-blond-fishnet-stockings-48134.jpg",
-                            // Optional: Does not require an id for each
-                            // image object, but is for best practices.
                             id: "blpccx4cn"
                         },
                         { url: "https://luehangs.site/pic-chat-app-images/beautiful-beautiful-woman-beauty-9763.jpg" },
-                        { URL: "https://luehangs.site/pic-chat-app-images/attractive-balance-beautiful-186263.jpg" },
+                        { URL: "https://luehangs.site/pic-chat-app-images/attractive-balance-beautiful-186263.jpg" },                        
+                        { source: { uri: "https://luehangs.site/pic-chat-app-images/beautiful-beautiful-women-beauty-40901.jpg" } },                        
+                        {
+                            source: require("../../assets/imgs/man.png"),
+                            dimensions: { width: 1080, height: 1920 }
+                        },
+
+                        {
+                            source: require("../../assets/imgs/bako.jpg"),
+                            dimensions: { width: 1080, height: 1440 }
+                        },
                     ]}
-                // Version *2.14.0 update
-                // onEndReached={() => {
-                //     // add more images when scrolls reaches end
-                // }}
                 />
             </ScrollView>
         </ExploreLayout>
