@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import tw from 'tailwind-react-native-classnames'
+import CommentComponent from '../../components/CommentComponent/CommentComponent'
 import PostComponent from '../../components/PostComponent/PostComponent'
 import ExploreLayout from '../../layouts/ExploreLayout'
 
@@ -36,7 +37,15 @@ const SinglePost = () => {
                         </View>
                     ))
                 }
-                
+
+            </View>
+            <View style={tw`bg-gray-100 rounded-lg p-2 w-full`}>
+                <Text style={tw`text-lg text-gray-700 font-semibold pb-4`}>
+                    Comments
+                </Text>
+                <View>
+                    <CommentComponent />
+                </View>
             </View>
         </ExploreLayout>
     )

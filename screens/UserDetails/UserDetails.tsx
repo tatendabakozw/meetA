@@ -6,7 +6,7 @@ import tw from 'tailwind-react-native-classnames'
 import CustomButton from '../../components/CustomButtons/CustomButton'
 import CustomLoading from '../../components/Loading/CustomLoading'
 import ExploreLayout from '../../layouts/ExploreLayout'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { get_current_set_user_Action } from '../../redux/actions/userActions'
 // ts-ignore
 import MasonryList from "react-native-masonry-list";
@@ -37,15 +37,18 @@ const UserDetails = ({ route }: Props) => {
     }
 
     return (
-        <ExploreLayout header_title={'User Info'}>
-            <View style={tw`flex flex-col w-full pt-20`}>
+        <ExploreLayout header_title={'Tatenda Bako'} header__back__activity={() => navigation.goBack()}>
+            <View style={tw`flex flex-col items-center w-full pt-16`}>
                 <Image
                     source={require('../../assets/imgs/bako.jpg')}
                     style={[tw`self-center`, { height: 100, width: 100, borderRadius: 50 }]}
                     resizeMode="cover"
                 />
             </View>
-            <Text style={tw`font-bold text-gray-700 text-lg text-center pt-4`}>@bako_tatenda</Text>
+            <View style={tw`flex flex-row items-center self-center pt-4`}>
+                <Text style={tw`font-bold text-gray-700 text-lg text-center mr-2`}>@bako_tatenda</Text>
+            <MaterialIcons name="verified" size={20} color="#1E3A8A" />
+            </View>
             <View style={tw`flex flex-row items-center justify-between pt-8 px-20`}>
                 <View style={tw`flex flex-col items-center`}>
                     <Text style={[tw`text-gray-700`, { fontWeight: '700', fontSize: 17 }]}>45</Text>
@@ -60,14 +63,17 @@ const UserDetails = ({ route }: Props) => {
                 </View>
             </View>
             <View style={tw`flex w-full flex-row items-center mt-8 px-20`}>
-                <View style={tw`w-4/5`}>
+                <View style={tw`w-3/5`}>
                     <CustomButton button_text={'Follow'} />
                 </View>
                 <TouchableOpacity style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
-                    <Ionicons name="md-mail-outline" size={24} color="black" />
+                    <Ionicons name="md-mail-outline" size={24} color="#374151" />
+                </TouchableOpacity>
+                <TouchableOpacity style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
+                    <AntDesign name="sharealt" size={24} color="#374151" />
                 </TouchableOpacity>
             </View>
-            <View style={tw`px-8 mt-8`}>
+            <View style={tw`px-2 mt-8`}>
                 <View style={tw`flex flex-row items-center p-2 bg-gray-200 rounded-xl`}>
                     <TouchableOpacity onPress={() => setViewOptions('photos')} style={tw`${view_options === 'photos' ? "bg-white " : "bg-gray-200 "} p-4 rounded-lg w-1/3`}>
                         <Text style={[tw`text-gray-700 text-center`, { fontWeight: '700', }]}>Photos</Text>
@@ -87,7 +93,7 @@ const UserDetails = ({ route }: Props) => {
                     columns={3}
                     spacing={2}
                     backgroundColor="#F9FAFB"
-                    onPressImage={()=>{navigation.navigate('singlepost')}}
+                    onPressImage={() => { navigation.navigate('singlepost') }}
                     images={[
                         {
                             uri: "https://luehangs.site/pic-chat-app-images/animals-avian-beach-760984.jpg",
@@ -98,8 +104,8 @@ const UserDetails = ({ route }: Props) => {
                             id: "blpccx4cn"
                         },
                         { url: "https://luehangs.site/pic-chat-app-images/beautiful-beautiful-woman-beauty-9763.jpg" },
-                        { URL: "https://luehangs.site/pic-chat-app-images/attractive-balance-beautiful-186263.jpg" },                        
-                        { source: { uri: "https://luehangs.site/pic-chat-app-images/beautiful-beautiful-women-beauty-40901.jpg" } },                        
+                        { URL: "https://luehangs.site/pic-chat-app-images/attractive-balance-beautiful-186263.jpg" },
+                        { source: { uri: "https://luehangs.site/pic-chat-app-images/beautiful-beautiful-women-beauty-40901.jpg" } },
                         {
                             source: require("../../assets/imgs/man.png"),
                             dimensions: { width: 1080, height: 1920 }

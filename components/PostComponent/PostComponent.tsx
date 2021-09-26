@@ -2,6 +2,7 @@ import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import tw from 'tailwind-react-native-classnames'
 import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/core';
 // import StackedAvatar from '../StackedAvatar/StackedAvatar';
 
 interface Props {
@@ -11,15 +12,18 @@ interface Props {
     time_posted: string,
     post_body: any,
     likes: number,
-    comments: number
+    comments: number,
+    user_id?: string
 }
 
-const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments }: Props) => {
+const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments, user_id }: Props) => {
+
+    const navigation = useNavigation()
 
     return (
         <View style={tw`flex flex-col p-4 bg-gray-100 rounded-xl mb-8 w-full flex-1`}>
             <View style={tw`flex flex-row items-center mb-4 flex-1`}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('details',{id: user_id})}>
                     <View style={[tw`border-2 overflow-hidden border-gray-400 mr-2`, { borderRadius: 50 }]}>
                         <View style={[tw`border overflow-hidden h-12 w-12 border-white`, { borderRadius: 50 }]}>
                             <Image source={require('../../assets/imgs/bako.jpg')} style={[tw`h-12 w-12`, { borderRadius: 50 }]} resizeMode="cover" />
@@ -27,14 +31,14 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
                     </View>
 
                 </TouchableOpacity>
-                <View style={tw`flex flex-col`}>
+                <TouchableOpacity onPress={() => navigation.navigate('details',{id: user_id})} style={tw`flex flex-col`}>
                     <View style={tw`flex flex-row items-center`}>
                         <Text style={[tw`text-gray-900 mr-2`, {fontSize: 15, fontWeight: '700'}]}>{name}</Text>
                         <MaterialIcons name="verified" size={16} color="#1E3A8A" />
                     </View>
 
                     <Text style={[tw`text-gray-500`, {fontSize: 12}]}>{time_posted} ago</Text>
-                </View>
+                </TouchableOpacity>
                 <View style={tw`flex-1`} />
                 <MaterialCommunityIcons name="dots-horizontal" size={20} color="#6B7280" />
             </View>
