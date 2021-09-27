@@ -32,14 +32,14 @@ const Home = ({ navigation }: Props) => {
 
     if (loading ) {
         return (
-            <HomeLayout header_title={'Profile'}>
+            <HomeLayout>
                 <CustomLoading />
             </HomeLayout>
         )
     }
 
     return (
-        <HomeLayout header_title="Home">
+        <HomeLayout>
              <>
                 <Moments />
             </>

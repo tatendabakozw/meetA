@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { ReactNode } from 'react';
-import { StyleSheet, View, ScrollView, SafeAreaView } from 'react-native'
+import { View, ScrollView, SafeAreaView } from 'react-native'
 import tw from 'tailwind-react-native-classnames';
 import HomeHeader from '../components/HomeHeader/HomeHeader';
-import { StatusBar } from 'expo-status-bar';
 import { getData } from '../helpers/async-storage';
 
 interface Props {
@@ -29,12 +28,12 @@ const HomeLayout = ({ children }: Props) => {
     }, [])
 
     return (
-        <SafeAreaView style={[tw`pb-32`, { flex: 1 }]}>
-            <StatusBar style="light" />
+        <SafeAreaView style={tw`pb-32 flex-1`}>
             <View>
                 <HomeHeader user={user} />
             </View>
-            <ScrollView style={[tw`min-h-full flex-1`, { paddingHorizontal: 10, backgroundColor: '#F9FAFB' }]}>{children}</ScrollView>
+            <ScrollView style={[tw`min-h-full flex-1`, { paddingHorizontal: 10, backgroundColor: '#F9FAFB' }]}>{children}
+            </ScrollView>
         </SafeAreaView>
     )
 }
