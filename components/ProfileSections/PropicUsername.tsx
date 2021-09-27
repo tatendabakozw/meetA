@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
 import CustomButton from '../../components/CustomButtons/CustomButton'
 import { auth } from '../../firebase'
 import { logout_user } from '../../redux/actions/authActions'
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Ionicons } from '@expo/vector-icons';
 import RedButton from '../../components/CustomButtons/RedButton'
 import { edit_phone_Action, edit_profile_Action, edit_username_Action } from '../../redux/actions/userActions'
 import Error from '../Alerts/Error'
 import SucCess from '../Alerts/Success'
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/core'
+import { getData } from '../../helpers/async-storage'
 
 interface Props {
     user?: any
@@ -34,10 +35,8 @@ const PropicUsername = ({ user }: Props) => {
     const _picture = useSelector(state => state.edit_profile)
 
     const { phone_loading, phone_error, phone_message } = edit_phone1
-    const {profile_loading, profile_message, profile_error} = _picture
+    const { profile_loading, profile_message, profile_error } = _picture
     const { loading, error, message } = edit_user
- 
-
 
     //for profile picture
     const [profile__preview, setProfilePreview] = useState<any>()
@@ -100,25 +99,36 @@ const PropicUsername = ({ user }: Props) => {
         dispatch(edit_phone_Action(auth.currentUser?.uid, new_phone))
     }
 
-    const edit_profile_picture_handler = () =>{
+    const edit_profile_picture_handler = () => {
         dispatch(edit_profile_Action(auth.currentUser?.uid, new_bio_picture, getRandomString(8)))
     }
 
     return (
         <>
-            <View style={tw`flex flex-row items-center w-full justify-between my-8`}>
+            <View style={tw`flex flex-row items-center w-full justify-between my-4`}>
                 {
                     edit_profile ? (<TouchableOpacity onPress={add_Picture} activeOpacity={0.8} style={tw`w-1/3`} >
-                        <Image
-                            source={profile__preview ? { uri: profile__preview } : require('../../assets/imgs/placeholder.png')}
-                            style={[tw`rounded-full bg-white`, { height: 100, width: 100, borderRadius: 50 }]} resizeMode="contain"
-                        />
-                    </TouchableOpacity>) : (<TouchableOpacity onPress={add_Picture} activeOpacity={0.8} style={tw`w-1/3`} >
-                        <Image
-                            source={auth.currentUser?.photoURL ? { uri: auth.currentUser?.photoURL } : require('../../assets/imgs/placeholder.png')}
-                            style={[tw`rounded-full`, { height: 100, width: 100, borderRadius: 400 }]} resizeMode="contain"
-                        />
-                    </TouchableOpacity>)
+                        <View style={[tw`border-2 border-white`, { height: 100, width: 100, borderRadius: 50 }]}>
+                            <Image
+                                source={profile__preview ? { uri: profile__preview } : require('../../assets/imgs/placeholder1.png')}
+                                style={[tw`rounded-full bg-white rounded-full`, { height: 100, width: 100, borderRadius: 50 }]} resizeMode="contain"
+                            />
+                        </View>
+
+                    </TouchableOpacity>) : (<View style={tw`w-1/3`} >
+                        <View style={[tw`relative`, { width: 110 }]}>
+                            <View style={[tw`border-2 border-white`, { height: 100, width: 100, borderRadius: 50 }]}>
+                                <Image
+                                    source={user?.photoURL ? { uri: user?.photoURL } : require('../../assets/imgs/placeholder1.png')}
+                                    style={[tw`rounded-full`, { height: 100, width: 100, borderRadius: 400 }]} resizeMode="contain"
+                                />
+                            </View>
+                            <TouchableOpacity activeOpacity={0.8} onPress={add_Picture} style={[tw`absolute bottom-0 right-0 z-40 bg-gray-300 border-2 border-white p-2`, { borderRadius: 50 }]}>
+                                <Ionicons name="camera" size={24} color="black" />
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>)
                 }
 
                 {/* //username */}
@@ -129,12 +139,12 @@ const PropicUsername = ({ user }: Props) => {
                                 <TextInput
                                     placeholder="New username"
                                     // @ts-ignore
-                                    defaultValue={auth.currentUser?.displayName}
+                                    defaultValue={user?.displayName}
                                     style={[tw`w-4/5`, styles.input]}
                                     numberOfLines={1}
                                     onChangeText={text => setNewUsername(text)} />
                             ) : (
-                                <Text style={tw`text-gray-700 font-semibold text-xl`}>{auth.currentUser?.displayName ? auth.currentUser?.displayName : 'Username'}</Text>
+                                <Text style={tw`text-gray-700 font-semibold text-xl`}>{user?.displayName ? user?.displayName : 'Username'}</Text>
                             )
                         }
                         <TouchableOpacity
@@ -223,11 +233,11 @@ const PropicUsername = ({ user }: Props) => {
                             }} />
                         </TouchableOpacity>
                         <View style={tw`w-2/5 ml-2`}>
-                            <CustomButton 
+                            <CustomButton
                                 button_text="Save picture"
                                 loading={profile_loading}
                                 button_action={edit_profile_picture_handler}
-                                />
+                            />
                         </View>
 
                     </View>

@@ -9,7 +9,6 @@ import {
     REGISTER_USER_REQUEST,
     REGISTER_USER_SUCCESS
 } from "../constants/authConstants"
-import { auth } from "../../firebase"
 import { removeData, storeData } from "../../helpers/async-storage";
 import axios from 'axios'
 import { apiUrl } from "../../helpers/apiUrl";
