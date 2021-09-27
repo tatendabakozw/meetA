@@ -1,29 +1,43 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { ReactNode } from 'react';
 import { StyleSheet, View, ScrollView, SafeAreaView } from 'react-native'
 import tw from 'tailwind-react-native-classnames';
 import HomeHeader from '../components/HomeHeader/HomeHeader';
 import { StatusBar } from 'expo-status-bar';
+import { getData } from '../helpers/async-storage';
 
-interface Props{
-    children ?: ReactNode,
-    header_title ?: string
+interface Props {
+    children?: ReactNode,
 }
 
-const HomeLayout = ({children, header_title}:Props) => {
+const HomeLayout = ({ children }: Props) => {
+    const [loading, setLoading] = useState<boolean>(false)
+    const [user, setUser] = useState<null>()
+
+    console.log(loading)
+
+    useEffect(() => {
+        setLoading(true)
+        getData().then(res => {
+            setLoading(false)
+            setUser(res)
+        }).catch(error => {
+            console.log(error)
+            setLoading(false)
+            setUser(null)
+        })
+    }, [])
 
     return (
-        <SafeAreaView style={[tw`pb-32`,{ flex:1}]}>
+        <SafeAreaView style={[tw`pb-32`, { flex: 1 }]}>
             <StatusBar style="light" />
             <View>
-                <HomeHeader heading__title={header_title}/>
+                <HomeHeader user={user} />
             </View>
-            <ScrollView style={[tw`min-h-full flex-1`,{paddingHorizontal: 10, backgroundColor: '#F9FAFB'}]}>{children}</ScrollView>
-            {/* <View style={{ bottom: 0, left: 0, right: 0}}><HomeFooter/></View> */}
+            <ScrollView style={[tw`min-h-full flex-1`, { paddingHorizontal: 10, backgroundColor: '#F9FAFB' }]}>{children}</ScrollView>
         </SafeAreaView>
     )
 }
 
 export default HomeLayout
 
-const styles = StyleSheet.create({})

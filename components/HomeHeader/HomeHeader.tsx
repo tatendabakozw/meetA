@@ -1,52 +1,58 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native'
-import { AntDesign, Ionicons   } from '@expo/vector-icons'; 
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, Image } from 'react-native'
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
+import UserAvatar from '../UserAvatar/UserAvatar';
 
-interface Props{
-    heading__title ?: string
+interface Props {
+    user: any
 }
 
-const HomeHeader = ({heading__title}:Props) => {
+const HomeHeader = ({ user }: Props) => {
 
     const [search_on, setSearchOn] = useState('off')
     const navigation = useNavigation()
 
-    const toggleSearch = () =>{
-        setSearchOn(search_on === 'off' ? 'on' : 'off' )
+    const toggleSearch = () => {
+        setSearchOn(search_on === 'off' ? 'on' : 'off')
     }
 
     return (
-        <View style={styles.header}>
+        <View style={tw`h-32 px-4 pb-2 pt-6 bg-white shadow-sm overflow-hidden`}>
             <StatusBar style="auto" />
-            <View style={styles.header__top}>
-                <View>
-                    <Text style={[tw``, {fontSize: 25, color: '#374151'}]}>{heading__title}</Text>
-                </View>
-                <TouchableOpacity onPress={toggleSearch} style={{borderRadius: 50, padding: 5}}>
-                    <AntDesign name="search1" size={20} color="#6B7280" />
+            <View style={tw`px-2 flex flex-row items-center flex-1`}>
+                <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('profile')} style={tw`flex-1`}>
+                    <UserAvatar picture={user?.photoURL} />
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.8} onPress={toggleSearch} style={[tw`bg-gray-200 p-2`,{ borderRadius: 50 }]}>
+                    <AntDesign name="search1" size={24} color="#6B7280" />
                 </TouchableOpacity>
             </View>
-            <View style={[tw`flex flex-row w-full justify-between`,styles.header__bottom]}>
+            <View style={tw`flex flex-row w-full justify-between items-center`}>
                 {
                     search_on === 'on' ? (
-                        <View style={styles.header__search}>
-                            <TextInput placeholder="Search" style={styles.header__searchInput} />
+                        <View style={[tw`bg-gray-100 flex-1 rounded-full py-2 px-4`]}>
+                            <TextInput placeholder="Search" />
                         </View>
-                    ):(
+                    ) : (
                         <>
-                            <TouchableOpacity onPress={()=> navigation.navigate('chats')} activeOpacity={0.7} style={styles.header__colorItem}>
-                                <Text style={{color: '#fff', fontSize: 12}}>My Chats</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={()=> navigation.navigate('profile')} activeOpacity={0.7} style={tw``}>
+                            <View style={tw`flex-1 flex-row items-center`}>
+                                <TouchableOpacity onPress={() => navigation.navigate('chats')} activeOpacity={0.7} style={styles.header__colorItem}>
+                                    <Text style={{ color: '#fff', fontSize: 13 }}>My Chats</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => navigation.navigate('chats')} activeOpacity={0.7} style={styles.header__colorItem}>
+                                    <Text style={{ color: '#fff', fontSize: 13 }}>Followers</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <TouchableOpacity activeOpacity={0.7} style={tw``}>
                                 <Ionicons name="settings-outline" size={24} color="#4B5563" />
                             </TouchableOpacity>
                         </>
                     )
                 }
-              
+
             </View>
         </View>
     )
@@ -55,46 +61,21 @@ const HomeHeader = ({heading__title}:Props) => {
 export default HomeHeader
 
 const styles = StyleSheet.create({
-    header:{
-        height: 130,
-        padding: 20,
-        backgroundColor: "#fff",
-        borderBottomColor:'#F3F4F6', // if you need 
-        borderBottomWidth:1,
-        overflow: 'hidden',
-        shadowColor: '#F3F4F6',
-        shadowRadius: 10,
-        shadowOpacity: 1,
-        
-    },
-    header__top:{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        flex: 1,
-        justifyContent: 'space-between',
-        marginBottom: 10
-    },
-    header__bottom:{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    header__colorItem:{
+    header__colorItem: {
         backgroundColor: '#1E3A8A',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 50,
         marginRight: 10
     },
-    header__nonecolrItem:{
+    header__nonecolrItem: {
         backgroundColor: '#f3f3f3',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 50,
         marginRight: 10
     },
-    header__search:{
+    header__search: {
         backgroundColor: '#F9FAFB',
         paddingVertical: 6,
         paddingHorizontal: 18,
@@ -102,7 +83,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         width: '100%'
     },
-    header__searchInput:{
+    header__searchInput: {
 
     }
 })
