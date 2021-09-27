@@ -30,7 +30,7 @@ const Home = ({ navigation }: Props) => {
         })
     }, [])
 
-    if (loading ) {
+    if (loading) {
         return (
             <HomeLayout>
                 <CustomLoading />
@@ -40,7 +40,7 @@ const Home = ({ navigation }: Props) => {
 
     return (
         <HomeLayout>
-             <>
+            <>
                 <Moments />
             </>
             {
@@ -49,7 +49,7 @@ const Home = ({ navigation }: Props) => {
                 </TouchableOpacity>)
             }
             {/* <Text>{JSON.stringify(all_messages)}</Text> */}
-           
+
             <>
                 {
                     all_messages?.init_chats?.map((detail: any) => (
