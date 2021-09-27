@@ -41,7 +41,7 @@ export const get_explore_users_Action = (token) => (dispatch) => {
     })
 
     // console.log(user_info)
-    axios.get(`${apiUrl}/user/explore`,{headers: {Authorization: token}}).then(res => {
+    axios.get(`${apiUrl}/user/explore`, { headers: { Authorization: token } }).then(res => {
         dispatch({
             type: GET_EXPLORE_USERS_SUCCESS,
             payload: res.data.users
@@ -77,11 +77,11 @@ export const get_current_set_user_Action = (id) => (dispatch) => {
 }
 
 //get single user
-export const get_single_user_Action = (id) => (dispatch) => {
+export const get_single_user_Action = (id, token) => (dispatch) => {
     dispatch({
         type: GET_SINGLE_USER_REQUEST
     })
-    axios.get(`${apiUrl}/user/${id}`).then(res => {
+    axios.get(`${apiUrl}/user/${id}`, { headers: { Authorization: token } }).then(res => {
         dispatch({
             type: GET_SINGLE_USER_SUCCESS,
             payload: res.data.user

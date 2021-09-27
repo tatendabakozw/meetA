@@ -10,6 +10,8 @@ import { Ionicons, AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { get_single_user_Action } from '../../redux/actions/userActions'
 // ts-ignore
 import MasonryList from "react-native-masonry-list";
+import { toggle_follow_Action } from '../../redux/actions/followActions'
+import { getData } from '../../helpers/async-storage'
 
 interface Props {
     route?: any
@@ -24,9 +26,26 @@ const UserDetails = ({ route }: Props) => {
     const navigation = useNavigation()
     const [view_options, setViewOptions] = useState<string>('photos')
 
+
     useEffect(() => {
-        dispatch(get_single_user_Action(id))
-    }, [])
+        getData().then(res => {
+            dispatch(get_single_user_Action(id, res.token))
+        }).catch(err => {
+            console.log(err)
+        })
+        
+    }, [dispatch, id])
+
+    console.log(user)
+
+    const toggle_follow_user = () =>{
+        getData().then(res => {
+            dispatch(toggle_follow_Action(user, res.token))
+        }).catch(err => {
+            console.log(err)
+        })
+        
+    }
 
     if (loading) {
         return (
@@ -65,7 +84,7 @@ const UserDetails = ({ route }: Props) => {
 
             <View style={tw`flex w-full flex-row items-center mt-8 px-20`}>
                 <View style={tw`w-3/5`}>
-                    <CustomButton button_text={'Follow'} />
+                    <CustomButton button_text={'Follow'} button_action={toggle_follow_user} />
                 </View>
                 <TouchableOpacity style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
                     <Ionicons name="md-mail-outline" size={24} color="#374151" />

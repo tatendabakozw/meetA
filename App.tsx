@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './screens/Auth/Login';
@@ -12,13 +12,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Explore from './screens/explore/Explore';
 import Profile from './screens/profile/Profile';
 import { LogBox } from 'react-native';
-import { auth } from './firebase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Conversation from './screens/conversation/Conversation';
 import Activity from './screens/Activity/Activity';
 import UserDetails from './screens/UserDetails/UserDetails';
 import CreatePost from './screens/CreatePost/CreatePost';
-import { getData, getItem } from './helpers/async-storage';
+import { getData } from './helpers/async-storage';
 import SinglePost from './screens/SinglePost/SinglePost';
 import AppLoading from "expo-app-loading";
 

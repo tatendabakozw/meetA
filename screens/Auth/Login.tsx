@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
@@ -21,6 +21,14 @@ const Login = () => {
     const login = () => {
         dispatch(login_user_Action(email.trim(), password))
     }
+
+    useEffect(()=>{
+        if(message === 'Login Successful'){
+            setTimeout(() => {
+                navigation.navigate('home')
+            }, 1500);
+        }
+    },[message])
 
     return (
         <SafeAreaView>
