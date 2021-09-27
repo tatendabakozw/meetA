@@ -22,6 +22,9 @@ import {
     GET_EXPLORE_USERS_FAIL,
     GET_EXPLORE_USERS_REQUEST,
     GET_EXPLORE_USERS_SUCCESS,
+    GET_SINGLE_USER_FAIL,
+    GET_SINGLE_USER_REQUEST,
+    GET_SINGLE_USER_SUCCESS,
     SET_USER_FAIL,
     SET_USER_REQUEST,
     SET_USER_SUCCESS
@@ -60,6 +63,20 @@ export const get_current_set_user_Reducer = (state = {}, action) => {
         case GET_CURRENT_USER_SUCCESS:
             return { loading: false, user: action.payload }
         case SET_USER_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+//GET A SINGLE USER
+export const get_single_user_Reducer = (state = {loading: false}, action) =>{
+    switch (action.type) {
+        case GET_SINGLE_USER_REQUEST:
+            return { loading: true }
+        case GET_SINGLE_USER_SUCCESS:
+            return { loading: false, user: action.payload }
+        case GET_SINGLE_USER_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
@@ -11,6 +11,7 @@ import BioSection from '../../components/ProfileSections/BioSection'
 import PicturesSection from '../../components/ProfileSections/PicturesSection'
 import RedButton from '../../components/CustomButtons/RedButton'
 import GenderSections from '../../components/ProfileSections/GenderSections'
+import { getData } from '../../helpers/async-storage'
 
 interface Props {
     navigation?: any
@@ -19,14 +20,20 @@ interface Props {
 const Profile = ({ navigation }: Props) => {
 
     // @ts-ignore
-    const user_info = useSelector(state => state.current_user)
-    const { loading, user } = user_info
-
-    const dispatch = useDispatch()
-
+    const [user, setUser] = useState<any>()
+    const [loading, setLoading] = useState(false)
+  
     useEffect(() => {
-        dispatch(get_current_set_user_Action(auth.currentUser?.uid))
-    }, [dispatch])
+      setLoading(true)
+      getData().then(res=>{
+        setLoading(false)
+        setUser(res)
+      }).catch(error=>{
+        console.log(error)
+        setLoading(false)
+        setUser(null)
+      })
+    }, [])
 
     if (loading) {
         return (
@@ -53,9 +60,9 @@ const Profile = ({ navigation }: Props) => {
                 
 
                 {/* //edit and add pictures to you account */}
-                <>
+                {/* <>
                     <PicturesSection user={user} />
-                </>
+                </> */}
 
                 {/* //edit and add pictures to you account */}
                 <>

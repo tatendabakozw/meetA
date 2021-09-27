@@ -20,7 +20,7 @@ const CreatePost = () => {
     const _user = useSelector(state => state.current_user)
     // @ts-ignore
     const _post = useSelector(state => state.create_post)
-    const {post_loading, post_message, post_error} = _post
+    const { post_loading, post_message, post_error } = _post
     const { loading, user } = _user
     const dispatch = useDispatch()
 
@@ -57,7 +57,13 @@ const CreatePost = () => {
     };
 
     const create_post = () => {
-        dispatch(create_a_post_Action(body, picture, location, user?.displayName, user?.token))
+        if (!body && !picture) {
+            console.log('you cant post empty stuff')
+        } else {
+            dispatch(create_a_post_Action(body, picture, location, user?.displayName, user?.token))
+            setBody('')
+            setPicture(null)
+        }
     }
 
 
@@ -93,7 +99,7 @@ const CreatePost = () => {
                 <CustomButton loading={post_loading} button_action={create_post} button_text={'Post'} />
             </View>
             <View style={tw`relative bg-gray-50`}>
-                <TouchableOpacity onPress={()=> {
+                <TouchableOpacity onPress={() => {
                     setPreviewPicture(null)
                     setPicture(null)
                 }} style={tw`absolute top-2 right-10 bg-white p-2 z-20 rounded-full`}>

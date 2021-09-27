@@ -31,3 +31,12 @@ export const getData = async () => {
         console.log(e)
     }
 }
+
+export const removeData = async () => {
+    try {
+        await AsyncStorage.removeItem('@user_value')
+        return null
+    } catch (error) {
+        console.log(error)
+    }
+}

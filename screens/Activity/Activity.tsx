@@ -6,7 +6,6 @@ import tw from 'tailwind-react-native-classnames';
 import PostComponent from '../../components/PostComponent/PostComponent';
 import { useNavigation } from '@react-navigation/core';
 
-
 function Activity() {
     const navigation = useNavigation()
 
@@ -23,10 +22,6 @@ function Activity() {
         }
     ]
 
-    const create_a_post = () => {
-
-    }
-
     const filter_posts = () => {
 
     }
@@ -34,10 +29,19 @@ function Activity() {
     return (
         <HomeLayout header_title={'Activity'}>
             {/* <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Moments</Text> */}
+            {/* <View style={tw`bg-white p-2 w-full rounded-xl mt-2 flex-row`}>
+                <UserAvatar />
+                <View style={tw`flex flex-row bg-gray-50 flex-1 p-2 items-center`}>
+                    <TextInput multiline={true} style={tw` rounded-lg flex-1 px-2 text-lg`} placeholder="What's on your mind" />
+                    <TouchableOpacity style={tw`text-gray-700`}>
+                        <Entypo name="attachment" size={20} color="#374151" />
+                    </TouchableOpacity>
+                </View>
+            </View> */}
             <View style={tw`flex flex-row items-center mt-4 mx-4`}>
                 <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Latest</Text>
                 <View style={tw`flex-1`} />
-                <TouchableOpacity onPress={()=> navigation.navigate('createpost')} style={tw`bg-blue-100 p-2 rounded-full`}>
+                <TouchableOpacity onPress={() => navigation.navigate('createpost')} style={tw`bg-blue-100 p-2 rounded-full`}>
                     <AntDesign name="plus" size={16} color="#1E3A8A" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={filter_posts} style={tw`p-2`}>

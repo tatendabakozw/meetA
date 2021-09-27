@@ -24,49 +24,36 @@ import {
     GET_EXPLORE_USERS_FAIL,
     GET_EXPLORE_USERS_REQUEST,
     GET_EXPLORE_USERS_SUCCESS,
+    GET_SINGLE_USER_FAIL,
+    GET_SINGLE_USER_REQUEST,
+    GET_SINGLE_USER_SUCCESS,
 } from "../constants/userActions"
 import firebase from "firebase"
-import { getData, storeData } from "../../helpers/async-storage"
+import { getData } from "../../helpers/async-storage"
+import axios from "axios"
+import { apiUrl } from "../../helpers/apiUrl"
 
 //get all uewrs fot explore page... 6 at a time
-export const get_explore_users_Action = (gender) => (dispatch) => {
+export const get_explore_users_Action = (token) => (dispatch) => {
     dispatch({
         type: GET_EXPLORE_USERS_REQUEST,
-        payload: gender
+        payload: token
     })
-    if (gender === 'female') {
-        db.collection('users').where('gender', '==', 'male').get().then(res => {
-            const users = []
-            res.docs.map(doc => {
-                users.push(doc.data())
-            })
-            dispatch({
-                type: GET_EXPLORE_USERS_SUCCESS,
-                payload: users
-            })
-        }).catch(error => {
-            dispatch({
-                type: GET_EXPLORE_USERS_FAIL,
-                payload: error.message
-            })
+
+    // console.log(user_info)
+    axios.get(`${apiUrl}/user/explore`,{headers: {Authorization: token}}).then(res => {
+        dispatch({
+            type: GET_EXPLORE_USERS_SUCCESS,
+            payload: res.data.users
         })
-    } else if (gender === 'male') {
-        db.collection('users').where('gender', '==', 'female').limit(6).get().then(res => {
-            const users = []
-            res.docs.map(doc => {
-                users.push(doc.data())
-            })
-            dispatch({
-                type: GET_EXPLORE_USERS_SUCCESS,
-                payload: users
-            })
-        }).catch(error => {
-            dispatch({
-                type: GET_EXPLORE_USERS_FAIL,
-                payload: error.message
-            })
+    }).catch(error => {
+        dispatch({
+            type: GET_EXPLORE_USERS_FAIL,
+            payload: error.response && error.response.data.error
+                ? error.response.data.error
+                : error.message,
         })
-    }
+    })
 }
 
 //get current user info
@@ -87,6 +74,26 @@ export const get_current_set_user_Action = (id) => (dispatch) => {
         })
     })
 
+}
+
+//get single user
+export const get_single_user_Action = (id) => (dispatch) => {
+    dispatch({
+        type: GET_SINGLE_USER_REQUEST
+    })
+    axios.get(`${apiUrl}/user/${id}`).then(res => {
+        dispatch({
+            type: GET_SINGLE_USER_SUCCESS,
+            payload: res.data.user
+        })
+    }).catch(error => {
+        dispatch({
+            type: GET_SINGLE_USER_FAIL,
+            payload: error.response && error.response.data.error
+                ? error.response.data.error
+                : error.message,
+        })
+    })
 }
 
 export const edit_username_Action = (id, new_username) => (dispatch) => {

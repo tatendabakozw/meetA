@@ -1,28 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
 import ExploreItem from '../../components/ExploreItem/ExploreItem'
 import CustomLoading from '../../components/Loading/CustomLoading'
-import { auth } from '../../firebase'
+import { getData } from '../../helpers/async-storage'
 import ExploreLayout from '../../layouts/ExploreLayout'
-import { get_current_set_user_Action, get_explore_users_Action } from '../../redux/actions/userActions'
+import {  get_explore_users_Action } from '../../redux/actions/userActions'
 
 const Explore = () => {
-    // @ts-ignore
-    const user_info = useSelector(state => state.current_user)
+    const [user_info, setUserInfo] = useState()
     // @ts-ignore
     const _explore = useSelector(state => state.explore_users)
     const { explore_loading, explore_users } = _explore
-    const { loading, user } = user_info
+    const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(get_current_set_user_Action(auth.currentUser?.uid))
-    }, [dispatch])
-
-    useEffect(() => {
-        dispatch(get_explore_users_Action(user?.gender ? user?.gender : 'female' ))
+        setLoading(true)
+        getData().then(res => {
+            dispatch(get_explore_users_Action(res.token))
+            setUserInfo(res)
+            setLoading(false)
+        }).catch(err => {
+            console.log(err)
+            setLoading(false)
+        })
     }, [dispatch])
 
     if (loading) {
@@ -62,8 +65,9 @@ const Explore = () => {
                                 </View>) : (
                                     <>
                                         {
+
                                             explore_users?.map((user: any, index: any) => (
-                                                <ExploreItem key={index} image={user?.photoURL} user={user} />
+                                                <ExploreItem key={index} user={user} />
                                             ))
                                         }
                                     </>

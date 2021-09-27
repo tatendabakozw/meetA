@@ -11,12 +11,15 @@ import { edit_phone_Action, edit_profile_Action, edit_username_Action } from '..
 import Error from '../Alerts/Error'
 import SucCess from '../Alerts/Success'
 import * as ImagePicker from 'expo-image-picker';
+import { useNavigation } from '@react-navigation/core'
 
 interface Props {
     user?: any
 }
 
 const PropicUsername = ({ user }: Props) => {
+    const navigation = useNavigation()
+
     const [edit_phone, setEditPhone] = useState(false)
     const [new_phone, setNewPhoneNumber] = useState('')
 
@@ -86,6 +89,7 @@ const PropicUsername = ({ user }: Props) => {
 
     const logout = () => {
         dispatch(logout_user())
+        navigation.navigate('login')
     }
 
     const Edit_Username_Handler = () => {

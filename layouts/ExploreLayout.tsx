@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar'
 import React, { ReactNode } from 'react'
 import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -13,6 +14,7 @@ interface Props {
 const ExploreLayout = ({ children, header_title, header__back__activity }: Props) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
+            <StatusBar style="light" />
             <View>
                 <ExploreHeader heading__title={header_title} header__back__activity={header__back__activity} />
             </View>

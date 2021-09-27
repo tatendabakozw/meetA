@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import { StyleSheet, View, ScrollView, SafeAreaView } from 'react-native'
 import tw from 'tailwind-react-native-classnames';
 import HomeHeader from '../components/HomeHeader/HomeHeader';
+import { StatusBar } from 'expo-status-bar';
 
 interface Props{
     children ?: ReactNode,
@@ -13,6 +14,7 @@ const HomeLayout = ({children, header_title}:Props) => {
 
     return (
         <SafeAreaView style={[tw`pb-32`,{ flex:1}]}>
+            <StatusBar style="light" />
             <View>
                 <HomeHeader heading__title={header_title}/>
             </View>

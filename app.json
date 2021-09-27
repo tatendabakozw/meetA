@@ -2,11 +2,16 @@
   "name": "meetA",
   "displayName": "meetA",
   "expo": {
-    "name": "chat",
-    "slug": "chat",
+    "name": "meetA",
+    "slug": "meetA",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "splash": {
+      "image": "./assets/imgs/splash.png",
+      "resizeMode": "contain"
+    },
+    "icon": "./assets/imgs/icon.png"
   }
 }

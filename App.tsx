@@ -20,6 +20,7 @@ import UserDetails from './screens/UserDetails/UserDetails';
 import CreatePost from './screens/CreatePost/CreatePost';
 import { getData, getItem } from './helpers/async-storage';
 import SinglePost from './screens/SinglePost/SinglePost';
+import AppLoading from "expo-app-loading";
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -81,10 +82,10 @@ const App = () => {
 
   useEffect(() => {
     setLoading(true)
-    getData().then(res=>{
+    getData().then(res => {
       setLoading(false)
       setUser(res)
-    }).catch(error=>{
+    }).catch(error => {
       console.log(error)
       setLoading(false)
       setUser(null)
@@ -94,7 +95,7 @@ const App = () => {
   if (loading) {
     return (
       <SafeAreaView>
-        <Text>Iam a loading screen</Text>
+        <AppLoading/>
       </SafeAreaView>
     )
   }
@@ -114,8 +115,8 @@ const App = () => {
               <Stack.Screen name="home" component={HomeTabs} options={{ headerShown: false }} />
               <Stack.Screen name="conversation" component={Conversation} options={{ headerShown: false }} />
               <Stack.Screen name="details" component={UserDetails} options={{ headerShown: false }} />
-              <Stack.Screen name="createpost" component={CreatePost} options={{headerShown: false}} />
-              <Stack.Screen name="singlepost" component={SinglePost} options={{headerShown: false}} />
+              <Stack.Screen name="createpost" component={CreatePost} options={{ headerShown: false }} />
+              <Stack.Screen name="singlepost" component={SinglePost} options={{ headerShown: false }} />
             </>
           )}
 

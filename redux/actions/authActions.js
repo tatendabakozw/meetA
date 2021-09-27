@@ -10,7 +10,7 @@ import {
     REGISTER_USER_SUCCESS
 } from "../constants/authConstants"
 import { auth } from "../../firebase"
-import { storeData } from "../../helpers/async-storage";
+import { removeData, storeData } from "../../helpers/async-storage";
 import axios from 'axios'
 import { apiUrl } from "../../helpers/apiUrl";
 
@@ -47,10 +47,10 @@ export const login_user_Action = (email, password) => (dispatch) => {
     axios.post(`${apiUrl}/auth/login`, { email, password }).then(response => {
         const user = {
             displayName: response.data.user.displayName,
-            uid: response.data.user.uid,
+            id: response.data.user._id,
             email: response.data.user.email,
             verified: response.data.user.verified,
-            photoURL: response.data.user.email,
+            photoURL: response.data.user.photoURL,
             phoneNumber: response.data.user.phoneNumber,
             bio: response.data.user.bio,
             gender: response.data.user.gender,
@@ -86,7 +86,7 @@ export const logout_user = () => (dispatch) => {
     dispatch({
         type: LOGOUT_REQUEST
     })
-    auth.signOut().then((res) => {
+    removeData().then((res) => {
         dispatch({
             type: LOGOUT_SUCCESS,
             payload: res

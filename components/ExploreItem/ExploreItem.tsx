@@ -1,18 +1,15 @@
 import React from 'react'
-import { useState } from 'react'
 import { Image, StyleSheet, TouchableOpacity, View, ActivityIndicator } from 'react-native'
 import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
 
 interface Props {
     loading?: boolean,
-    image?: any,
     user?: any
 }
 
-const ExploreItem = ({ loading, image, user }: Props) => {
+const ExploreItem = ({ loading, user }: Props) => {
     const navigation = useNavigation()
-
     return (
         <>
             {
@@ -21,9 +18,9 @@ const ExploreItem = ({ loading, image, user }: Props) => {
                         <ActivityIndicator color="#9CA3AF" size="large" />
                     </View>
                 </TouchableOpacity>) : (
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('details',{id: user?.uid})} style={[tw``, styles.exploreitem]}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('details',{id: user?._id})} style={[tw``, styles.exploreitem]}>
                         <Image
-                            source={{ uri: image }}
+                            source={user?.photoURL !== '' ? { uri: user?.photoURL } : require('../../assets/imgs/man.png')}
                             style={[tw`bg-gray-200`, styles.image]}
                             resizeMode="cover"
                             blurRadius={20}
