@@ -86,11 +86,6 @@ const PropicUsername = ({ user }: Props) => {
         }
     };
 
-    const logout = () => {
-        dispatch(logout_user())
-        navigation.navigate('login')
-    }
-
     const Edit_Username_Handler = () => {
         dispatch(edit_username_Action(auth.currentUser?.uid, new_username))
     }
@@ -246,7 +241,6 @@ const PropicUsername = ({ user }: Props) => {
                     </View>) : null
                 }
             </View>
-            <CustomButton button_text="Logout" button_action={logout} />
         </>
     )
 }

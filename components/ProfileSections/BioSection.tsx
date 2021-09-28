@@ -32,7 +32,7 @@ const BioSection = ({ user }: Props) => {
     return (
         <View style={tw`w-full mb-8`}>
             <View style={tw`flex-row items-center justify-between`}>
-                <Text style={tw`text-xl text-gray-700 font-semibold text-center`}>Bio</Text>
+                <Text style={tw`text-lg text-gray-700 font-semibold text-center`}>Bio</Text>
                 <TouchableOpacity
                     onPress={() => setEditBio(!edit_bio ? true : false)}
                     style={tw`ml-4`}>
@@ -64,7 +64,7 @@ const BioSection = ({ user }: Props) => {
                         {error && <Error error={error} />}
                         {message && <SucCess message={message} />}
                     </View>
-                ) : (<Text style={tw`text-gray-500 text-lg mt-4`}>{user?.bio ? user?.bio : 'Write something intersting about you here. People interested in you will see this bio'}</Text>)
+                ) : (<Text style={tw`text-gray-500 mt-4`}>{user?.bio ? user?.bio : 'Write something intersting about yourself.'}</Text>)
             }
         </View>
 

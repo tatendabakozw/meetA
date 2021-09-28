@@ -35,7 +35,7 @@ const Login = () => {
             <StatusBar style="auto" />
             <KeyboardAvoidingView style={tw`flex flex-row items-center min-h-full px-4`}>
                 <View style={tw`flex flex-col items-center mx-auto w-full`}>
-                    <Image source={require('../../assets/imgs/logo.png')} style={{ width: 120, height: 120, marginBottom: 10 }} resizeMode="contain" />
+                    <Image source={require('../../assets/imgs/logo.png')} style={{ width: 150, height: 150, marginBottom: 10 }} resizeMode="contain" />
                     <TextInput
                         placeholder="Email"
                         value={email}

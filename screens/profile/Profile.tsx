@@ -12,6 +12,8 @@ import PicturesSection from '../../components/ProfileSections/PicturesSection'
 import RedButton from '../../components/CustomButtons/RedButton'
 import GenderSections from '../../components/ProfileSections/GenderSections'
 import { getData } from '../../helpers/async-storage'
+import CustomButton from '../../components/CustomButtons/CustomButton'
+import { logout_user } from '../../redux/actions/authActions'
 
 interface Props {
     navigation?: any
@@ -22,17 +24,23 @@ const Profile = ({ navigation }: Props) => {
     // @ts-ignore
     const [user, setUser] = useState<any>()
     const [loading, setLoading] = useState(false)
-  
+    const dispatch = useDispatch()
+
+    const logout = () => {
+        dispatch(logout_user())
+        navigation.navigate('login')
+    }
+
     useEffect(() => {
-      setLoading(true)
-      getData().then(res=>{
-        setLoading(false)
-        setUser(res)
-      }).catch(error=>{
-        console.log(error)
-        setLoading(false)
-        setUser(null)
-      })
+        setLoading(true)
+        getData().then(res => {
+            setLoading(false)
+            setUser(res)
+        }).catch(error => {
+            console.log(error)
+            setLoading(false)
+            setUser(null)
+        })
     }, [])
 
     if (loading) {
@@ -53,23 +61,29 @@ const Profile = ({ navigation }: Props) => {
                 </>
 
                 {/* //to add and edit user bio */}
-                <View style={tw`border-b border-gray-300 w-full my-8 w-3/4`} />
+                <View style={tw`border-b border-gray-300 w-full my-4 w-3/4`} />
                 <>
                     <BioSection user={user} />
                 </>
-                
 
-                {/* //edit and add pictures to you account */}
-                {/* <>
-                    <PicturesSection user={user} />
-                </> */}
 
                 {/* //edit and add pictures to you account */}
                 <>
                     <GenderSections user={user} />
                 </>
 
-                <View style={tw`flex w-full my-8`}>
+                {/* //edit and add pictures to you account */}
+                {/* <>
+                    <PicturesSection user={user} />
+                </> */}
+
+                <View style={tw`flex w-full mt-8`}>
+
+                    <CustomButton button_text="Logout" button_action={logout} />
+                </View>
+                <View style={tw`border-b border-gray-300 w-full my-8 w-3/4`} />
+
+                <View style={tw`flex w-full mb-8`}>
                     <RedButton button_text={'Delete Account'} />
                 </View>
             </View>

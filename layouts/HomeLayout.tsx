@@ -32,7 +32,8 @@ const HomeLayout = ({ children }: Props) => {
             <View>
                 <HomeHeader user={user} />
             </View>
-            <ScrollView style={[tw`min-h-full flex-1`, { paddingHorizontal: 10, backgroundColor: '#F9FAFB' }]}>{children}
+            <ScrollView style={[tw`min-h-full flex-1`, { paddingHorizontal: 10, backgroundColor: '#F9FAFB' }]}>
+                {children}
             </ScrollView>
         </SafeAreaView>
     )

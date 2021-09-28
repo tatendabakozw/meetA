@@ -29,7 +29,7 @@ const GenderSections = ({ user }: Props) => {
     return (
         <View style={tw`w-full`}>
             <View style={tw`flex-row items-center justify-between`}>
-                <Text style={tw`text-xl text-gray-700 font-semibold text-center`}>Gender</Text>
+                <Text style={tw`text-lg text-gray-700 font-semibold text-center`}>Gender</Text>
                 <TouchableOpacity
                     onPress={() => setEditGender(!edit_gender ? true : false)}
                     style={tw`ml-4`}>
@@ -62,7 +62,7 @@ const GenderSections = ({ user }: Props) => {
                             {message && <SucCess message={message} />}
                         </View>
                     </>
-                ) : (<Text style={tw`text-gray-500 text-lg mt-4`}>{user?.gender ? user?.gender : 'Provide your gender so that we can customise you interests more accurately'}</Text>)
+                ) : (<Text style={tw`text-gray-500 mt-4`}>{user?.gender ? user?.gender : 'Provide your gender so that we can customise you interests more accurately'}</Text>)
             }
         </View>
     )
