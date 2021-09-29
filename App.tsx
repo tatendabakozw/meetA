@@ -20,6 +20,8 @@ import CreatePost from './screens/CreatePost/CreatePost';
 import { getData } from './helpers/async-storage';
 import SinglePost from './screens/SinglePost/SinglePost';
 import AppLoading from "expo-app-loading";
+import io from 'socket.io-client'
+import { apiUrl } from './helpers/apiUrl';
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -80,6 +82,7 @@ const App = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    io(`${apiUrl}`)
     setLoading(true)
     getData().then(res => {
       setLoading(false)

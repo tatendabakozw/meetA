@@ -10,7 +10,6 @@ import {
     SEND_MESSAGE_REQUEST,
     SEND_MESSAGE_SUCCESS
 } from "../constants/chatConstants"
-import firebase from "firebase"
 import axios from "axios"
 import { apiUrl } from "../../helpers/apiUrl"
 
@@ -38,7 +37,7 @@ export const get_all_messages_Action = (id1, id2, token) => (dispatch) => {
         })
     }).catch(error => {
         dispatch({
-            type: GET_ALL_CHAT_USERS_FAIL,
+            type: GET_ALL_MESSAGES_FAIL,
             payload: error.response && error.response.data.error
                 ? error.response.data.error
                 : error.message,
@@ -46,70 +45,37 @@ export const get_all_messages_Action = (id1, id2, token) => (dispatch) => {
     })
 }
 
-export const send_message_Action = (sent_to, sent_by, body) => (dispatch) => {
-    const chat_obj = {
-        chat_id: generateChannelID(sent_by, sent_to),
-        last_message: body,
-        createdAt: Date.now(),
-        participant: sent_by
-    }
+export const send_message_Action = (id, token, body, socket) => (dispatch) => {
     dispatch({
         type: SEND_MESSAGE_REQUEST,
-        payload: { sent_by, sent_to, body }
+        payload: { body }
     })
-    db.collection('ChatRooms').doc(generateChannelID(sent_by, sent_to)).set({
-        chatId: generateChannelID(sent_by, sent_to),
-        users: [sent_to, sent_by],
-        sender: sent_by,
-        last_message: body,
-        time: Date.now()
-    }, { merge: true }).then(() => {
-        db.collection('ChatRooms').doc(generateChannelID(sent_by, sent_to)).collection('messages').add({
-            sender: sent_by,
-            message: body,
-            createdAt: Date.now(),
-            msgId: '',
-            status: 'unread'
-        }).then(res => {
-            db.collection('ChatRooms').doc(generateChannelID(sent_by, sent_to)).collection('messages').doc(res.id).update({
-                msgId: res.id
-            }).then(() => {
-                db.collection('users').doc(sent_to).update({
-                    UserChatRooms: firebase.firestore.FieldValue.arrayUnion(generateChannelID(sent_by, sent_to))
-                }).then(() => {
-                    db.collection('users').doc(sent_by).update({
-                        UserChatRooms: firebase.firestore.FieldValue.arrayUnion(generateChannelID(sent_by, sent_to))
-                    }).then((response) => {
-                        dispatch({
-                            type: SEND_MESSAGE_SUCCESS,
-                            payload: response
-                        })
-                    }).catch(error => {
-                        console.log(error)
-                        dispatch({
-                            type: SEND_MESSAGE_FAIL,
-                            payload: error
-                        })
-                    })
-                })
-            }).catch(error => {
-                dispatch({
-                    type: SEND_MESSAGE_FAIL,
-                    payload: error
-                })
-            })
-        }).catch(error => {
-            dispatch({
-                type: SEND_MESSAGE_FAIL,
-                payload: error
-            })
-        })
-    }).catch(error => {
-        dispatch({
-            type: SEND_MESSAGE_FAIL,
-            payload: error
-        })
+
+    socket.emit("Sending Message",{
+        body
     })
+
+    dispatch({
+        type: SEND_MESSAGE_SUCCESS,
+        payload: body
+    })
+
+    // axios.post(`${apiUrl}/chat/send_message/${id}`,{body: body},{headers:{
+    //     Authorization: token
+    // }}).then(res=>{
+    //     dispatch({
+    //         type: SEND_MESSAGE_SUCCESS,
+    //         payload: res.data
+    //     })
+    // }).catch(error=>{
+    //     dispatch({
+    //         type: SEND_MESSAGE_FAIL,
+    //         payload: error.response && error.response.data.error
+    //             ? error.response.data.error
+    //             : error.message,
+    //     })
+    // })
+    
 }
 
 //get all messages from firestore

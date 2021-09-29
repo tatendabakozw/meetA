@@ -3,10 +3,16 @@ import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { send_message_Action } from '../../redux/actions/chatActions';
-import { auth } from '../../firebase';
 
+interface Props {
+    id1?: string,
+    id2?: string,
+    token?: string,
+    user?: string,
+    socket ?: any
+}
 
-const ConversatonInput = () => {
+const ConversatonInput = ({ id1, id2, token, user, socket }: Props) => {
     const [new_message, setNewMessage] = useState('')
 
     // @ts-ignore
@@ -16,8 +22,14 @@ const ConversatonInput = () => {
     const dispatch = useDispatch()
 
     const send_message = () => {
-        // dispatch(send_message_Action(id, auth.currentUser?.uid, new_message))
-        setNewMessage('')
+        if (user === id1) {
+            // then id2 is receiveing so shiuld be passed as parameter
+            dispatch(send_message_Action(id2,token, socket ))
+        }
+        else {
+            // then id1 is receiveing so shiuld be passed as parameter
+            dispatch(send_message_Action(id1, token, socket))
+        }
     }
 
     return (
