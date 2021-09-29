@@ -18,6 +18,7 @@ import { get_all_messages_Reducer, send_message_Reducer } from "./reducers/chatR
 import { getData } from "../helpers/async-storage";
 import { create_a_post_Reducer, get_all_posts_Reducer, get_a_single_post_Reducer, like_a_post_Reducer } from "./reducers/postReducer";
 import { toggle_follow_Reducer } from "./reducers/followReducer";
+import { create_a_comment_Reducer } from "./reducers/commentReucers";
 
 const initialState = {
     userSignIn: {
@@ -33,15 +34,15 @@ const reducer = combineReducers({
     //for messages
     send_message: send_message_Reducer,
     get_all_messages: get_all_messages_Reducer,
-    
+
     //for posts
     all_posts: get_all_posts_Reducer,
-    create_post : create_a_post_Reducer,
+    create_post: create_a_post_Reducer,
     like_post: like_a_post_Reducer,
     get_single_post: get_a_single_post_Reducer,
-    
+
     //for user actions
-    get_single_user:get_single_user_Reducer,
+    get_single_user: get_single_user_Reducer,
     set_user: set_user_Reducer,
     current_user: get_current_set_user_Reducer,
     edit_username: edit_username_Reducer,
@@ -51,10 +52,13 @@ const reducer = combineReducers({
     add_picture: add_picture_Reducer,
     edit_profile: edit_profile_Reducer,
     explore_users: get_explore_users_Reducer,
-    
+
     // for following
     toggle_follow: toggle_follow_Reducer,
-    
+
+    // for comments`
+    create_a_comment: create_a_comment_Reducer
+
 })
 
 const store = createStore(reducer, initialState, composeWithDevTools(applyMiddleware(thunk)))

@@ -18,7 +18,6 @@ export const toggle_follow_Action = (user, token) => (dispatch) => {
             payload: res
         })
     }).catch(error => {
-        console.log(error.response.data.error)
         dispatch({
             type: TOGGLEFOLLOW_USER_FAIL,
             payload: error.response && error.response.data.error
