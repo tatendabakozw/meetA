@@ -91,6 +91,7 @@ function Activity() {
                                 verified={post.post_owner_verified}
                                 logged_in_user = {user}
                                 liked={post.liked_post}
+                                user_id={post.post_owner_id}
                             />
                         </View>
                     ))

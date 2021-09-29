@@ -22,14 +22,13 @@ interface Props {
     post_picture?: string,
     verified?: boolean,
     logged_in_user?: any,
-    liked?: boolean
+    liked?: boolean,
 }
 
 
 
 const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments, post_picture, user_id, verified, logged_in_user, liked }: Props) => {
     const dispatch = useDispatch()
-    // console.log(logged_in_user)
 
     const like_post = () => {
         dispatch(like_a_post_Action(id, logged_in_user.token))
@@ -42,7 +41,7 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
             <View style={tw`flex flex-row items-center mb-4 flex-1`}>
                 <TouchableOpacity onPress={() => navigation.navigate('details', { id: user_id })}>
 
-                    <UserAvatar picture={post_user_image} size="lg" />
+                    <UserAvatar picture={post_user_image} size="lg" user_id={user_id} />
 
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('details', { id: user_id })} style={tw`flex flex-col`}>
@@ -55,7 +54,7 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
                 <View style={tw`flex-1`} />
                 <MaterialCommunityIcons name="dots-horizontal" size={20} color="#6B7280" />
             </View>
-            <TouchableOpacity activeOpacity={0.9} onPress={()=> navigation.navigate('singlepost',{id: id})}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => navigation.navigate('singlepost', { id: id })}>
 
                 <Text style={[tw`text-gray-700 mb-2`, { fontWeight: '600', fontSize: 15 }]}>
                     {post_body}

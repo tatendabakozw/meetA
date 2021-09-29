@@ -9,19 +9,6 @@ import { getData } from '../../helpers/async-storage'
 import ExploreLayout from '../../layouts/ExploreLayout'
 import { get_a_single_post_Action } from '../../redux/actions/postActions'
 
-const posts = [
-    {
-        id: '1',
-        name: 'Tatenda Bako',
-        time_posted: '5 mins',
-        post_body: 'This is the first post on this app.  Enjoy your dating!  \n \nUse comments below as feedback. Leave your comments below on what you wish should be added, removed or altered to this platform.',
-        likes: 10,
-        comments: 25,
-        post_user_image: '../../assets/imgs/bako.jpg'
-
-    }
-]
-
 interface Props {
     route?: any
 }
@@ -53,7 +40,7 @@ const SinglePost = ({ route }: Props) => {
     return (
         <ExploreLayout header_title={'Single Post'} header__back__activity={() => navigation.goBack()}>
             <View style={tw`w-full mt-8`}>
-                <View key={post.id}>
+                <View>
                     <PostComponent
                         name={post?.post_owner.displayName}
                         post_body={post?.post.body}
@@ -65,6 +52,7 @@ const SinglePost = ({ route }: Props) => {
                         verified={post?.post_owner.verified}
                         liked={post?.post_owner.liked_post}
                         post_picture={post?.post.pictureUrl}
+                        user_id={post.post_owner._id}
                     />
                 </View>
 
