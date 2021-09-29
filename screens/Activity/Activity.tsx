@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import HomeLayout from '../../layouts/HomeLayout'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import PostComponent from '../../components/PostComponent/PostComponent';
 import { useNavigation } from '@react-navigation/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_all_posts_Action } from '../../redux/actions/postActions';
+import { getData } from '../../helpers/async-storage';
 
 function Activity() {
     const navigation = useNavigation()
@@ -14,6 +15,7 @@ function Activity() {
     const _posts = useSelector(state => state.all_posts)
     const {loading, posts} = _posts
     const dispatch = useDispatch()
+    const [user, setUser] = useState()
  
     const posts_ = [
         {
@@ -32,10 +34,16 @@ function Activity() {
 
     }
     useEffect(()=>{
-        dispatch(get_all_posts_Action())
+        getData().then(res=>{
+            setUser(res)
+            dispatch(get_all_posts_Action(res.token))
+        }).catch(err=>{
+            console.log(err)
+        })
+        
     },[dispatch])
 
-    console.log(posts)
+    // console.log(user)
 
     if(loading){
         return(
@@ -81,6 +89,8 @@ function Activity() {
                                 post_user_image={post.post_owner_pic}
                                 post_picture = {post.pictureUrl}
                                 verified={post.post_owner_verified}
+                                logged_in_user = {user}
+                                liked={post.liked_post}
                             />
                         </View>
                     ))

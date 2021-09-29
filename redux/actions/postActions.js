@@ -51,11 +51,15 @@ export const create_a_post_Action = (body, picture, location, displayName, token
 }
 
 //get all posts
-export const get_all_posts_Action = () => (dispatch) => {
+export const get_all_posts_Action = (token) => (dispatch) => {
     dispatch({
         type: GET_ALL_POSTS_REQUEST
     })
-    axios.get(`${apiUrl}/posts/all`).then(res => {
+    axios.get(`${apiUrl}/posts/all`,{
+        headers: {
+            Authorization: token
+        }
+    }).then(res => {
         dispatch({
             type: GET_ALL_POSTS_SUCCESS,
             payload: res.data
@@ -71,12 +75,12 @@ export const get_all_posts_Action = () => (dispatch) => {
 }
 
 //like a post
-export const like_a_post_Action = (id, token) => {
+export const like_a_post_Action = (id, token) => (dispatch) => {
     dispatch({
         type: LIKE_A_POST_REQUEST,
         payload: id
     })
-    axios.patch(`${apiUrl}/posts/like${id}`, {}, {
+    axios.patch(`${apiUrl}/posts/like/${id}`, {}, {
         headers: {
             Authorization: token
         }

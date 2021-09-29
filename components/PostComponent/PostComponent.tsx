@@ -7,6 +7,8 @@ import UserAvatar from '../UserAvatar/UserAvatar';
 import Username from '../Username/Username';
 // import StackedAvatar from '../StackedAvatar/StackedAvatar';
 import moment from 'moment'
+import { useDispatch } from 'react-redux';
+import { like_a_post_Action } from '../../redux/actions/postActions';
 
 interface Props {
     id: string,
@@ -18,10 +20,20 @@ interface Props {
     comments: number,
     user_id?: string,
     post_picture?: string,
-    verified ?: boolean 
+    verified?: boolean,
+    logged_in_user?: any,
+    liked?: boolean
 }
 
-const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments, post_picture, user_id, verified }: Props) => {
+
+
+const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments, post_picture, user_id, verified, logged_in_user, liked }: Props) => {
+    const dispatch = useDispatch()
+    // console.log(logged_in_user)
+
+    const like_post = () => {
+        dispatch(like_a_post_Action(id, logged_in_user.token))
+    }
 
     const navigation = useNavigation()
 
@@ -53,7 +65,7 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
                             <Image source={{ uri: post_picture }} style={[tw`rounded-lg flex-1`, { height: undefined, width: '100%', aspectRatio: 1 }]} resizeMode="cover" />
                         )}
                     </View>
-                ):(
+                ) : (
                     <Text>{post_picture}</Text>
                 )
             }
@@ -62,8 +74,14 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
             </View> */}
             <View style={tw`border-b border-gray-300 w-full my-4`} />
             <View style={tw`flex flex-row items-center p-2 mr-2`}>
-                <TouchableOpacity style={tw`flex flex-row items-center mr-4`}>
-                    <Ionicons name="heart-outline" size={24} style={tw`text-gray-700 font-bold`} />
+                <TouchableOpacity activeOpacity={0.8} onPress={like_post} style={tw`flex flex-row items-center mr-4`}>
+                    {
+                        liked ? (
+                            <Ionicons name="heart" size={24} style={tw`text-pink-500 font-bold`} />
+                        ) : (
+                            <Ionicons name="heart-outline" size={24} style={tw`text-gray-700 font-bold`} />
+                        )
+                    }
                     <Text style={tw`mx-1`}>{likes}</Text>
                     {/* <Text style={tw``}>likes</Text> */}
                 </TouchableOpacity>
