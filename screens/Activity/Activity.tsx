@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native'
 import HomeLayout from '../../layouts/HomeLayout'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
@@ -48,23 +48,16 @@ function Activity() {
     if(loading){
         return(
             <HomeLayout>
-                <Text>loading...</Text>
+                <View style={tw`my-40`}>
+                    <ActivityIndicator size="large" color="#1E3A8A" />
+                </View>
             </HomeLayout>
         )
     }
 
     return (
         <HomeLayout>
-            {/* <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Moments</Text> */}
-            {/* <View style={tw`bg-white p-2 w-full rounded-xl mt-2 flex-row`}>
-                <UserAvatar />
-                <View style={tw`flex flex-row bg-gray-50 flex-1 p-2 items-center`}>
-                    <TextInput multiline={true} style={tw` rounded-lg flex-1 px-2 text-lg`} placeholder="What's on your mind" />
-                    <TouchableOpacity style={tw`text-gray-700`}>
-                        <Entypo name="attachment" size={20} color="#374151" />
-                    </TouchableOpacity>
-                </View>
-            </View> */}
+           
             <View style={tw`flex flex-row items-center mt-4 mx-4`}>
                 <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Latest</Text>
                 <View style={tw`flex-1`} />

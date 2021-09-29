@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View, ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
 import CommentComponent from '../../components/CommentComponent/CommentComponent'
@@ -42,7 +42,9 @@ const SinglePost = ({ route }: Props) => {
     if (loading) {
         return (
             <ExploreLayout header_title={"Loading..."} header__back__activity={() => navigation.goBack()}>
-                <Text>loading ...</Text>
+                <View style={tw`my-40`}>
+                    <ActivityIndicator size="large" color="#1E3A8A" />
+                </View>
             </ExploreLayout>
         )
     }
