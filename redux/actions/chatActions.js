@@ -22,6 +22,30 @@ const generateChannelID = (otherID, myid) => {
     }
 }
 
+export const get_all_messages_Action = (id1, id2, token) => (dispatch) => {
+    dispatch({
+        type: GET_ALL_MESSAGES_REQUEST,
+        payload: { id1, id2, token }
+    })
+    axios.get(`${apiUrl}/chat/messages/${id1}/${id2}`, {
+        headers: {
+            Authorization: token
+        }
+    }).then(res => {
+        dispatch({
+            type: GET_ALL_MESSAGES_SUCCESS,
+            payload: res.data
+        })
+    }).catch(error => {
+        dispatch({
+            type: GET_ALL_CHAT_USERS_FAIL,
+            payload: error.response && error.response.data.error
+                ? error.response.data.error
+                : error.message,
+        })
+    })
+}
+
 export const send_message_Action = (sent_to, sent_by, body) => (dispatch) => {
     const chat_obj = {
         chat_id: generateChannelID(sent_by, sent_to),
@@ -95,14 +119,16 @@ export const get_all_user_chats_Action = (token) => (dispatch) => {
         payload: token
     })
 
-    axios.get(`${apiUrl}/chat/rooms/all`,{headers :{
-        Authorization: token
-    }}).then((res)=>{
+    axios.get(`${apiUrl}/chat/rooms/all`, {
+        headers: {
+            Authorization: token
+        }
+    }).then((res) => {
         dispatch({
             type: GET_ALL_CHAT_USERS_SUCCESS,
             payload: res.data
         })
-    }).catch(error=>{
+    }).catch(error => {
         dispatch({
             type: GET_ALL_CHAT_USERS_FAIL,
             payload: error.response && error.response.data.error

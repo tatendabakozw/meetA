@@ -5,11 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { send_message_Action } from '../../redux/actions/chatActions';
 import { auth } from '../../firebase';
 
-interface Props {
-    id: any
-}
 
-const ConversatonInput = ({ id }: Props) => {
+const ConversatonInput = () => {
     const [new_message, setNewMessage] = useState('')
 
     // @ts-ignore
@@ -19,7 +16,7 @@ const ConversatonInput = ({ id }: Props) => {
     const dispatch = useDispatch()
 
     const send_message = () => {
-        dispatch(send_message_Action(id, auth.currentUser?.uid, new_message))
+        // dispatch(send_message_Action(id, auth.currentUser?.uid, new_message))
         setNewMessage('')
     }
 
