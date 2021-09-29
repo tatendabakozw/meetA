@@ -1,4 +1,4 @@
-import { CREATE_POST_FAIL, CREATE_POST_REQUEST, CREATE_POST_SUCCESS, GET_ALL_POSTS_FAIL, GET_ALL_POSTS_REQUEST, GET_ALL_POSTS_SUCCESS } from "../constants/postConstants"
+import { CREATE_POST_FAIL, CREATE_POST_REQUEST, CREATE_POST_SUCCESS, GET_ALL_POSTS_FAIL, GET_ALL_POSTS_REQUEST, GET_ALL_POSTS_SUCCESS, GET_A_SINGLE_POST_FAIL, GET_A_SINGLE_POST_REQUEST, GET_A_SINGLE_POST_SUCCESS } from "../constants/postConstants"
 
 //create a post
 export const create_a_post_Reducer = (state = { post_loading: false }, action) => {
@@ -37,6 +37,20 @@ export const like_a_post_Reducer = (state = { like_loading: false }, action) => 
             return { like_loading: false, like: action.payload }
         case GET_ALL_POSTS_FAIL:
             return { like_loading: false, like_error: action.payload }
+        default:
+            return state
+    }
+}
+
+//get single post
+export const get_a_single_post_Reducer = (state = { loading: false }, action) => {
+    switch (action.type) {
+        case GET_A_SINGLE_POST_REQUEST:
+            return { loading: true }
+        case GET_A_SINGLE_POST_SUCCESS:
+            return { loading: false, post: action.payload }
+        case GET_A_SINGLE_POST_FAIL:
+            return { loading: false, error: action.payload }
         default:
             return state
     }

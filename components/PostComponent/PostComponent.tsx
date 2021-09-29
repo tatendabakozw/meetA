@@ -55,20 +55,23 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
                 <View style={tw`flex-1`} />
                 <MaterialCommunityIcons name="dots-horizontal" size={20} color="#6B7280" />
             </View>
-            <Text style={[tw`text-gray-700 mb-2`, { fontWeight: '600', fontSize: 15 }]}>
-                {post_body}
-            </Text>
-            {
-                post_picture ? (
-                    <View style={tw`w-full rounded-lg overflow-hidden flex-1`}>
-                        {post_picture && (
-                            <Image source={{ uri: post_picture }} style={[tw`rounded-lg flex-1`, { height: undefined, width: '100%', aspectRatio: 1 }]} resizeMode="cover" />
-                        )}
-                    </View>
-                ) : (
-                    <Text>{post_picture}</Text>
-                )
-            }
+            <TouchableOpacity activeOpacity={0.9} onPress={()=> navigation.navigate('singlepost',{id: id})}>
+
+                <Text style={[tw`text-gray-700 mb-2`, { fontWeight: '600', fontSize: 15 }]}>
+                    {post_body}
+                </Text>
+                {
+                    post_picture ? (
+                        <View style={tw`w-full rounded-lg overflow-hidden flex-1`}>
+                            {post_picture && (
+                                <Image source={{ uri: post_picture }} style={[tw`rounded-lg flex-1`, { height: undefined, width: '100%', aspectRatio: 1 }]} resizeMode="cover" />
+                            )}
+                        </View>
+                    ) : (
+                        <Text>{post_picture}</Text>
+                    )
+                }
+            </TouchableOpacity>
             {/* <View style={tw`my-2`}>
                 <StackedAvatar maxAvatars={2} round={true} size={50} avatars={avatars}  /> 
             </View> */}

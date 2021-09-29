@@ -16,7 +16,7 @@ import {
 } from "./reducers/userReducer";
 import { get_all_messages_Reducer, send_message_Reducer } from "./reducers/chatReducer";
 import { getData } from "../helpers/async-storage";
-import { create_a_post_Reducer, get_all_posts_Reducer, like_a_post_Reducer } from "./reducers/postReducer";
+import { create_a_post_Reducer, get_all_posts_Reducer, get_a_single_post_Reducer, like_a_post_Reducer } from "./reducers/postReducer";
 import { toggle_follow_Reducer } from "./reducers/followReducer";
 
 const initialState = {
@@ -38,6 +38,7 @@ const reducer = combineReducers({
     all_posts: get_all_posts_Reducer,
     create_post : create_a_post_Reducer,
     like_post: like_a_post_Reducer,
+    get_single_post: get_a_single_post_Reducer,
     
     //for user actions
     get_single_user:get_single_user_Reducer,
