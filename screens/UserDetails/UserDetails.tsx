@@ -59,7 +59,7 @@ const UserDetails = ({ route }: Props) => {
         <ExploreLayout header_title={'Tatenda Bako'} header__back__activity={() => navigation.goBack()}>
             <View style={tw`flex flex-col items-center w-full pt-16`}>
                 <Image
-                    source={user?.photoURL ? { uri: user?.photoURL } : require('../../assets/imgs/man.png')}
+                    source={user?.photoURL ? { uri: user?.photoURL } : require('../../assets/imgs/placeholder1.png')}
                     style={[tw`self-center`, { height: 100, width: 100, borderRadius: 50 }]}
                     resizeMode="cover"
                 />
