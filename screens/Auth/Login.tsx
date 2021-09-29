@@ -19,6 +19,7 @@ const Login = () => {
     const dispatch = useDispatch()
 
     const login = () => {
+        // console.log('button cliked')
         dispatch(login_user_Action(email.trim(), password))
     }
 

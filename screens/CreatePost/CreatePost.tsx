@@ -84,7 +84,7 @@ const CreatePost = () => {
     return (
         <ExploreLayout header_title={'Create Post'} header__back__activity={() => navigation.goBack()}>
             <View style={tw`flex flex-col bg-gray-50`}>
-                <TextInput onChangeText={text => setBody(text)} placeholder="Anything intersting?" placeholderTextColor="gray" style={[tw`p-4 text-gray-500`, { fontSize: 20, lineHeight: 35 }]} multiline={true} />
+                <TextInput onChangeText={text => setBody(text)} placeholder="Anything interesting?" placeholderTextColor="gray" style={[tw`p-4 text-gray-500 bg-white rounded-lg mt-4`, { fontSize: 20, lineHeight: 35 }]} multiline={true} />
                 <View style={tw`flex flex-row items-center text-blue-900 self-end p-4`}>
                     <TouchableOpacity onPress={add_Picture} style={tw`px-4 py-2`}>
                         <Ionicons name="ios-image-outline" size={24} color="#1E3A8A" />

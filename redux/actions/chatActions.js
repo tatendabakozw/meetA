@@ -1,6 +1,8 @@
 import { db } from "../../firebase"
 import {
+    GET_ALL_CHAT_USERS_FAIL,
     GET_ALL_CHAT_USERS_REQUEST,
+    GET_ALL_CHAT_USERS_SUCCESS,
     GET_ALL_MESSAGES_FAIL,
     GET_ALL_MESSAGES_REQUEST,
     GET_ALL_MESSAGES_SUCCESS,
@@ -9,6 +11,8 @@ import {
     SEND_MESSAGE_SUCCESS
 } from "../constants/chatConstants"
 import firebase from "firebase"
+import axios from "axios"
+import { apiUrl } from "../../helpers/apiUrl"
 
 const generateChannelID = (otherID, myid) => {
     if (myid > otherID) {
@@ -85,77 +89,25 @@ export const send_message_Action = (sent_to, sent_by, body) => (dispatch) => {
 }
 
 //get all messages from firestore
-export const get_all_messages_Action = (id) => (dispatch) => {
+export const get_all_user_chats_Action = (token) => (dispatch) => {
     dispatch({
-        type: GET_ALL_MESSAGES_REQUEST,
-        payload: id
+        type: GET_ALL_CHAT_USERS_REQUEST,
+        payload: token
     })
 
-    db.collection('users').doc(id).onSnapshot(user => {
-        const init_chats = []
-        let user_chat_rooms = []
-        console.log(user.data().UserChatRooms)
-        user_chat_rooms = user.data().UserChatRooms
-
-        for (let i = 0; i < user_chat_rooms.length; i++) {
-            db.collection('ChatRooms').doc(user_chat_rooms[i]).get().then(res => {
-                db.collection('users').doc(res.data().sender).get().then(sender_user => {
-                    init_chats.push({
-                        chat_id: res.id,
-                        info: res.data(),
-                        sender: sender_user.data()
-                    })
-                })
-
-            })
-        }
+    axios.get(`${apiUrl}/chat/rooms/all`,{headers :{
+        Authorization: token
+    }}).then((res)=>{
         dispatch({
-            type: GET_ALL_MESSAGES_SUCCESS,
-            payload: { init_chats }
+            type: GET_ALL_CHAT_USERS_SUCCESS,
+            payload: res.data
         })
-        // console.log(chats)
-    }, (error) => {
+    }).catch(error=>{
         dispatch({
-            type: GET_ALL_MESSAGES_FAIL,
-            payload: error.message
+            type: GET_ALL_CHAT_USERS_FAIL,
+            payload: error.response && error.response.data.error
+                ? error.response.data.error
+                : error.message,
         })
     })
-
-    // db.collection('chats').where('sent_to', 'in', [sent_by, sent_to]).onSnapshot(res => {
-    //     const arr = []
-    //     res.docs.forEach(doc => {
-    //         // console.log(doc.data().sent_by)
-    //         db.collection('users').doc(doc.data().sent_by).get().then(response => {
-    //             arr.push({
-    //                 message: doc.data().message,
-    //                 seen: doc.data().seen,
-    //                 sent_to: doc.data().sent_to,
-    //                 id: doc.id,
-    //                 name: response.data().displayName,
-    //                 propic: response.data().photoURL,
-    //                 time: doc.data().time,
-    //                 sent_by: doc.data().sent_by
-    //             })
-
-    //         }).finally(() => {
-    //             dispatch({
-    //                 type: GET_ALL_MESSAGES_SUCCESS,
-    //                 payload: arr
-    //             })
-    //         }).catch(error => {
-    //             console.log(error.message)
-    //             dispatch({
-    //                 type: GET_ALL_MESSAGES_FAIL,
-    //                 payload: error.message
-    //             })
-    //         })
-    //     })
-
-    // }, (error) => {
-    //     console.log(error.message)
-    //     dispatch({
-    //         type: GET_ALL_MESSAGES_FAIL,
-    //         payload: error.message
-    //     })
-    // })
 }

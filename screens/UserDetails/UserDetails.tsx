@@ -36,8 +36,6 @@ const UserDetails = ({ route }: Props) => {
 
     }, [dispatch, id])
 
-    console.log(user)
-
     const toggle_follow_user = () => {
         getData().then(res => {
             dispatch(toggle_follow_Action(user, res.token))
@@ -98,7 +96,7 @@ const UserDetails = ({ route }: Props) => {
                         </View>
                     )
                 }
-                <TouchableOpacity onPress={() => navigation.navigate('conversation')} style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
+                <TouchableOpacity onPress={() => navigation.navigate('conversation',{id: user?._id})} style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
                     <Ionicons name="md-mail-outline" size={24} color="#374151" />
                 </TouchableOpacity>
                 <TouchableOpacity style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
@@ -120,7 +118,7 @@ const UserDetails = ({ route }: Props) => {
             </View>
             <ScrollView style={tw`mt-8 bg-gray-50 rounded-xl`}>
                 {
-                    user?.pictures.length > 1 ? (
+                    user?.pictures.length < 1 ? (
                         <Text style={tw`text-center text-gray-700 text-lg`}>No photos posted</Text>
                     ) : (
                         <MasonryList

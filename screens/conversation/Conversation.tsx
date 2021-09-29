@@ -10,6 +10,7 @@ interface Props {
 
 const Conversation = ({ navigation, route }: Props) => {
     const {id} = route.params
+    console.log(id)
     return (
         <ConversationsLayout back_location={() => navigation.goBack()} id={id}>
             <View style={{ paddingHorizontal: 20, flexDirection: 'column' }}>
