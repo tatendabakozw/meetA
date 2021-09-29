@@ -86,7 +86,7 @@ const UserDetails = ({ route }: Props) => {
                 {
                     user?.iam_following_user ? (
                         <View style={tw`w-3/5`}>
-                            <CustomButton button_text={'Un-Follow'} button_action={toggle_follow_user} />
+                            <CustomButton button_text={'Un-Follow'} outline button_action={toggle_follow_user} />
                         </View>
                     ) : user?.user_follows_me ? (
                         <View style={tw`w-3/5`}>
@@ -98,7 +98,7 @@ const UserDetails = ({ route }: Props) => {
                         </View>
                     )
                 }
-                <TouchableOpacity style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
+                <TouchableOpacity onPress={() => navigation.navigate('conversation')} style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
                     <Ionicons name="md-mail-outline" size={24} color="#374151" />
                 </TouchableOpacity>
                 <TouchableOpacity style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
@@ -119,15 +119,21 @@ const UserDetails = ({ route }: Props) => {
                 </View>
             </View>
             <ScrollView style={tw`mt-8 bg-gray-50 rounded-xl`}>
-                <MasonryList
-                    imageContainerStyle={{ borderRadius: 12, backgroundColor: 'white' }}
-                    listContainerStyle={{ backgroundColor: '#F9FAFB', borderWidth: 0, borderColor: 'red' }}
-                    columns={3}
-                    spacing={2}
-                    backgroundColor="#F9FAFB"
-                    onPressImage={() => { navigation.navigate('singlepost') }}
-                    images={user?.pictures}
-                />
+                {
+                    user?.pictures.length > 1 ? (
+                        <Text style={tw`text-center text-gray-700 text-lg`}>No photos posted</Text>
+                    ) : (
+                        <MasonryList
+                            imageContainerStyle={{ borderRadius: 12, backgroundColor: 'white' }}
+                            listContainerStyle={{ backgroundColor: '#F9FAFB', borderWidth: 0, borderColor: 'red' }}
+                            columns={3}
+                            spacing={2}
+                            backgroundColor="#F9FAFB"
+                            onPressImage={() => { navigation.navigate('singlepost') }}
+                            images={user?.pictures}
+                        />
+                    )
+                }
             </ScrollView>
         </ExploreLayout>
     )

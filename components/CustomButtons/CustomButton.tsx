@@ -15,7 +15,7 @@ export default function CustomButton({ button_text, outline, button_action, load
             disabled={loading}
             activeOpacity={0.8}
             onPress={button_action}
-            style={[tw`${outline ? `border border-blue-900` : `bg-blue-900`} p-4 w-full my-2`, styles.button]}
+            style={[tw`${outline ? `border-2 border-blue-900 ` : `bg-blue-900`} p-4 w-full my-2`, styles.button]}
         >
             <Text style={[tw`${outline ? `text-blue-900` : `text-white`} text-center font-semibold uppercase font-bold`, styles.text]}>
                 {loading ? (<ActivityIndicator size="small" {...outline ? { color: "#0000ff" } : { color: "#fff" }} />) : button_text}

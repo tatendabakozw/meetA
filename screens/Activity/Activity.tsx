@@ -1,15 +1,21 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import HomeLayout from '../../layouts/HomeLayout'
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import tw from 'tailwind-react-native-classnames';
 import PostComponent from '../../components/PostComponent/PostComponent';
 import { useNavigation } from '@react-navigation/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { get_all_posts_Action } from '../../redux/actions/postActions';
 
 function Activity() {
     const navigation = useNavigation()
-
-    const posts = [
+    // @ts-ignore
+    const _posts = useSelector(state => state.all_posts)
+    const {loading, posts} = _posts
+    const dispatch = useDispatch()
+ 
+    const posts_ = [
         {
             id: '1',
             name: 'Tatenda Bako',
@@ -22,12 +28,25 @@ function Activity() {
         }
     ]
 
-    const filter_posts = () => {
+    const filter_posts_ = () => {
 
+    }
+    useEffect(()=>{
+        dispatch(get_all_posts_Action())
+    },[dispatch])
+
+    console.log(posts)
+
+    if(loading){
+        return(
+            <HomeLayout>
+                <Text>loading...</Text>
+            </HomeLayout>
+        )
     }
 
     return (
-        <HomeLayout header_title={'Activity'}>
+        <HomeLayout>
             {/* <Text style={tw`text-gray-700 text-lg mt-2 font-semibold`}>Moments</Text> */}
             {/* <View style={tw`bg-white p-2 w-full rounded-xl mt-2 flex-row`}>
                 <UserAvatar />
@@ -44,22 +63,24 @@ function Activity() {
                 <TouchableOpacity onPress={() => navigation.navigate('createpost')} style={tw`bg-blue-100 p-2 rounded-full`}>
                     <AntDesign name="plus" size={16} color="#1E3A8A" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={filter_posts} style={tw`p-2`}>
+                <TouchableOpacity onPress={filter_posts_} style={tw`p-2`}>
                     <MaterialCommunityIcons name="tune" size={24} color="#374151" />
                 </TouchableOpacity>
             </View>
             <View style={tw`my-4`}>
                 {
                     posts?.map((post: any) => (
-                        <View key={post.id}>
+                        <View key={post._id}>
                             <PostComponent
-                                name={post.name}
+                                name={post.post_owner_username}
                                 post_body={post.post_body}
-                                likes={post.likes}
-                                comments={post.comments}
-                                id={post.id}
-                                time_posted={post.time_posted}
-                                post_user_image={post.post_user_image}
+                                likes={post.post_liked_length}
+                                comments={post.post_comments_length}
+                                id={post._id}
+                                time_posted={post.createdAt}
+                                post_user_image={post.post_owner_pic}
+                                post_picture = {post.pictureUrl}
+                                verified={post.post_owner_verified}
                             />
                         </View>
                     ))

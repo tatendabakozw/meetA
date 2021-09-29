@@ -13,7 +13,7 @@ const HomeLayout = ({ children }: Props) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [user, setUser] = useState<null>()
 
-    console.log(loading)
+    // console.log(loading)
 
     useEffect(() => {
         setLoading(true)

@@ -3,7 +3,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import tw from 'tailwind-react-native-classnames'
 import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
+import UserAvatar from '../UserAvatar/UserAvatar';
+import Username from '../Username/Username';
 // import StackedAvatar from '../StackedAvatar/StackedAvatar';
+import moment from 'moment'
 
 interface Props {
     id: string,
@@ -13,31 +16,29 @@ interface Props {
     post_body: any,
     likes: number,
     comments: number,
-    user_id?: string
+    user_id?: string,
+    post_picture?: string,
+    verified ?: boolean 
 }
 
-const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments, user_id }: Props) => {
+const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments, post_picture, user_id, verified }: Props) => {
 
     const navigation = useNavigation()
 
     return (
         <View style={tw`flex flex-col p-4 bg-gray-100 rounded-xl mb-8 w-full flex-1`}>
             <View style={tw`flex flex-row items-center mb-4 flex-1`}>
-                <TouchableOpacity onPress={() => navigation.navigate('details',{id: user_id})}>
-                    <View style={[tw`border-2 overflow-hidden border-gray-400 mr-2`, { borderRadius: 50 }]}>
-                        <View style={[tw`border overflow-hidden h-12 w-12 border-white`, { borderRadius: 50 }]}>
-                            <Image source={require('../../assets/imgs/bako.jpg')} style={[tw`h-12 w-12`, { borderRadius: 50 }]} resizeMode="cover" />
-                        </View>
-                    </View>
+                <TouchableOpacity onPress={() => navigation.navigate('details', { id: user_id })}>
+
+                    <UserAvatar picture={post_user_image} size="lg" />
 
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('details',{id: user_id})} style={tw`flex flex-col`}>
+                <TouchableOpacity onPress={() => navigation.navigate('details', { id: user_id })} style={tw`flex flex-col`}>
                     <View style={tw`flex flex-row items-center`}>
-                        <Text style={[tw`text-gray-900 mr-2`, {fontSize: 15, fontWeight: '700'}]}>{name}</Text>
-                        <MaterialIcons name="verified" size={16} color="#1E3A8A" />
+                        <Username name={name} fontSize={17} fontWeight='700' verified={verified} />
                     </View>
 
-                    <Text style={[tw`text-gray-500`, {fontSize: 12}]}>{time_posted} ago</Text>
+                    <Text style={[tw`text-gray-500`, { fontSize: 12 }]}>{moment(time_posted).fromNow()}</Text>
                 </TouchableOpacity>
                 <View style={tw`flex-1`} />
                 <MaterialCommunityIcons name="dots-horizontal" size={20} color="#6B7280" />
@@ -45,9 +46,17 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
             <Text style={[tw`text-gray-700 mb-2`, { fontWeight: '600', fontSize: 15 }]}>
                 {post_body}
             </Text>
-            <View style={tw`w-full rounded-lg overflow-hidden flex-1`}>
-                <Image source={require('../../assets/imgs/bako.jpg')} style={[tw`rounded-lg flex-1`, {height:undefined, width: '100%', aspectRatio: 1}]} resizeMode="cover" />
-            </View>
+            {
+                post_picture ? (
+                    <View style={tw`w-full rounded-lg overflow-hidden flex-1`}>
+                        {post_picture && (
+                            <Image source={{ uri: post_picture }} style={[tw`rounded-lg flex-1`, { height: undefined, width: '100%', aspectRatio: 1 }]} resizeMode="cover" />
+                        )}
+                    </View>
+                ):(
+                    <Text>{post_picture}</Text>
+                )
+            }
             {/* <View style={tw`my-2`}>
                 <StackedAvatar maxAvatars={2} round={true} size={50} avatars={avatars}  /> 
             </View> */}

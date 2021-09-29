@@ -5,14 +5,15 @@ import tw from 'tailwind-react-native-classnames';
 
 interface Props {
     verified ?: boolean,
-    fontSize ?: string,
-    fontWeight ?: string
+    fontSize ?: number,
+    fontWeight ?: string,
+    name ?: string
 }
 
-const Username = ({verified, fontSize, fontWeight}:Props) => {
+const Username = ({verified, fontSize, fontWeight, name}:Props) => {
     return (
         <View style={tw`flex flex-row items-center`}>
-            <Text style={[tw`text-gray-900 mr-2`, { fontSize: fontSize ? fontSize : 15, fontWeight: fontWeight ? fontWeight : '500' }]}>Tatenda Bako</Text>
+            <Text style={[tw`text-gray-900 mr-2`, { fontSize: fontSize ? fontSize : 15, fontWeight: fontWeight ? fontWeight : '500' }]}>{name}</Text>
             {verified && <MaterialIcons name="verified" size={20} color="#1E3A8A" />}
         </View>
     )
