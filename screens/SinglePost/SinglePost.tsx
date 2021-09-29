@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
 import CommentComponent from '../../components/CommentComponent/CommentComponent'
@@ -8,6 +8,8 @@ import PostComponent from '../../components/PostComponent/PostComponent'
 import { getData } from '../../helpers/async-storage'
 import ExploreLayout from '../../layouts/ExploreLayout'
 import { get_a_single_post_Action } from '../../redux/actions/postActions'
+import { Ionicons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 interface Props {
     route?: any
@@ -52,18 +54,24 @@ const SinglePost = ({ route }: Props) => {
                         verified={post?.post_owner.verified}
                         liked={post?.post_owner.liked_post}
                         post_picture={post?.post.pictureUrl}
-                        user_id={post.post_owner._id}
+                        user_id={post?.post_owner._id}
                     />
                 </View>
 
             </View>
             <View style={tw`bg-gray-100 rounded-lg p-2 w-full`}>
-                <Text style={tw`text-lg text-gray-700 font-semibold pb-4`}>
+                <View style={tw`flex flex-row items-center`}>
+                    <TextInput placeholder="Write a comment" style={tw`rounded-lg bg-white p-2 flex-1 text-lg`} multiline={true} />
+                    <TouchableOpacity activeOpacity={0.7} style={tw`p-2`}>
+                        <Ionicons name="send" size={24} style={tw`text-gray-700`} />
+                    </TouchableOpacity>
+                </View>
+                <Text style={tw`text-lg text-gray-700 font-semibold py-4`}>
                     Comments
                 </Text>
                 <View>
                     {
-                        post?.post.comments < 1 ? (
+                        post?.post.comments > 1 ? (
                             <Text style={tw`text-gray-700 text-lg text-center`}>This post has no comments yet</Text>
                         ):(
                             <CommentComponent />
