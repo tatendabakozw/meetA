@@ -25,11 +25,15 @@ const UserDetails = ({ route }: Props) => {
     const { loading, user } = _user
     const navigation = useNavigation()
     const [view_options, setViewOptions] = useState<string>('photos')
+    const [current_user_id, setCurrentUserId] = useState()
+
+    console.log(id)
 
 
     useEffect(() => {
         getData().then(res => {
             dispatch(get_single_user_Action(id, res.token))
+            setCurrentUserId(res._id)
         }).catch(err => {
             console.log(err)
         })
@@ -43,6 +47,10 @@ const UserDetails = ({ route }: Props) => {
             console.log(err)
         })
 
+    }
+
+    const enter_chat = () => {
+        navigation.navigate('conversation', { id1: id, id2: current_user_id })
     }
 
     if (loading) {
@@ -96,7 +104,7 @@ const UserDetails = ({ route }: Props) => {
                         </View>
                     )
                 }
-                <TouchableOpacity onPress={() => navigation.navigate('conversation',{id: user?._id})} style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
+                <TouchableOpacity onPress={enter_chat} style={tw`bg-gray-200 rounded-full p-3 ml-2`}>
                     <Ionicons name="md-mail-outline" size={24} color="#374151" />
                 </TouchableOpacity>
                 <TouchableOpacity style={tw`bg-gray-200 rounded-full p-3 ml-2`}>

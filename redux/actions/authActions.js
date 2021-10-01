@@ -28,7 +28,6 @@ export const register_user_Action = (email, password, username) => (dispatch) =>
             payload: res
         })
     }).catch(error => {
-        console.log(error.response.data.error)
         dispatch({
             type: REGISTER_USER_FAIL,
             payload: error.response && error.response.data.error

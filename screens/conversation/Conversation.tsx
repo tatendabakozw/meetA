@@ -44,10 +44,10 @@ const Conversation = ({ back_location, route }: Props) => {
                 headers: {
                     Authorization: res.token
                 }
-            }).then(res=>{
+            }).then(res => {
                 setAllMessages(res.data.messages)
                 setPageLoading(false)
-                
+
             })
         }).catch(error => {
             console.log(error)
@@ -61,21 +61,24 @@ const Conversation = ({ back_location, route }: Props) => {
             setAllMessages((old_messages: any) => [...old_messages, data])
             // console.log(data)
         })
-
     }, [socket])
 
     const send_message = () => {
-        if (user_id === id1) {
-            // then id2 is receiveing so shiuld be passed as parameter
-            dispatch(send_message_Action(id2, token, new_message))
-            socket.emit('message', new_message)
-            setNewMessage('')
-        }
-        else {
-            // then id1 is receiveing so shiuld be passed as parameter
-            dispatch(send_message_Action(id1, token, new_message))
-            setNewMessage('')
-            socket.emit('message', new_message)
+        if (!new_message) {
+            console.log('cant send empty message')
+        } else {
+            if (user_id === id1) {
+                // then id2 is receiveing so shiuld be passed as parameter
+                dispatch(send_message_Action(id2, token, new_message.trim()))
+                // socket.emit('message', new_message)
+                setNewMessage('')
+            }
+            else {
+                // then id1 is receiveing so shiuld be passed as parameter
+                dispatch(send_message_Action(id1, token, new_message.trim()))
+                setNewMessage('')
+                // socket.emit('message', new_message)
+            }
         }
     }
 
@@ -85,9 +88,10 @@ const Conversation = ({ back_location, route }: Props) => {
                 <View>
                     <ConverHeader back_location={back_location} />
                 </View>
-                <View>
+                <View style={tw`flex-1 self-center items-center content-center pt-40`}>
                     <Text>Loading ...</Text>
                 </View>
+
             </SafeAreaView>
         )
     }
@@ -98,9 +102,7 @@ const Conversation = ({ back_location, route }: Props) => {
                 <ConverHeader back_location={() => navigation.goBack()} />
             </View>
             <KeyboardAvoidingView style={tw`flex-1`}>
-
-                <ScrollView style={tw`flex-1 bg-gray-50 px-2`}>
-
+                <ScrollView style={tw`flex-1 bg-gray-50 px-2 pt-4 `}>
                     {
                         all_messages?.map((message: any, index: any) => (
                             <Fragment key={index}>
@@ -114,7 +116,6 @@ const Conversation = ({ back_location, route }: Props) => {
                             </Fragment>
                         ))
                     }
-
                 </ScrollView>
                 <View style={tw`pt-2 bottom-2 w-full`}>
                     <View style={styles.converinput}>
@@ -136,7 +137,6 @@ const Conversation = ({ back_location, route }: Props) => {
                                 <Ionicons name="ios-send" size={20} color="#374151" />
                             </TouchableOpacity>)
                         }
-
                     </View>
                 </View>
             </KeyboardAvoidingView>
