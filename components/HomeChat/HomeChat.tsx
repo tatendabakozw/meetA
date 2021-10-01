@@ -25,6 +25,9 @@ const HomeChat = ({ propic, name, message, time, id, verified, room_id, chat_use
         navigation.navigate('conversation', { id1: chat_users[1], id2: chat_users[0] })
     }
 
+
+    console.log(chat_users)
+
     return (
         <View style={styles.homechat}>
             <View>

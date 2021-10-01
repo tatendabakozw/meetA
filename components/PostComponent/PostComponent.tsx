@@ -34,6 +34,8 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
         dispatch(like_a_post_Action(id, logged_in_user.token))
     }
 
+    console.log(post_picture)
+
     const navigation = useNavigation()
 
     return (

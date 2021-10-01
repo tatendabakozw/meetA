@@ -45,15 +45,15 @@ export const get_all_messages_Action = (id1, id2, token) => (dispatch) => {
     })
 }
 
-export const send_message_Action = (id, token, body, socket) => (dispatch) => {
+export const send_message_Action = (id, token, body) => (dispatch) => {
     dispatch({
         type: SEND_MESSAGE_REQUEST,
         payload: { body }
     })
 
-    socket.emit("Sending Message",{
-        body
-    })
+    // socket.emit("Sending Message",{
+    //     body
+    // })
 
     dispatch({
         type: SEND_MESSAGE_SUCCESS,

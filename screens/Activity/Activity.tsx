@@ -43,7 +43,7 @@ function Activity() {
         
     },[dispatch])
 
-    // console.log(user)
+    console.log(posts)
 
     if(loading){
         return(

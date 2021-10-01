@@ -27,8 +27,7 @@ const Profile = ({ navigation }: Props) => {
     const dispatch = useDispatch()
 
     const logout = () => {
-        dispatch(logout_user())
-        navigation.navigate('login')
+        dispatch(logout_user(user.token))
     }
 
     useEffect(() => {

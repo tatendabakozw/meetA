@@ -81,19 +81,31 @@ export const login_user_Action = (email, password) => (dispatch) => {
 }
 
 //logout user
-export const logout_user = () => (dispatch) => {
+export const logout_user = (token) => (dispatch) => {
     dispatch({
         type: LOGOUT_REQUEST
     })
-    removeData().then((res) => {
-        dispatch({
-            type: LOGOUT_SUCCESS,
-            payload: res
+    axios.post(`${apiUrl}/auth/logout`, {
+        Headers: { Authorization: token }
+    }).then(() => {
+        removeData().then((res) => {
+            dispatch({
+                type: LOGOUT_SUCCESS,
+                payload: res
+            })
+        }).catch(error => {
+            dispatch({
+                type: LOGOUT_FAIL,
+                payload: error.message
+            })
         })
     }).catch(error => {
         dispatch({
             type: LOGOUT_FAIL,
-            payload: error.message
+            payload: error.response && error.response.data.error
+                ? error.response.data.error
+                : error.message,
         })
     })
+
 }

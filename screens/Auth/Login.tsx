@@ -9,6 +9,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login_user_Action } from '../../redux/actions/authActions';
 import Error from '../../components/Alerts/Error';
 import SucCess from '../../components/Alerts/Success';
+import io from 'socket.io-client';
+import { socketUrl } from '../../helpers/apiUrl';
+import { storeData } from '../../helpers/async-storage';
+
+const sock = io(socketUrl, {
+    transports: ['websocket'],
+    forceNew: true,
+});
+
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -19,17 +28,8 @@ const Login = () => {
     const dispatch = useDispatch()
 
     const login = () => {
-        // console.log('button cliked')
         dispatch(login_user_Action(email.trim(), password))
     }
-
-    useEffect(()=>{
-        if(message === 'Login Successful'){
-            setTimeout(() => {
-                navigation.navigate('home')
-            }, 1500);
-        }
-    },[message])
 
     return (
         <SafeAreaView>
@@ -72,7 +72,7 @@ const Login = () => {
 }
 
 const styles = StyleSheet.create({
-    input:{
+    input: {
         borderRadius: 50
     }
 })
