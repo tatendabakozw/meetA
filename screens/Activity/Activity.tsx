@@ -17,19 +17,6 @@ function Activity() {
     const dispatch = useDispatch()
     const [user, setUser] = useState()
  
-    const posts_ = [
-        {
-            id: '1',
-            name: 'Tatenda Bako',
-            time_posted: '5 mins',
-            post_body: 'This is the first post on this app.  Enjoy your dating!  \n \nUse comments below as feedback. Leave your comments below on what you wish should be added, removed or altered to this platform.',
-            likes: 10,
-            comments: 25,
-            post_user_image: '../../assets/imgs/bako.jpg'
-
-        }
-    ]
-
     const filter_posts_ = () => {
 
     }
@@ -42,8 +29,6 @@ function Activity() {
         })
         
     },[dispatch])
-
-    console.log(posts)
 
     if(loading){
         return(

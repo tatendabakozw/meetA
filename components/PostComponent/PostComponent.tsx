@@ -5,7 +5,6 @@ import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core';
 import UserAvatar from '../UserAvatar/UserAvatar';
 import Username from '../Username/Username';
-// import StackedAvatar from '../StackedAvatar/StackedAvatar';
 import moment from 'moment'
 import { useDispatch } from 'react-redux';
 import { like_a_post_Action } from '../../redux/actions/postActions';
@@ -26,8 +25,6 @@ interface Props {
     liked?: boolean,
 }
 
-
-
 const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments, post_picture, user_id, verified, logged_in_user, liked }: Props) => {
     const dispatch = useDispatch()
     const [post_liked, setPostLiked] = useState(liked)
@@ -42,12 +39,8 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
             console.log(data)
             setNumberOfLikes(data.likes)
             setPostLiked(data.user_liked)
-            // setPostLiked()
         })
     }, [socket])
-
-    // console.log(likes)
-
 
     const navigation = useNavigation()
 
