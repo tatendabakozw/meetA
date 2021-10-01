@@ -63,6 +63,8 @@ const Home = ({ navigation }: Props) => {
                                 online_status={'online'}
                                 room_id={chat.room_id}
                                 chat_users={chat.chat_users}
+                                current_user_id={current_user?._id}
+                                sent_by_you={chat.sent_by_you}
                             />
                         </View>
                     ))

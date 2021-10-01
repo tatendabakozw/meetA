@@ -15,18 +15,19 @@ interface Props {
     id?: number,
     verified?: boolean,
     room_id?: string,
-    chat_users?: any
+    chat_users?: any,
+    current_user_id?: string,
+    sent_by_you?: string
 }
 
 
-const HomeChat = ({ propic, name, message, time, id, verified, room_id, chat_users }: Props) => {
+const HomeChat = ({ propic, name, message, time, id, verified, room_id, chat_users, current_user_id, sent_by_you }: Props) => {
     const navigation = useNavigation()
     const enter_chat = () => {
         navigation.navigate('conversation', { id1: chat_users[1], id2: chat_users[0] })
     }
 
-
-    console.log(chat_users)
+    console.log(sent_by_you)
 
     return (
         <View style={styles.homechat}>
@@ -41,7 +42,18 @@ const HomeChat = ({ propic, name, message, time, id, verified, room_id, chat_use
                 <View style={tw`flex-row items-center`}>
                     <Username name={name} verified={verified} fontWeight="700" fontSize={17} />
                 </View>
-                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.homechat__message}>{message}</Text>
+                {
+                    sent_by_you ? (
+                        <View style={tw`flex flex-row items-center`}>
+                            <Text style={tw`text-gray-500 font-bold`}>You: </Text>
+                            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.homechat__message}>{message}</Text>
+                        </View>
+
+                    ) : (
+
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.homechat__message}>{message}</Text>
+                    )
+                }
             </TouchableOpacity>
             <View style={{ flex: 1 }} />
             <Text style={{ color: '#6B7280' }}>{moment(time).fromNow()}</Text>
@@ -79,6 +91,6 @@ const styles = StyleSheet.create({
     homechat__message: {
         fontSize: 14,
         color: '#6B7280',
-        width: 320
+        width: 300
     }
 })

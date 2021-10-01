@@ -81,19 +81,19 @@ const App = () => {
 
   useEffect(() => {
     socket.on('login-success', (data) => {
-      getData().then((res) => {
-        if (data === 'sucessfully logged in') {
-          setUser(res)
-        }
-        setLoading(false)
-      }).catch(error => {
-        console.log(error)
-      })
+        setUser(data)
     })
     socket.on('logout-success', (data) => {
       if (data === 'sucessfully logged out') {
         setUser(null)
       }
+    })
+    getData().then((res) => {
+      setUser(res)
+      setLoading(false)
+    }).catch(error => {
+      console.log(error)
+      setLoading(false)
     })
   }, [])
 

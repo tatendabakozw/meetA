@@ -46,7 +46,7 @@ export const login_user_Action = (email, password) => (dispatch) => {
     axios.post(`${apiUrl}/auth/login`, { email, password }).then(response => {
         const user = {
             displayName: response.data.user.displayName,
-            id: response.data.user._id,
+            _id: response.data.user._id,
             email: response.data.user.email,
             verified: response.data.user.verified,
             photoURL: response.data.user.photoURL,
