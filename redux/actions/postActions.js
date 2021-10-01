@@ -15,7 +15,7 @@ export const create_a_post_Action = (body, picture, location, displayName, token
     const ref = storage.ref(`/images/posts/${displayName}/${random_string}`)
     ref.put(picture).then(snapshot => {
         snapshot.ref.getDownloadURL().then(url => {
-            console.log(' * new url', url)
+            // console.log(' * new url', url)
             axios.post(`${apiUrl}/posts/create`, {
                 body,
                 pictureUrl: url,

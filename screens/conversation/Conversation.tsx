@@ -1,97 +1,86 @@
-import React, { useState, useEffect } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import io from 'socket.io-client';
-import { apiUrl, socketUrl } from '../../helpers/apiUrl';
+import React, { useState, useEffect, Fragment } from 'react'
+import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import tw from 'tailwind-react-native-classnames';
 import { Ionicons } from '@expo/vector-icons';
 import ConverHeader from '../../components/ConverHeader/ConverHeader';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { get_all_messages_Action, send_message_Action } from '../../redux/actions/chatActions';
 import { getData } from '../../helpers/async-storage';
 import { useNavigation } from '@react-navigation/core';
-const sock = io(socketUrl, {
-    transports: ['websocket'],
-    forceNew: true,
-});
+import { socket } from '../../helpers/socket';
+import OutgoingMessage from '../../components/MessageComponents/OutgoingMessage';
+import { MessageComponent } from '../../components/MessageComponents/IncomingMessage';
+import axios from 'axios';
+import { apiUrl } from '../../helpers/apiUrl';
 
 interface Props {
     header_title?: string,
     back_location: () => void,
-    route ?: any
-    
+    route?: any
+
 }
 
-
 const Conversation = ({ back_location, route }: Props) => {
-    const [new_message, setNewMessage] = useState('')
-    const [mes, setMsg] = useState<any()
     const [page_loading, setPageLoading] = useState(false)
+    const [new_message, setNewMessage] = useState('')
     const [user_id, setUserId] = useState('')
     const [token, setToken] = useState('')
+    const [all_messages, setAllMessages] = useState<any>([])
     // @ts-ignore
     const _message = useSelector(state => state.send_message)
-    const { loading, error } = _message
+    const { loading } = _message
 
     const dispatch = useDispatch()
-    const {id1, id2}  = route.params
+    const { id1, id2 } = route.params
     const navigation = useNavigation()
 
     useEffect(() => {
-        //start loading page
-        setPageLoading(true)
-
         //get user data from async strage
+        setPageLoading(true)
         getData().then(res => {
             setUserId(res._id)
             setToken(res.token)
-            setPageLoading(false)
-
-            dispatch(get_all_messages_Action(id1, id2, token))
-
-            sock.on('output-message',data=>{
-                console.log(data)
-            })
-
-            //connect socket io
-            sock.on('connection', () => {
-                console.log(`I'm connected with the back-end`);
-                debugger;
-            })
-
-            //get the message that has been sent from server
-            sock.on('message', (msg) => {
-                setMsg([...msg, ...msg])
-                console.log('received')
-                console.log(msg)
+            axios.get(`${apiUrl}/chat/messages/${id1}/${id2}`, {
+                headers: {
+                    Authorization: res.token
+                }
+            }).then(res=>{
+                setAllMessages(res.data.messages)
+                setPageLoading(false)
+                
             })
         }).catch(error => {
             console.log(error)
             setPageLoading(false)
         })
+    }, [])
 
-    }, [setMsg])
+    // @ts-ignore
+    useEffect(() => {
+        socket.on('message', data => {
+            setAllMessages((old_messages: any) => [...old_messages, data])
+            // console.log(data)
+        })
 
-    console.log(token)
-
-    const send_something = () => {
-        axios.post(`${apiUrl}/chat/send_message`)
-        sock.emit('message', 'demo');
-    }
+    }, [socket])
 
     const send_message = () => {
         if (user_id === id1) {
             // then id2 is receiveing so shiuld be passed as parameter
             dispatch(send_message_Action(id2, token, new_message))
+            socket.emit('message', new_message)
+            setNewMessage('')
         }
         else {
             // then id1 is receiveing so shiuld be passed as parameter
             dispatch(send_message_Action(id1, token, new_message))
+            setNewMessage('')
+            socket.emit('message', new_message)
         }
     }
 
-    if(page_loading){
-        return(
+    if (page_loading) {
+        return (
             <SafeAreaView>
                 <View>
                     <ConverHeader back_location={back_location} />
@@ -106,48 +95,51 @@ const Conversation = ({ back_location, route }: Props) => {
     return (
         <SafeAreaView style={tw`bg-gray-50 flex-1`}>
             <View>
-                <ConverHeader back_location={()=> navigation.goBack()} />
+                <ConverHeader back_location={() => navigation.goBack()} />
             </View>
-            <ScrollView style={tw`flex-1 bg-gray-50`}>
-                <View style={tw`flex-end`}>
-                    <Text>{mes}</Text>
-                </View>
-                <View style={tw`flex-end`}>
-                    <Text>messages</Text>
-                </View>
-                <View>
-                    <Text>input</Text>
-                </View>
-                <View style={tw`flex-end`}>
-                    <Text>messages</Text>
-                </View>
-            </ScrollView>
-            <TouchableOpacity onPress={send_something}>
-                <Text>send something</Text>
-            </TouchableOpacity>
-            <View style={tw`pt-2 bottom-2 w-ful`}>
-                <View style={styles.converinput}>
-                    {/* <Text>{id}</Text> */}
-                    <TextInput
-                        multiline={true}
-                        placeholder="Type message..."
-                        style={styles.input}
-                        value={new_message}
-                        onChangeText={text => setNewMessage(text)}
-                    />
-                    <TouchableOpacity style={{ marginRight: 15 }}>
-                        <Ionicons name="ios-camera-outline" size={24} color="#374151" />
-                    </TouchableOpacity>
+            <KeyboardAvoidingView style={tw`flex-1`}>
+
+                <ScrollView style={tw`flex-1 bg-gray-50 px-2`}>
+
                     {
-                        loading ? (<TouchableOpacity style={{ marginRight: 10 }}>
-                            <Ionicons name="ios-send" size={20} color="#3B82F6" />
-                        </TouchableOpacity>) : (<TouchableOpacity onPress={send_message} style={{ marginRight: 10 }}>
-                            <Ionicons name="ios-send" size={20} color="#374151" />
-                        </TouchableOpacity>)
+                        all_messages?.map((message: any, index: any) => (
+                            <Fragment key={index}>
+                                {
+                                    message.sent_by === user_id ? (
+                                        <OutgoingMessage message={message.body} time={message.createdAt} />
+                                    ) : (
+                                        <MessageComponent message={message.body} time={message.createdAt} />
+                                    )
+                                }
+                            </Fragment>
+                        ))
                     }
 
+                </ScrollView>
+                <View style={tw`pt-2 bottom-2 w-full`}>
+                    <View style={styles.converinput}>
+                        {/* <Text>{id}</Text> */}
+                        <TextInput
+                            multiline={true}
+                            placeholder="Type message..."
+                            style={styles.input}
+                            value={new_message}
+                            onChangeText={text => setNewMessage(text)}
+                        />
+                        <TouchableOpacity style={{ marginRight: 15 }}>
+                            <Ionicons name="ios-camera-outline" size={24} color="#374151" />
+                        </TouchableOpacity>
+                        {
+                            loading ? (<TouchableOpacity disabled={true} style={{ marginRight: 10 }}>
+                                <Ionicons name="ios-send" size={20} color="#3B82F6" />
+                            </TouchableOpacity>) : (<TouchableOpacity onPress={send_message} style={{ marginRight: 10 }}>
+                                <Ionicons name="ios-send" size={20} color="#374151" />
+                            </TouchableOpacity>)
+                        }
+
+                    </View>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     )
 }

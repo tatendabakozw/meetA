@@ -27,8 +27,6 @@ const HomeChat = ({ propic, name, message, time, id, verified, room_id, chat_use
         navigation.navigate('conversation', { id1: chat_users[1], id2: chat_users[0] })
     }
 
-    console.log(sent_by_you)
-
     return (
         <View style={styles.homechat}>
             <View>
@@ -43,7 +41,7 @@ const HomeChat = ({ propic, name, message, time, id, verified, room_id, chat_use
                     <Username name={name} verified={verified} fontWeight="700" fontSize={17} />
                 </View>
                 {
-                    sent_by_you ? (
+                    !sent_by_you ? (
                         <View style={tw`flex flex-row items-center`}>
                             <Text style={tw`text-gray-500 font-bold`}>You: </Text>
                             <Text numberOfLines={1} ellipsizeMode="tail" style={styles.homechat__message}>{message}</Text>

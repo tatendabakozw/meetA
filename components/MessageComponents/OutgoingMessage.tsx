@@ -11,9 +11,9 @@ interface Props {
 
 const OutgoingMessage = ({ message, time }: Props) => {
     return (
-        <View style={tw`pb-1`}>
-            <View style={[tw`flex flex-col w-4/5 self-end`]}>
-                <Text style={[tw`bg-blue-900 py-2 px-4 text-white rounded-xl `, { fontSize: 15 }]}>{message}</Text>
+        <View style={tw`pb-1 ml-20`}>
+            <View style={[tw`flex rounded-xl flex-col bg-blue-900 self-end`]}>
+                <Text style={[tw`py-2 px-4 text-white `, { fontSize: 15 }]}>{message}</Text>
             </View>
             <View style={tw`flex flex-row items-center self-end`}>
                 <Text style={tw`text-xs self-end text-gray-500`}>{moment(time).fromNow()}</Text>

@@ -45,37 +45,34 @@ export const get_all_messages_Action = (id1, id2, token) => (dispatch) => {
     })
 }
 
-export const send_message_Action = (id, token, body) => (dispatch) => {
+export const send_message_Action = (id, token, body, socket) => (dispatch) => {
     dispatch({
         type: SEND_MESSAGE_REQUEST,
         payload: { body }
     })
-
-    // socket.emit("Sending Message",{
-    //     body
-    // })
-
     dispatch({
         type: SEND_MESSAGE_SUCCESS,
         payload: body
     })
 
-    // axios.post(`${apiUrl}/chat/send_message/${id}`,{body: body},{headers:{
-    //     Authorization: token
-    // }}).then(res=>{
-    //     dispatch({
-    //         type: SEND_MESSAGE_SUCCESS,
-    //         payload: res.data
-    //     })
-    // }).catch(error=>{
-    //     dispatch({
-    //         type: SEND_MESSAGE_FAIL,
-    //         payload: error.response && error.response.data.error
-    //             ? error.response.data.error
-    //             : error.message,
-    //     })
-    // })
-    
+    axios.post(`${apiUrl}/chat/send_message/${id}`, { body: body }, {
+        headers: {
+            Authorization: token
+        }
+    }).then(res => {
+        dispatch({
+            type: SEND_MESSAGE_SUCCESS,
+            payload: res.data
+        })
+    }).catch(error => {
+        dispatch({
+            type: SEND_MESSAGE_FAIL,
+            payload: error.response && error.response.data.error
+                ? error.response.data.error
+                : error.message,
+        })
+    })
+
 }
 
 //get all messages from firestore

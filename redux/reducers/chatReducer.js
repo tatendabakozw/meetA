@@ -25,14 +25,14 @@ export const send_message_Reducer = (state = {loading:false}, action) => {
 }
 
 //get all chats
-export const get_all_messages_Reducer = (state = {loading:false}, action) => {
+export const get_all_messages_Reducer = (state = {messages_loading:false}, action) => {
     switch (action.type) {
         case GET_ALL_MESSAGES_REQUEST:
-            return { loading: true }
+            return { messages_loading: true }
         case GET_ALL_MESSAGES_SUCCESS:
-            return { loading: false, messages: action.payload }
+            return { messages_loading: false, messages: action.payload }
         case GET_ALL_MESSAGES_FAIL:
-            return { loading: false, error: action.payload }
+            return { messages_loading: false, error: action.payload }
         default:
             return state
     }
