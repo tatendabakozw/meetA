@@ -19,14 +19,7 @@ import CreatePost from './screens/CreatePost/CreatePost';
 import { getData } from './helpers/async-storage';
 import SinglePost from './screens/SinglePost/SinglePost';
 import AppLoading from "expo-app-loading";
-import io from 'socket.io-client';
-import { socketUrl } from './helpers/apiUrl';
-
-const sock = io(socketUrl, {
-  transports: ['websocket'],
-  forceNew: true,
-});
-
+import { socket } from './helpers/socket';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -87,7 +80,7 @@ const App = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    sock.on('login-success', (data) => {
+    socket.on('login-success', (data) => {
       getData().then((res) => {
         if (data === 'sucessfully logged in') {
           setUser(res)
@@ -97,7 +90,7 @@ const App = () => {
         console.log(error)
       })
     })
-    sock.on('logout-success', (data) => {
+    socket.on('logout-success', (data) => {
       if (data === 'sucessfully logged out') {
         setUser(null)
       }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { Image, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register_user_Action } from '../../redux/actions/authActions';
 import Error from '../../components/Alerts/Error';
 import SucCess from '../../components/Alerts/Success';
+import { socket } from '../../helpers/socket';
 
 const Register = () => {
     const [email, setEmail] = useState('')
@@ -36,6 +37,16 @@ const Register = () => {
             dispatch(register_user_Action(email.trim(), password, username))
         }
     }
+
+    useEffect(() => {
+        socket.on('register-success', (data) => {
+            if (data === 'sucessfully registered') {
+                setTimeout(() => {
+                    navigation.navigate('login')
+                }, 1500);
+            }
+        })
+    }, [])
 
     return (
         <SafeAreaView>
