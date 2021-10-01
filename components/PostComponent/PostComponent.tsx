@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import tw from 'tailwind-react-native-classnames'
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
@@ -9,6 +9,7 @@ import Username from '../Username/Username';
 import moment from 'moment'
 import { useDispatch } from 'react-redux';
 import { like_a_post_Action } from '../../redux/actions/postActions';
+import { socket } from '../../helpers/socket';
 
 interface Props {
     id: string,
@@ -29,12 +30,24 @@ interface Props {
 
 const PostComponent = ({ id, post_user_image, name, time_posted, post_body, likes, comments, post_picture, user_id, verified, logged_in_user, liked }: Props) => {
     const dispatch = useDispatch()
+    const [post_liked, setPostLiked] = useState(liked)
+    const [number_of_likes, setNumberOfLikes] = useState(likes)
 
     const like_post = () => {
         dispatch(like_a_post_Action(id, logged_in_user.token))
     }
 
-    console.log(post_picture)
+    useEffect(() => {
+        socket.on('like-done', data => {
+            console.log(data)
+            setNumberOfLikes(data.likes)
+            setPostLiked(data.user_liked)
+            // setPostLiked()
+        })
+    }, [socket])
+
+    // console.log(likes)
+
 
     const navigation = useNavigation()
 
@@ -80,13 +93,13 @@ const PostComponent = ({ id, post_user_image, name, time_posted, post_body, like
             <View style={tw`flex flex-row items-center p-2 mr-2`}>
                 <TouchableOpacity activeOpacity={0.8} onPress={like_post} style={tw`flex flex-row items-center mr-4`}>
                     {
-                        liked ? (
+                        post_liked ? (
                             <Ionicons name="heart" size={24} style={tw`text-pink-500 font-bold`} />
                         ) : (
                             <Ionicons name="heart-outline" size={24} style={tw`text-gray-700 font-bold`} />
                         )
                     }
-                    <Text style={tw`mx-1`}>{likes}</Text>
+                    <Text style={tw`mx-1`}>{number_of_likes}</Text>
                     {/* <Text style={tw``}>likes</Text> */}
                 </TouchableOpacity>
                 <TouchableOpacity style={tw`flex flex-row items-center`}>
