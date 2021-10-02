@@ -54,7 +54,7 @@ const HomeChat = ({ propic, name, message, time, id, verified, room_id, chat_use
                 }
             </TouchableOpacity>
             <View style={{ flex: 1 }} />
-            <Text style={{ color: '#6B7280' }}>{moment(time).fromNow()}</Text>
+            <Text style={{ color: '#6B7280' }}>{moment(time).fromNow(true)}</Text>
         </View>
     )
 }

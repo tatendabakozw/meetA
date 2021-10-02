@@ -55,10 +55,9 @@ const SinglePost = ({ route }: Props) => {
         return () => { mountedRef.current = false }
     }, [])
 
-
     useEffect(() => {
         socket.on('commented', (body) => {
-
+            setComments((old_comments: any) => [...old_comments, body])
         })
     }, [socket])
 

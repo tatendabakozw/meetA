@@ -16,7 +16,7 @@ const OutgoingMessage = ({ message, time }: Props) => {
                 <Text style={[tw`py-2 px-4 text-white `, { fontSize: 15 }]}>{message}</Text>
             </View>
             <View style={tw`flex flex-row items-center self-end`}>
-                <Text style={tw`text-xs self-end text-gray-500`}>{moment(time).fromNow()}</Text>
+                <Text style={tw`text-xs self-end text-gray-500`}>{moment(time).fromNow(true)}</Text>
                 <View style={styles.homechat__img}>
                     <Ionicons name="checkmark-done-circle-outline" size={16} color="#60A5FA" />
                 </View>

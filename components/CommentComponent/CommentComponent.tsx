@@ -1,10 +1,11 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import tw from 'tailwind-react-native-classnames'
 import UserAvatar from '../UserAvatar/UserAvatar'
 import Username from '../Username/Username'
-import { Ionicons } from '@expo/vector-icons';
+import { EvilIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 interface Props {
     body?: string,
@@ -31,17 +32,33 @@ const CommentComponent = ({ body, user_pic, username, verified, user_id, liked }
                     <Username name={username} fontWeight={'700'} fontSize={17} verified={verified} />
                 </View>
                 <Text style={[tw`text-gray-700`, { fontSize: 14 }]}>{body}</Text>
-                <TouchableOpacity activeOpacity={0.8} onPress={like_comment} style={tw`flex flex-row items-center my-4`}>
-                    {
-                        liked ? (
-                            <Ionicons name="heart" size={24} style={tw`text-pink-500 font-bold`} />
-                        ) : (
-                            <Ionicons name="heart-outline" size={20} style={tw`text-gray-700 font-bold`} />
-                        )
-                    }
-                    <Text style={tw`mx-1`}>{likes}</Text>
-                </TouchableOpacity>
-            <View style={tw`border-b border-gray-300 w-full self-center mb-8`} />
+                <View style={tw`flex flex-row items-center w-3/5 justify-between`}>
+                    <TouchableOpacity activeOpacity={0.8} onPress={like_comment} style={tw`flex flex-row items-center my-4`}>
+                        {
+                            !liked ? (
+                                <AntDesign name="like1" size={16} style={tw`text-pink-500`} />
+                            ) : (
+                                <AntDesign name="like2" size={16} style={tw`text-gray-700`} />
+                            )
+                        }
+                        <Text style={tw`mx-1 text-sm`}>{likes}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.8} onPress={like_comment} style={tw`flex flex-row items-center my-4`}>
+                        {
+                            liked ? (
+                                <AntDesign name="dislike1" size={16} style={tw`text-blue-900`} />
+                            ) : (
+                                <AntDesign name="dislike2" size={16} style={tw`text-gray-700`} />
+                            )
+                        }
+                        <Text style={tw`mx-1 text-sm`}>{likes}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.8} onPress={like_comment} style={tw`flex flex-row items-center my-4`}>
+                        <EvilIcons name="comment" size={24} style={tw`text-gray-700`} />
+                        <Text>1</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={tw`border-b border-gray-300 w-full self-center mb-8`} />
             </View>
 
         </View>

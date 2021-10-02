@@ -22,6 +22,7 @@ const CommentsSection = ({ token, id, comments, loading }: Props) => {
 
     const create_comment = () => {
         dispatch(create_a_comment_Action(id, token, body))
+        setBody('')
     }
 
     if (loading) {
