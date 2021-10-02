@@ -12,6 +12,7 @@ import { get_single_user_Action } from '../../redux/actions/userActions'
 import MasonryList from "react-native-masonry-list";
 import { toggle_follow_Action } from '../../redux/actions/followActions'
 import { getData } from '../../helpers/async-storage'
+import Username from '../../components/Username/Username'
 
 interface Props {
     route?: any
@@ -71,10 +72,10 @@ const UserDetails = ({ route }: Props) => {
                 />
             </View>
             <View style={tw`flex flex-row items-center self-center pt-4`}>
-                <Text style={tw`font-bold text-gray-700 text-lg text-center mr-2`}>@{user?.displayName}</Text>
-                <MaterialIcons name="verified" size={20} color="#1E3A8A" />
+                <Username verified={user?.verified} name={user?.displayName} fontSize={17} fontWeight='700' />
             </View>
             <View style={tw`flex flex-row items-center justify-between pt-8 px-20`}>
+
                 <View style={tw`flex flex-col items-center`}>
                     <Text style={[tw`text-gray-700`, { fontWeight: '700', fontSize: 17 }]}>{user?.followers.length}</Text>
                     <Text style={tw`text-gray-400`}>Followers</Text>
