@@ -22,30 +22,27 @@ const CommentComponent = ({ body, user_pic, username, verified, user_id, liked }
     const like_comment = () => { }
 
     return (
-        <View>
+        <View style={tw`flex flex-row px-4`}>
             <TouchableOpacity style={tw`flex flex-row`} >
                 <UserAvatar picture={user_pic} user_id={user_id} />
-                <View style={tw`self-center flex-1`}>
+            </TouchableOpacity>
+            <View style={tw`pt-2 flex-1`}>
+                <View style={tw`flex-1`}>
                     <Username name={username} fontWeight={'700'} fontSize={17} verified={verified} />
                 </View>
-
-            </TouchableOpacity>
-            <View style={tw` px-8 pt-2`}>
-            <Text style={[tw`text-gray-700`, { fontSize: 14 }]}>{body}</Text>
-            <TouchableOpacity activeOpacity={0.8} onPress={like_comment} style={tw`flex flex-row items-center my-4`}>
-                {
-                    liked ? (
-                        <Ionicons name="heart" size={24} style={tw`text-pink-500 font-bold`} />
-                    ) : (
-                        <Ionicons name="heart-outline" size={24} style={tw`text-gray-700 font-bold`} />
-                    )
-                }
-                <Text style={tw`mx-1`}>{likes}</Text>
-                {/* <Text style={tw``}>likes</Text> */}
-            </TouchableOpacity>
-
+                <Text style={[tw`text-gray-700`, { fontSize: 14 }]}>{body}</Text>
+                <TouchableOpacity activeOpacity={0.8} onPress={like_comment} style={tw`flex flex-row items-center my-4`}>
+                    {
+                        liked ? (
+                            <Ionicons name="heart" size={24} style={tw`text-pink-500 font-bold`} />
+                        ) : (
+                            <Ionicons name="heart-outline" size={20} style={tw`text-gray-700 font-bold`} />
+                        )
+                    }
+                    <Text style={tw`mx-1`}>{likes}</Text>
+                </TouchableOpacity>
+            <View style={tw`border-b border-gray-300 w-full self-center mb-8`} />
             </View>
-            <View style={tw`border-b border-gray-300 w-4/5 self-center mb-8`} />
 
         </View>
     )

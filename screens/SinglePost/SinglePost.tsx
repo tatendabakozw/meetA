@@ -1,16 +1,16 @@
 import { useNavigation } from '@react-navigation/core'
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TextInput, View, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import tw from 'tailwind-react-native-classnames'
-import CommentComponent from '../../components/CommentComponent/CommentComponent'
 import PostComponent from '../../components/PostComponent/PostComponent'
 import { getData } from '../../helpers/async-storage'
 import ExploreLayout from '../../layouts/ExploreLayout'
 import { get_a_single_post_Action } from '../../redux/actions/postActions'
-import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { create_a_comment_Action } from '../../redux/actions/commentActions'
+import { socket } from '../../helpers/socket'
+import CommentsSection from '../../components/CommentsSection/CommentsSection'
+import axios from 'axios'
+import { apiUrl } from '../../helpers/apiUrl'
 
 interface Props {
     route?: any
@@ -20,11 +20,13 @@ const SinglePost = ({ route }: Props) => {
     const navigation = useNavigation()
     const { id } = route.params
     const [token, setToken] = useState()
-    const [body, setBody] = useState('')
     // @ts-ignore
     const _post = useSelector(state => state.get_single_post)
     const { loading, post } = _post
     const dispatch = useDispatch()
+    const mountedRef = useRef(true)
+    const [comments, setComments] = useState<any>()
+    const [comments_loading, setCommentsLoading] = useState(false)
 
     useEffect(() => {
         getData().then(res => {
@@ -35,11 +37,32 @@ const SinglePost = ({ route }: Props) => {
         })
     }, [dispatch])
 
-    const create_comment = () => {
-        dispatch(create_a_comment_Action(id, token, body))
-    }
+    const getComments = useCallback(async () => {
+        try {
+            const data = await axios.get(`${apiUrl}/comment/all/${id}`)
+            if (!mountedRef.current) return null;
+            setComments(data.data.comments)
+        } catch (error) {
+            console.log(error)
+            setCommentsLoading(false)
+        }
+    }, [mountedRef])
+    
+    useEffect(() => {
+        setCommentsLoading(true)
+        getComments()
+        setCommentsLoading(false)
+        return () => { mountedRef.current = false }
+    }, [])
 
-    if (loading) {
+
+    useEffect(() => {
+        socket.on('commented', (body) => {
+
+        })
+    }, [socket])
+
+    if (loading || comments_loading) {
         return (
             <ExploreLayout header_title={"Loading..."} header__back__activity={() => navigation.goBack()}>
                 <View style={tw`my-40`}>
@@ -65,39 +88,10 @@ const SinglePost = ({ route }: Props) => {
                         liked={post?.post_owner.liked_post}
                         post_picture={post?.post.pictureUrl}
                         user_id={post?.post_owner._id}
-                    
                     />
                 </View>
-
-            </View>
-            <View style={tw`bg-gray-100 rounded-lg p-2 w-full`}>
-                <View style={tw`flex flex-row items-center`}>
-                    <TextInput onChangeText={text => setBody(text)} placeholder="Write a comment" style={tw`rounded-lg bg-white p-2 flex-1 text-lg`} multiline={true} />
-                    <TouchableOpacity onPress={create_comment} activeOpacity={0.7} style={tw`p-2`}>
-                        <Ionicons name="send" size={24} style={tw`text-gray-700`} />
-                    </TouchableOpacity>
-                </View>
-                <Text style={tw`text-lg text-gray-700 font-semibold py-4`}>
-                    Comments
-                </Text>
                 <View>
-                    {
-                        post?.comments < 1 ? (
-                            <Text style={tw`text-gray-700 text-lg text-center`}>This post has no comments yet</Text>
-                        ) : (
-                            <>
-                                {post?.comments.map((comment: any, index: any) => (
-                                    <CommentComponent
-                                        body={comment.comment_body}
-                                        user_pic={comment.comment_owner_picture}
-                                        username={comment.comment_owner_name}
-                                        verified={comment.comment_owner_verified}
-                                        liked_post={true}
-                                    key={index} />
-                                ))}
-                            </>
-                        )
-                    }
+                    <CommentsSection token={token} loading={comments_loading} id={post?.post?._id} comments={comments} />
                 </View>
             </View>
         </ExploreLayout>
