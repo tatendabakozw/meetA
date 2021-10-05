@@ -3,6 +3,8 @@ import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { send_message_Action } from '../../redux/actions/chatActions';
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import tw from 'tailwind-react-native-classnames';
 
 interface Props {
     user_id?: string,
@@ -16,7 +18,6 @@ const ConversatonInput = ({ user_id, id1, id2, token }: Props) => {
     const dispatch = useDispatch()
     // @ts-ignore
     const _message = useSelector(state => state.send_message)
-
     const { loading } = _message
 
     const send_message = () => {
@@ -40,25 +41,45 @@ const ConversatonInput = ({ user_id, id1, id2, token }: Props) => {
 
     return (
         <>
-            <View style={styles.converinput}>
-                {/* <Text>{id}</Text> */}
-                <TextInput
-                    multiline={true}
-                    placeholder="Type message..."
-                    style={styles.input}
-                    value={new_message}
-                    onChangeText={text => setNewMessage(text)}
-                />
-                <TouchableOpacity style={{ marginRight: 15 }}>
-                    <Ionicons name="ios-camera-outline" size={24} color="#374151" />
+            <View style={tw`flex-row px-2`}>
+                <TouchableOpacity style={tw` py-2 pr-2 rounded-full self-end`}>
+                    <MaterialIcons name="emoji-emotions" size={32} color="#374151" />
                 </TouchableOpacity>
-                {
-                    loading ? (<TouchableOpacity disabled={true} style={{ marginRight: 10 }}>
-                        <Ionicons name="ios-send" size={20} color="#3B82F6" />
-                    </TouchableOpacity>) : (<TouchableOpacity onPress={send_message} style={{ marginRight: 10 }}>
-                        <Ionicons name="ios-send" size={20} color="#374151" />
-                    </TouchableOpacity>)
-                }
+                <View style={[tw`bg-white shadow-sm p-2 flex-1 flex-row`, {borderRadius: 30}]}>
+                    <TextInput
+                        multiline={true}
+                        style={[tw`self-center flex-1 p-2`, {borderRadius: 30}]}
+                    />
+                    <TouchableOpacity style={tw`self-end p-2`}>
+                    <MaterialIcons name="attach-file" size={24} color="#374151" />
+                    </TouchableOpacity>
+                    {
+                        loading ? (<TouchableOpacity disabled={true} style={tw`self-end p-2`}>
+                            <Ionicons name="ios-send" size={24} color="#3B82F6" />
+                        </TouchableOpacity>) : (<TouchableOpacity onPress={send_message} style={tw`self-end p-2`}>
+                            <Ionicons name="ios-send" size={24} color="#374151" />
+                        </TouchableOpacity>)
+                    }
+                </View>
+                {/* <View style={tw`flex flex-row items-center`}>
+                    <TextInput
+                        multiline={true}
+                        placeholder="Type message..."
+                        style={styles.input}
+                        value={new_message}
+                        onChangeText={text => setNewMessage(text)}
+                    />
+                    <TouchableOpacity style={{ marginRight: 15 }}>
+                        <Ionicons name="ios-camera-outline" size={24} color="#374151" />
+                    </TouchableOpacity>
+                    {
+                        loading ? (<TouchableOpacity disabled={true} style={{ marginRight: 10 }}>
+                            <Ionicons name="ios-send" size={20} color="#3B82F6" />
+                        </TouchableOpacity>) : (<TouchableOpacity onPress={send_message} style={{ marginRight: 10 }}>
+                            <Ionicons name="ios-send" size={20} color="#374151" />
+                        </TouchableOpacity>)
+                    }
+                </View> */}
             </View>
         </>
     )
@@ -68,12 +89,12 @@ export default ConversatonInput
 
 const styles = StyleSheet.create({
     converinput: {
-        width: '95%',
+        // width: '95%',
         alignSelf: 'center',
-        borderRadius: 50,
+        borderRadius: 30,
         flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        alignItems: 'center'
     },
     input: {
         paddingVertical: 15,

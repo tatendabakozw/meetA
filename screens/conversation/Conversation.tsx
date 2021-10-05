@@ -2,7 +2,6 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import tw from 'tailwind-react-native-classnames';
 import ConverHeader from '../../components/ConverHeader/ConverHeader';
-import { useDispatch } from 'react-redux';
 import { getData } from '../../helpers/async-storage';
 import { useNavigation } from '@react-navigation/core';
 import { socket } from '../../helpers/socket';
