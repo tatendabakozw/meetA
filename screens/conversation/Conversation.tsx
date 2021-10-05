@@ -1,10 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import tw from 'tailwind-react-native-classnames';
-import { Ionicons } from '@expo/vector-icons';
 import ConverHeader from '../../components/ConverHeader/ConverHeader';
-import { useDispatch, useSelector } from 'react-redux';
-import { get_all_messages_Action, send_message_Action } from '../../redux/actions/chatActions';
+import { useDispatch } from 'react-redux';
 import { getData } from '../../helpers/async-storage';
 import { useNavigation } from '@react-navigation/core';
 import { socket } from '../../helpers/socket';
@@ -12,6 +10,7 @@ import OutgoingMessage from '../../components/MessageComponents/OutgoingMessage'
 import { MessageComponent } from '../../components/MessageComponents/IncomingMessage';
 import axios from 'axios';
 import { apiUrl } from '../../helpers/apiUrl';
+import ConversatonInput from '../../components/ConversationInput/ConversatonInput';
 
 interface Props {
     header_title?: string,
@@ -22,15 +21,9 @@ interface Props {
 
 const Conversation = ({ back_location, route }: Props) => {
     const [page_loading, setPageLoading] = useState(false)
-    const [new_message, setNewMessage] = useState('')
     const [user_id, setUserId] = useState('')
     const [token, setToken] = useState('')
     const [all_messages, setAllMessages] = useState<any>([])
-    // @ts-ignore
-    const _message = useSelector(state => state.send_message)
-    const { loading } = _message
-
-    const dispatch = useDispatch()
     const { id1, id2 } = route.params
     const navigation = useNavigation()
 
@@ -63,25 +56,6 @@ const Conversation = ({ back_location, route }: Props) => {
         })
     }, [socket])
 
-    const send_message = () => {
-        if (!new_message) {
-            console.log('cant send empty message')
-        } else {
-            if (user_id === id1) {
-                // then id2 is receiveing so shiuld be passed as parameter
-                dispatch(send_message_Action(id2, token, new_message.trim()))
-                // socket.emit('message', new_message)
-                setNewMessage('')
-            }
-            else {
-                // then id1 is receiveing so shiuld be passed as parameter
-                dispatch(send_message_Action(id1, token, new_message.trim()))
-                setNewMessage('')
-                // socket.emit('message', new_message)
-            }
-        }
-    }
-
     if (page_loading) {
         return (
             <SafeAreaView>
@@ -102,42 +76,26 @@ const Conversation = ({ back_location, route }: Props) => {
                 <ConverHeader back_location={() => navigation.goBack()} />
             </View>
             <KeyboardAvoidingView style={tw`flex-1`}>
-                <ScrollView style={tw`flex-1 bg-gray-50 px-2 pt-4 `}>
-                    {
-                        all_messages?.map((message: any, index: any) => (
-                            <Fragment key={index}>
-                                {
-                                    message.sent_by === user_id ? (
-                                        <OutgoingMessage message={message.body} time={message.createdAt} />
-                                    ) : (
-                                        <MessageComponent message={message.body} time={message.createdAt} />
-                                    )
-                                }
-                            </Fragment>
-                        ))
-                    }
-                </ScrollView>
-                <View style={tw`pt-2 bottom-2 w-full`}>
-                    <View style={styles.converinput}>
-                        {/* <Text>{id}</Text> */}
-                        <TextInput
-                            multiline={true}
-                            placeholder="Type message..."
-                            style={styles.input}
-                            value={new_message}
-                            onChangeText={text => setNewMessage(text)}
-                        />
-                        <TouchableOpacity style={{ marginRight: 15 }}>
-                            <Ionicons name="ios-camera-outline" size={24} color="#374151" />
-                        </TouchableOpacity>
+                <ScrollView style={tw`flex-1 bg-gray-50 px-2 pt-4`}>
+                    <View style={tw`pb-8`}>
+
                         {
-                            loading ? (<TouchableOpacity disabled={true} style={{ marginRight: 10 }}>
-                                <Ionicons name="ios-send" size={20} color="#3B82F6" />
-                            </TouchableOpacity>) : (<TouchableOpacity onPress={send_message} style={{ marginRight: 10 }}>
-                                <Ionicons name="ios-send" size={20} color="#374151" />
-                            </TouchableOpacity>)
+                            all_messages?.map((message: any, index: any) => (
+                                <Fragment key={index}>
+                                    {
+                                        message.sent_by === user_id ? (
+                                            <OutgoingMessage message={message.body} time={message.createdAt} />
+                                        ) : (
+                                            <MessageComponent message={message.body} time={message.createdAt} />
+                                        )
+                                    }
+                                </Fragment>
+                            ))
                         }
                     </View>
+                </ScrollView>
+                <View style={tw`pt-2 bottom-2 w-full`}>
+                    <ConversatonInput token={token} id1={id1} id2={id2} user_id={user_id} />
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>

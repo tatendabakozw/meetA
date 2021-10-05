@@ -22,11 +22,11 @@ export default function StackedAvatar(props:any) {
   };
 
   return (
-    <div style={{ marginLeft: props.size / 2 }}>
+    <View style={{ marginLeft: props.size / 2 }}>
       {avatars.slice(0, maxAvatars).map((avatar:any, idx:any) => (
         <Avatar {...avatar} {...others} key={idx} style={style} />
       ))}
       {renderRemaining({ ...props, style })}
-    </div>
+    </View>
   );
 }
