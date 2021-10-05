@@ -7,7 +7,7 @@ import tw from 'tailwind-react-native-classnames'
 interface Props {
     picture?: any,
     size?: string,
-    user_id: any
+    user_id?: any
 }
 
 const UserAvatar = ({ picture, size, user_id }: Props) => {

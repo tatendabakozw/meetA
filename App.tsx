@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './redux/store';
 import { StyleSheet } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';

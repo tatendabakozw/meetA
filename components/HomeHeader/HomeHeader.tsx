@@ -24,7 +24,7 @@ const HomeHeader = ({ user }: Props) => {
             <StatusBar style="auto" />
             <View style={tw`px-2 flex flex-row items-center flex-1`}>
                 <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('profile')} style={tw`flex-1`}>
-                    <UserAvatar picture={user?.photoURL} />
+                    <UserAvatar picture={user?.photoURL} user_id={'an id'} />
                 </TouchableOpacity>
                 <TouchableOpacity activeOpacity={0.8} onPress={toggleSearch} style={[tw`bg-gray-200 p-2`,{ borderRadius: 50 }]}>
                     <AntDesign name="search1" size={24} color="#6B7280" />
@@ -42,9 +42,9 @@ const HomeHeader = ({ user }: Props) => {
                                 <TouchableOpacity onPress={() => navigation.navigate('chats')} activeOpacity={0.7} style={styles.header__colorItem}>
                                     <Text style={{ color: '#fff', fontSize: 13 }}>My Chats</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.navigate('chats')} activeOpacity={0.7} style={styles.header__colorItem}>
+                                {/* <TouchableOpacity onPress={() => navigation.navigate('chats')} activeOpacity={0.7} style={styles.header__colorItem}>
                                     <Text style={{ color: '#fff', fontSize: 13 }}>Followers</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </View>
                             <TouchableOpacity activeOpacity={0.7} style={tw``}>
                                 <Ionicons name="settings-outline" size={24} color="#4B5563" />
