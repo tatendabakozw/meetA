@@ -24,7 +24,7 @@ interface Props {
 const HomeChat = ({ propic, name, message, time, id, verified, room_id, chat_users, current_user_id, sent_by_you }: Props) => {
     const navigation = useNavigation()
     const enter_chat = () => {
-        navigation.navigate('conversation', { id1: chat_users[1], id2: chat_users[0] })
+        navigation.navigate('conversation', { id1: chat_users[1], id2: chat_users[0], name: name, propic: propic })
     }
 
     return (

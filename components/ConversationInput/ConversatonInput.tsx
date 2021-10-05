@@ -48,7 +48,10 @@ const ConversatonInput = ({ user_id, id1, id2, token }: Props) => {
                 <View style={[tw`bg-white shadow-sm p-2 flex-1 flex-row`, {borderRadius: 30}]}>
                     <TextInput
                         multiline={true}
-                        style={[tw`self-center flex-1 p-2`, {borderRadius: 30}]}
+                        style={[tw`self-center flex-1 p-2 text-lg`, {borderRadius: 30}]}
+                        placeholder="Start typing ..."
+                        value={new_message}
+                        onChangeText={text => setNewMessage(text)}
                     />
                     <TouchableOpacity style={tw`self-end p-2`}>
                     <MaterialIcons name="attach-file" size={24} color="#374151" />
@@ -61,46 +64,9 @@ const ConversatonInput = ({ user_id, id1, id2, token }: Props) => {
                         </TouchableOpacity>)
                     }
                 </View>
-                {/* <View style={tw`flex flex-row items-center`}>
-                    <TextInput
-                        multiline={true}
-                        placeholder="Type message..."
-                        style={styles.input}
-                        value={new_message}
-                        onChangeText={text => setNewMessage(text)}
-                    />
-                    <TouchableOpacity style={{ marginRight: 15 }}>
-                        <Ionicons name="ios-camera-outline" size={24} color="#374151" />
-                    </TouchableOpacity>
-                    {
-                        loading ? (<TouchableOpacity disabled={true} style={{ marginRight: 10 }}>
-                            <Ionicons name="ios-send" size={20} color="#3B82F6" />
-                        </TouchableOpacity>) : (<TouchableOpacity onPress={send_message} style={{ marginRight: 10 }}>
-                            <Ionicons name="ios-send" size={20} color="#374151" />
-                        </TouchableOpacity>)
-                    }
-                </View> */}
             </View>
         </>
     )
 }
 
 export default ConversatonInput
-
-const styles = StyleSheet.create({
-    converinput: {
-        // width: '95%',
-        alignSelf: 'center',
-        borderRadius: 30,
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        alignItems: 'center'
-    },
-    input: {
-        paddingVertical: 15,
-        fontSize: 15,
-        borderRadius: 50,
-        paddingHorizontal: 20,
-        flex: 1
-    }
-})

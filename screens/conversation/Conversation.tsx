@@ -23,7 +23,7 @@ const Conversation = ({ back_location, route }: Props) => {
     const [user_id, setUserId] = useState('')
     const [token, setToken] = useState('')
     const [all_messages, setAllMessages] = useState<any>([])
-    const { id1, id2 } = route.params
+    const { id1, id2, name, propic } = route.params
     const navigation = useNavigation()
 
     useEffect(() => {
@@ -59,7 +59,7 @@ const Conversation = ({ back_location, route }: Props) => {
         return (
             <SafeAreaView>
                 <View>
-                    <ConverHeader back_location={back_location} />
+                    <ConverHeader back_location={back_location} username={name} propic={propic} />
                 </View>
                 <View style={tw`flex-1 self-center items-center content-center pt-40`}>
                     <Text>Loading ...</Text>
@@ -72,7 +72,7 @@ const Conversation = ({ back_location, route }: Props) => {
     return (
         <SafeAreaView style={tw`bg-gray-50 flex-1`}>
             <View>
-                <ConverHeader back_location={() => navigation.goBack()} />
+                <ConverHeader back_location={() => navigation.goBack()} username={name} propic={propic} />
             </View>
             <KeyboardAvoidingView style={tw`flex-1`}>
                 <ScrollView style={tw`flex-1 bg-gray-50 px-2 pt-4`}>

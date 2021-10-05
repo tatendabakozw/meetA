@@ -12,7 +12,7 @@ interface Props {
 const OutgoingMessage = ({ message, time }: Props) => {
     return (
         <View style={tw`pb-1 ml-20`}>
-            <View style={[tw`flex rounded-xl flex-col bg-blue-900 self-end`]}>
+            <View style={[tw`flex flex-col bg-blue-900 self-end`, {borderRadius: 20}]}>
                 <Text style={[tw`py-2 px-4 text-white `, { fontSize: 15 }]}>{message}</Text>
             </View>
             <View style={tw`flex flex-row items-center self-end`}>
