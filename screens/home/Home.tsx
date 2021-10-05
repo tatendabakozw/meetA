@@ -43,9 +43,9 @@ const Home = ({ navigation }: Props) => {
 
     return (
         <HomeLayout>
-            <>
-                <Moments />
-            </>
+            {/* <>
+                <Moments current_user={current_user} />
+            </> */}
             {
                 !current_user?.bio && (<TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('profile')} style={tw`p-4 text-center rounded-lg my-4 bg-red-100`}>
                     <Text style={tw`text-center`}>Click here to add a bio to your account</Text>
