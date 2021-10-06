@@ -7,7 +7,6 @@ export const toggle_follow_Action = (user, token) => (dispatch) => {
     dispatch({
         type: TOGGLEFOLLOW_USER_REQUEST
     })
-    console.log(token)
     axios.patch(`${apiUrl}/user/follow/${user._id}`, {},{
         headers: {
             Authorization: token

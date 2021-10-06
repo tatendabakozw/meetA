@@ -13,6 +13,7 @@ import MasonryList from "react-native-masonry-list";
 import { toggle_follow_Action } from '../../redux/actions/followActions'
 import { getData } from '../../helpers/async-storage'
 import Username from '../../components/Username/Username'
+import { socket } from '../../helpers/socket'
 
 interface Props {
     route?: any
@@ -27,8 +28,10 @@ const UserDetails = ({ route }: Props) => {
     const navigation = useNavigation()
     const [view_options, setViewOptions] = useState<string>('photos')
     const [current_user_id, setCurrentUserId] = useState()
+    const [followers, setFollowers] = useState<any>()
+    const [user_followed, setUserFollowed] = useState<any>()
 
-    console.log(id)
+    // console.log(id)
 
 
     useEffect(() => {
@@ -47,8 +50,21 @@ const UserDetails = ({ route }: Props) => {
         }).catch(err => {
             console.log(err)
         })
-
     }
+
+    useEffect(() => {
+        socket.on('followed', data => {
+            if (data.message === 'followed') {
+                setFollowers(data.followers)
+                setUserFollowed(true)
+            } else {
+                setFollowers(data.followers)
+                // setUserFollowed(false)
+            }
+        })
+    }, [socket])
+
+    console.log(followers)
 
     const enter_chat = () => {
         navigation.navigate('conversation', { id1: id, id2: current_user_id })
@@ -77,7 +93,9 @@ const UserDetails = ({ route }: Props) => {
             <View style={tw`flex flex-row items-center justify-between pt-8 px-20`}>
 
                 <View style={tw`flex flex-col items-center`}>
-                    <Text style={[tw`text-gray-700`, { fontWeight: '700', fontSize: 17 }]}>{user?.followers.length}</Text>
+                    <Text style={[tw`text-gray-700`, { fontWeight: '700', fontSize: 17 }]}>{
+                        followers ? followers : user?.followers.length
+                    }</Text>
                     <Text style={tw`text-gray-400`}>Followers</Text>
                 </View>
                 <View style={tw`flex flex-col items-center`}>
@@ -136,7 +154,7 @@ const UserDetails = ({ route }: Props) => {
                             columns={3}
                             spacing={2}
                             backgroundColor="#F9FAFB"
-                            onPressImage={() => { navigation.navigate('singlepost') }}
+                            onPressImage={() => console.log(user?.pictures)}
                             images={user?.pictures}
                         />
                     )
